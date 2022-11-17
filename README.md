@@ -139,5 +139,3 @@ module.exports = {
 - **DATABASE_PASSWORD:** _your_password_
 - **DATABASE_CONNECTION_OPTIONS:** ssl=true&replicaSet=globaldb
 
-
-Prueba de webhook pivotal
