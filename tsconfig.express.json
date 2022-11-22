@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
@@ -12,5 +11,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["backend/src/*", "backend/routers/*", "backend/models/*", "backend/db/*",]
+  "include": ["backend/src/*", "backend/routers/*", "backend/models/*", "backend/db/*"]
 }

@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import {defaultRouter} from '../routers/default';
 import {postRouter} from '../routers/post';
 import {getRouter} from '../routers/get';
+import '../db/mongoose';
 
 const express_app = express();
 
