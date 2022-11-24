@@ -1,6 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 
-export interface Publication extends Document {
+export interface PublicationInterface extends Document {
   id: string;
   content: {
     text: string;
@@ -16,7 +16,7 @@ export interface Publication extends Document {
   ];
 }
 
-const publicationSchema = new Schema({
+const publicationSchema = new Schema<PublicationInterface>({
   id: {
     type: String,
     required: true,
@@ -65,4 +65,4 @@ const publicationSchema = new Schema({
   ],
 });
 
-export default model<Publication>("Publication", publicationSchema);
+export default model<PublicationInterface>("Publication", publicationSchema);

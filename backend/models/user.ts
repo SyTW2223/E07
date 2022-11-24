@@ -1,6 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 
-export interface User extends Document {
+export interface UserInterface extends Document {
   id: string;
   date: Date;
   username: string;
@@ -21,7 +21,7 @@ export interface User extends Document {
   publications: string[];
 }
 
-const UserSchema = new Schema({
+const UserSchema = new Schema<UserInterface>({
   id: {
     type: String,
     unique: true,
@@ -31,7 +31,7 @@ const UserSchema = new Schema({
 
   date: {
     type: Date,
-    required: true,
+    required: false,
     trim: true,
   },
 
@@ -44,7 +44,7 @@ const UserSchema = new Schema({
 
   avatar_path: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
   },
 
@@ -73,24 +73,24 @@ const UserSchema = new Schema({
 
   lastlogin: {
     type: Date,
-    required: true,
+    required: false,
     trim: true,
   },
 
   personalInfo: {
     firstname: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     lastname: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     birthdate: {
       type: Date,
-      required: true,
+      required: false,
       trim: true,
     },
   },
@@ -98,26 +98,26 @@ const UserSchema = new Schema({
   stats: {
     follower_count: {
       type: Number,
-      required: true,
+      required: false,
       trim: true,
     },
     following_count: {
       type: Number,
-      required: true,
+      required: false,
       trim: true,
     },
     publication_counter: {
       type: Number,
-      required: true,
+      required: false,
       trim: true,
     },
   },
 
   publications: {
     type: [String],
-    required: true,
+    required: false,
     trim: true,
   },
 });
 
-export default model<User>("User", UserSchema);
+export default model<UserInterface>("User", UserSchema);
