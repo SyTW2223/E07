@@ -1,7 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 
 export interface UserInterface extends Document {
-  id: string;
   date: Date;
   username: string;
   avatar_path: string;
@@ -22,13 +21,6 @@ export interface UserInterface extends Document {
 }
 
 const UserSchema = new Schema<UserInterface>({
-  id: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true,
-  },
-
   date: {
     type: Date,
     required: false,
