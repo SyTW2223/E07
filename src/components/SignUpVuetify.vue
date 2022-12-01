@@ -1,26 +1,36 @@
 <template>
-  <div id="app">
-    <form @submit.prevent="signUp">
-      <label>
-        Email address
-        <input type="email" v-model="email" />
-      </label>
-      <label>
-        Account name (custom field)
-        <input type="text" v-model="username" />
-      </label>
-      <label>
-        Password
-        <input type="password" v-model="password" />
-      </label>
-      <label>
-        Verify password
-        <input type="password" v-model="verifypassword" />
-      </label>
-      <v-btn type="submit" block color="primary" elevation="2">Sign Up</v-btn>
-
-    </form>
-  </div>
+  <v-form v-model="valid">
+    <v-container>
+      <v-text-field
+        label="Email address"
+        type="email"
+        :rules="rules.email"
+        hide-details="auto"
+        v-model="email"
+      ></v-text-field>
+      <v-text-field
+        label="Account name (custom field)"
+        hide-details="auto"
+        v-model="username"
+      ></v-text-field>
+      <v-text-field
+        label="Password"
+        type="password"
+        :rules="rules.password"
+        hide-details="auto"
+        v-model="password"
+        required
+      ></v-text-field>
+      <v-text-field
+        label="Verify password"
+        type="password"
+        :rules="rules.password"
+        v-model="verifypassword"
+        hide-details="auto"
+      ></v-text-field>
+      <v-btn @click="signUp" block color="primary" elevation="2">Sign Up</v-btn>
+    </v-container>
+  </v-form>
 </template>
 
 <script lang="ts">
@@ -28,10 +38,25 @@ export default {
   name: "SignUp",
   data() {
     return {
+      valid: false,
       email: "",
       username: "",
       password: "",
       verifypassword: "",
+      rules: {
+        email: [
+          (email: string) => !!email || "Required.",
+          (email: string) =>
+            /^([\w-.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(email) ||
+            "Enter a valid email",
+        ],
+        password: [
+          (password: string) => !!password || "Required.",
+          (password: string) =>
+            /^(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(password) ||
+            "A-z numbers and length 8",
+        ],
+      },
     };
   },
 
@@ -57,8 +82,8 @@ export default {
         }).then((response) => {
           response.json().then((obj) => {
             alert(obj.message);
+            this.$router.push({ name: "login" });
           });
-          this.$router.push({ name: "login" });
         });
       } catch (error) {
         console.log(error);
