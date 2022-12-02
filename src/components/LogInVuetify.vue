@@ -16,8 +16,11 @@
           hide-details="auto"
           v-model="password"
         ></v-text-field>
-
-        <v-btn @click="logIn" block color="primary" elevation="2">Log In</v-btn>
+        <v-container>
+          <v-btn @click="logIn" block color="primary" elevation="2"
+            >Log In</v-btn
+          >
+        </v-container>
       </v-container>
     </v-form>
   </div>

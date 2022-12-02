@@ -2580,7 +2580,7 @@
   optionalDependencies:
     "source-map" "~0.6.1"
 
-"eslint-config-prettier@^8.3.0":
+"eslint-config-prettier@^8.3.0", "eslint-config-prettier@^8.5.0":
   "integrity" "sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q=="
   "resolved" "https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-8.5.0.tgz"
   "version" "8.5.0"
@@ -5426,7 +5426,7 @@
     "de-indent" "^1.0.2"
     "he" "^1.2.0"
 
-"vue-tsc@^1.0.8":
+"vue-tsc@^1.0.10":
   "integrity" "sha512-o6ek6ZSDwpVWn7/ZXlIILfCZ18o7ypEYKMDynsyPj9m10/ALXkCLKIj9yVfx00QAX5Z/hKrdhYcA2ZaQ0+U7Kg=="
   "resolved" "https://registry.npmjs.org/vue-tsc/-/vue-tsc-1.0.10.tgz"
   "version" "1.0.10"
