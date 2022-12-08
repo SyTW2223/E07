@@ -4,19 +4,19 @@ import * as dotenv from "dotenv";
 import { defaultRouter } from "../routers/default";
 import { postRouter } from "../routers/post";
 import { getRouter } from "../routers/get";
+import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 import "../db/mongoose";
-const morgan = require("morgan");
 
 const express_app = express();
 
 express_app.use(express.json());
 express_app.use(cors());
+
 express_app.use(postRouter);
 express_app.use(getRouter);
 express_app.use(defaultRouter);
 
-//middleware to see requests in console
-express_app.use(morgan("dev"));
+express_app.use(jwtAuthMiddleware);
 
 dotenv.config({ path: ".env.local" });
 

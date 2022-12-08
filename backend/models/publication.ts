@@ -1,7 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 
 export interface PublicationInterface extends Document {
-  id: string;
   content: {
     text: string;
     media_path: string;
@@ -17,13 +16,6 @@ export interface PublicationInterface extends Document {
 }
 
 const publicationSchema = new Schema<PublicationInterface>({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
-
   content: {
     text: {
       type: String,
@@ -38,14 +30,13 @@ const publicationSchema = new Schema<PublicationInterface>({
   },
 
   date: {
-    type: Date,
     required: true,
+    type: Date,
     trim: true,
   },
 
   fav_count: {
     type: Number,
-    required: true,
     trim: true,
   },
 
@@ -53,12 +44,12 @@ const publicationSchema = new Schema<PublicationInterface>({
     {
       id: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
       },
       content: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
       },
     },

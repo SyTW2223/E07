@@ -19,6 +19,11 @@ defineProps<{
       publishing software like Aldus PageMaker including versions of Lorem
       Ipsum.
     </p>
+    <v-container>
+      <v-btn @click="addPublication" block color="primary" elevation="2"
+        >Test Middleware</v-btn
+      >
+    </v-container>
   </div>
 </template>
 
@@ -45,3 +50,32 @@ h3 {
   }
 }
 </style>
+
+<script lang="ts">
+import { useAuthStore } from "@/stores";
+import { fetchWrapper } from "@/helpers";
+
+const baseUrl = `http://localhost:3000`;
+export default {
+  name: "LogIn",
+  methods: {
+    async addPublication() {
+      try {
+        return await fetchWrapper
+          .post(`${baseUrl}/publication`, {
+            content: {
+              text: "Publicacion de prueba",
+            },
+            date: new Date(),
+            fav_count: 0,
+          })
+          .then((message) => {
+            alert(message);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
+</script>

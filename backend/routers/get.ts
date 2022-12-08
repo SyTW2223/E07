@@ -49,25 +49,25 @@ getRouter.get("/user/:id", (req, res) => {
 /*
  * Busca una publicación por su id
  */
-getRouter.get("/publication", (req, res) => {
-  const filter = req.query.id ? { id: req.query.id.toString() } : {};
+// getRouter.get("/publication", (req, res) => {
+//   const filter = req.query.id ? { id: req.query.id.toString() } : {};
 
-  if (!filter.id) {
-    res.status(404).send("The id is required");
-    return;
-  }
-  Publication.findOne(filter)
-    .then((publication) => {
-      if (!publication) {
-        res.status(404).send("The publication cannot be found");
-      } else {
-        res.status(201).send(publication);
-      }
-    })
-    .catch((err) => {
-      res.status(400).send(err);
-    });
-});
+//   if (!filter.id) {
+//     res.status(404).send("The id is required");
+//     return;
+//   }
+//   Publication.findOne(filter)
+//     .then((publication) => {
+//       if (!publication) {
+//         res.status(404).send("The publication cannot be found");
+//       } else {
+//         res.status(201).send(publication);
+//       }
+//     })
+//     .catch((err) => {
+//       res.status(400).send(err);
+//     });
+// });
 
 /*
  * Devuelve una publicación a partir de su id

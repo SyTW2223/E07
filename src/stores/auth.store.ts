@@ -9,29 +9,29 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
     // initialize state from local storage to enable user to stay logged in
-    user: JSON.parse(localStorage.getItem("user") || "null"),
+    api_token: JSON.parse(localStorage.getItem("api_token") || "null"),
     // store the url of the page user tried to access before being redirected to login page
     returnUrl: "/",
   }),
   actions: {
     async login(email: string, password: string) {
-      const user = await fetchWrapper.post(`${baseUrl}/login`, {
+      const api_token = await fetchWrapper.post(`${baseUrl}/login`, {
         email,
         password,
       });
 
       // update pinia state
-      this.user = user;
+      this.api_token = api_token;
 
       // store user details and jwt in local storage to keep user logged in between page refreshes
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("api_token", JSON.stringify(api_token));
 
       // redirect to previous url or default to home page
       router.push(this.returnUrl || "/");
     },
     logout() {
-      this.user = null;
-      localStorage.removeItem("user");
+      this.api_token = null;
+      localStorage.removeItem("api_token");
       router.push("/login");
     },
   },

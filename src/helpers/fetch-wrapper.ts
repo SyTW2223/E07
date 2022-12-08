@@ -23,7 +23,6 @@ function request(method: string) {
         body: {},
       };
     }
-    console.log(authHeader(url));
     return fetch(url, requestOptions).then(handleResponse);
   };
 }
@@ -32,12 +31,12 @@ function request(method: string) {
 
 function authHeader(url: string) {
   // return auth header with jwt if user is logged in and request is to the api url
-  const { user } = useAuthStore();
-  const isLoggedIn = !!user?.token;
+  const { api_token } = useAuthStore();
+  const isLoggedIn = !!api_token?.token;
   const isApiUrl = url.startsWith("http://localhost:3000");
   if (isLoggedIn && isApiUrl) {
     return {
-      Authorization: `Bearer ${user.token}`,
+      Authorization: `Bearer ${api_token.token}`,
       "Content-Type": "application/json",
     };
   } else {
@@ -51,9 +50,9 @@ function handleResponse(response: Response) {
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
 
-    if (!response.ok) {
-      const { user, logout } = useAuthStore();
-      if ([401, 403].includes(response.status) && user) {
+    if (response.status == 200) {
+      const { api_token, logout } = useAuthStore();
+      if ([401, 403].includes(response.status) && api_token) {
         // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
         logout();
       }
