@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LogIn from "../components/LogInVuetify.vue";
+import TopNavBar from "../components/TopNavBar.vue";
 </script>
 
 <template>
   <main>
-    <LogIn />
+    <TopNavBar />
   </main>
 </template>

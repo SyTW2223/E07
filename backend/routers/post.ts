@@ -11,7 +11,9 @@ postRouter.post("/user", (req, res) => {
   user
     .save()
     .then(() => {
-      res.status(200).send("User saved successfully");
+      res.status(200).send({
+        message: "User saved suscessfully",
+      });
     })
     .catch((err) => {
       res.status(400).send(err);
@@ -30,9 +32,6 @@ postRouter.post("/publication", (req, res) => {
     });
 });
 
-
-
-
 /*
  * Inicio de sesion
  */
@@ -48,6 +47,10 @@ postRouter.post("/login", (req, res) => {
         if (user.password == req.body.password) {
           res.status(201).send({
             message: "Login successful",
+          });
+        } else {
+          res.status(403).send({
+            message: "Password incorrect",
           });
         }
       }
