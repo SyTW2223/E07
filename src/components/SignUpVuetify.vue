@@ -1,49 +1,47 @@
 <template>
   <v-form v-model="valid">
-    <v-row>
+    <v-container>
+      <v-text-field
+        label="Email address"
+        type="email"
+        :rules="rules.email"
+        hide-details="auto"
+        v-model="email"
+      ></v-text-field>
+
+      <v-text-field
+        label="Account name (custom field)"
+        hide-details="auto"
+        v-model="username"
+      ></v-text-field>
+
+      <v-text-field
+        label="Password"
+        type="password"
+        :rules="rules.password"
+        hide-details="auto"
+        v-model="password"
+        required
+      ></v-text-field>
+
+      <v-text-field
+        label="Verify password"
+        type="password"
+        :rules="rules.password"
+        v-model="verify_password"
+        hide-details="auto"
+      ></v-text-field>
       <v-container>
-        <v-text-field
-          label="Email address"
-          type="email"
-          :rules="rules.email"
-          hide-details="auto"
-          v-model="email"
-        ></v-text-field>
-
-        <v-text-field
-          label="Account name (custom field)"
-          hide-details="auto"
-          v-model="username"
-        ></v-text-field>
-
-        <v-text-field
-          label="Password"
-          type="password"
-          :rules="rules.password"
-          hide-details="auto"
-          v-model="password"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          label="Verify password"
-          type="password"
-          :rules="rules.password"
-          v-model="verify_password"
-          hide-details="auto"
-        ></v-text-field>
-        <v-container>
-          <v-btn
-            @click="signUp"
-            block
-            color="primary"
-            elevation="2"
-            max-width="50%"
-            >Sign Up</v-btn
-          >
-        </v-container>
+        <v-btn
+          @click="signUp"
+          block
+          color="primary"
+          elevation="2"
+          max-width="50%"
+          >Sign Up</v-btn
+        >
       </v-container>
-    </v-row>
+    </v-container>
   </v-form>
 </template>
 

@@ -10,15 +10,9 @@ import { RouterLink, RouterView } from "vue-router";
       <v-spacer></v-spacer>
 
       <v-tabs centered color="grey-darken-2">
-        <v-tab>
-          <RouterLink to="/">Home</RouterLink>
-        </v-tab>
-        <v-tab>
-          <RouterLink to="/log-in">Log in</RouterLink>
-        </v-tab>
-        <v-tab>
-          <RouterLink to="/sign-up">Sign Up</RouterLink>
-        </v-tab>
+        <v-tab to="/"> Home </v-tab>
+        <v-tab to="/log-in"> Log in </v-tab>
+        <v-tab to="/sign-up"> Sign Up </v-tab>
       </v-tabs>
       <v-spacer></v-spacer>
 
