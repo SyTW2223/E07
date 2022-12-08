@@ -48,7 +48,7 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
           console.log(err);
           res.status(401).send(err);
         });
-      res.status(200).send({ text: "Publication added successfully"});
+      res.status(200).send({ text: "Publication added successfully" });
     })
     .catch((err) => {
       console.log(err);

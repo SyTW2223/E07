@@ -52,7 +52,6 @@ h3 {
 </style>
 
 <script lang="ts">
-import { useAuthStore } from "@/stores";
 import { fetchWrapper } from "@/helpers";
 
 const baseUrl = `http://localhost:3000`;
