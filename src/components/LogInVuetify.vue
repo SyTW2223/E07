@@ -27,6 +27,8 @@
 </template>
 
 <script lang="ts">
+import { useAuthStore } from "@/stores";
+
 export default {
   name: "LogIn",
   data() {
@@ -53,22 +55,13 @@ export default {
   methods: {
     async logIn() {
       try {
-        const url = "http://localhost:3000/login";
-        await fetch(url, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-          body: JSON.stringify({
-            email: this.email,
-            password: this.password,
-          }),
-        }).then((response) => {
-          response.json().then((obj) => {
-            alert(obj.message);
-          });
-          this.$router.push({ name: "home" });
+        const authStore = useAuthStore();
+        const email: string = this.email;
+        const password: string = this.password;
+
+        return authStore.login(email, password).catch((error) => {
+          console.log(error);
+          alert(error);
         });
       } catch (error) {
         console.log(error);

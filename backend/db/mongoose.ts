@@ -8,5 +8,5 @@ connect(mongodb_url)
     console.log("Connection to MongoDB server established");
   })
   .catch(() => {
-    console.log("Unnable to connect to MongoDB server");
+    console.log("Unable to connect to MongoDB server");
   });

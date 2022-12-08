@@ -36,6 +36,7 @@ postRouter.post("/publication", (req, res) => {
  * Inicio de sesion
  */
 postRouter.post("/login", (req, res) => {
+  console.log(req.body);
   const filter = req.body.email ? { email: req.body.email.toString() } : {};
   User.findOne(filter)
     .then((user) => {
