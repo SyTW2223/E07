@@ -2,6 +2,9 @@ import * as express from "express";
 import User from "../models/user";
 import Publication from "../models/publication";
 
+import * as jwt from "jsonwebtoken";
+import { jwtAuthMiddleware } from "../middleware/jwt-auth";
+
 export const postRouter = express.Router();
 
 postRouter.post("/user", (req, res) => {
@@ -12,7 +15,7 @@ postRouter.post("/user", (req, res) => {
     .save()
     .then(() => {
       res.status(200).send({
-        message: "User saved suscessfully",
+        message: "User saved successfully",
       });
     })
     .catch((err) => {
@@ -20,14 +23,35 @@ postRouter.post("/user", (req, res) => {
     });
 });
 
-postRouter.post("/publication", (req, res) => {
+postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
   const publication = new Publication(req.body);
   publication
     .save()
-    .then(() => {
-      res.status(200).send("Publication saved successfully");
+    .then((savedDoc) => {
+      const id_publication = savedDoc._id;
+      const username = res.locals.user.username;
+      User.findOne({ username: username })
+        .then((user) => {
+          // eslint-disable-next-line prefer-const
+          let publications_copy = user.publications;
+          publications_copy.push(id_publication.toString());
+          User.updateOne(
+            { username: username },
+            { publications: publications_copy }
+          )
+            .then()
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(401).send(err);
+        });
+      res.status(200).send({ text: "Publication added successfully" });
     })
     .catch((err) => {
+      console.log(err);
       res.status(400).send(err);
     });
 });
@@ -45,8 +69,14 @@ postRouter.post("/login", (req, res) => {
           .send("The user cannot be found or the password is not correct");
       } else {
         if (user.password == req.body.password) {
+          const payload = {
+            username: user.username,
+            exp: Math.floor(Date.now() / 1000) + 60 * 60,
+          };
+          const secret = "my-secret-key";
+          const token = jwt.sign(payload, secret, { algorithm: "HS256" });
           res.status(201).send({
-            message: "Login successful",
+            token: token,
           });
         } else {
           res.status(403).send({
