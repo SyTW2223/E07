@@ -8,6 +8,8 @@
           :rules="rules.email"
           hide-details="auto"
           v-model="email"
+          data-email
+          data-test="email-text-box"
         ></v-text-field>
         <v-text-field
           label="Password"
@@ -15,6 +17,8 @@
           :rules="rules.password"
           hide-details="auto"
           v-model="password"
+          data-password
+          data-test="password-text-box"
         ></v-text-field>
         <v-container>
           <v-btn @click="logIn" block color="primary" elevation="2"
@@ -58,11 +62,15 @@ export default {
         const authStore = useAuthStore();
         const email: string = this.email;
         const password: string = this.password;
-
-        return authStore.login(email, password).catch((error) => {
-          console.log(error);
-          alert(error);
-        });
+        return authStore
+          .login(email, password)
+          .then(() => {
+            this.valid == true;
+          })
+          .catch((error) => {
+            console.log(error);
+            alert(error);
+          });
       } catch (error) {
         console.log(error);
       }

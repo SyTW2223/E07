@@ -11,6 +11,11 @@ export default defineConfig({
     coverage: {
       provider: "istanbul", // or 'c8'
     },
+    setupFiles: "../vuetify.config.ts",
+    deps: {
+      inline: ["vuetify"],
+    },
+    globals: true,
   },
   resolve: {
     alias: {

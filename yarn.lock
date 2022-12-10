@@ -1181,6 +1181,13 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
+"@pinia/testing@^0.0.14":
+  "integrity" "sha512-ZmZwVNd/NnKYLIfjfuKl0zlJ3UdiXFpsHzSlL6wCeezSlyrqGMxsIQKv0J6fleu38gyCNTPBEipfxrt8V4+VIg=="
+  "resolved" "https://registry.npmjs.org/@pinia/testing/-/testing-0.0.14.tgz"
+  "version" "0.0.14"
+  dependencies:
+    "vue-demi" "*"
+
 "@rushstack/eslint-patch@^1.1.4":
   "integrity" "sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg=="
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz"
@@ -4744,7 +4751,7 @@
   "resolved" "https://registry.npmjs.org/pify/-/pify-3.0.0.tgz"
   "version" "3.0.0"
 
-"pinia@^2.0.23":
+"pinia@^2.0.23", "pinia@>=2.0.19":
   "integrity" "sha512-nOnXP0OFeL8R4WjAHsterU+11vptda643gH02xKNtSCDPiRzVfRYodOLihLDoa0gL1KKuQKV+KOzEgdt3YvqEw=="
   "resolved" "https://registry.npmjs.org/pinia/-/pinia-2.0.27.tgz"
   "version" "2.0.27"
