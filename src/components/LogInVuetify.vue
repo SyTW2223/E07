@@ -62,10 +62,11 @@ export default {
         const authStore = useAuthStore();
         const email: string = this.email;
         const password: string = this.password;
-        return authStore
+        return await authStore
           .login(email, password)
           .then(() => {
             this.valid == true;
+            return Promise.resolve(this.valid);
           })
           .catch((error) => {
             console.log(error);

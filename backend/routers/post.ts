@@ -64,9 +64,9 @@ postRouter.post("/login", (req, res) => {
   User.findOne(filter)
     .then((user) => {
       if (!user) {
-        res
-          .status(404)
-          .send("The user cannot be found or the password is not correct");
+        res.status(404).send({
+          message: "Password incorrect",
+        });
       } else {
         if (user.password == req.body.password) {
           const payload = {
