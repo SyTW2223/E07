@@ -9,8 +9,6 @@ jobs:
   deploy_expressJS:
     name: Deploying ExpressJS
     runs-on: ubuntu-latest
-    env:
-      ENV_PARAMS: ${{ secrets.ENV.PARAMS }}
     strategy:
       matrix:
         node-version: [16.x]
@@ -24,13 +22,12 @@ jobs:
     - name: Install packages
       run: npm ci
     - name: Load Secrets
-      run: echo "$ENV_PARAMS" > backend/.env
+      run: 'echo "$ENV_PARAMS" > backend/.env'
+      shell: bash
+      env:
+        ENV_PARAMS: ${{ secrets.ENV.PARAMS }}
     - name: Check Secrets
       run: cat backend/.env
-    - name: Check Secrets 1
-      run: cat /backend/.env
-    - name: Check Secrets 2
-      run: cat ./backend/.env
     - name: Building Express
       run: npm run build:express
     - name: Starting Express
