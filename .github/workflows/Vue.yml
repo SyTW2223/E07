@@ -1,19 +1,19 @@
-name: "Run tests"
+name: Run tests
 
 on:
   workflow_run:
-    workflows: ["Deploy ExpressJS"]
+    workflows: [Deploy ExpressJS]
     types:
       - completed
 jobs:
   build_vue:
-    name: Building Vue"
+    name: Building Vue
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [16.x]
-        
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
