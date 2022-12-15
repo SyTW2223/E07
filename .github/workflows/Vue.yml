@@ -1,0 +1,30 @@
+name: "Run tests"
+
+on:
+  workflow_run:
+    workflows: ["Deploy ExpressJS"]
+    types:
+      - completed
+jobs:
+  build_vue:
+    name: Building Vue"
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install packages
+      run: npm ci
+    - name: Building Vue
+      run: npm run build 
+    - name: Running Tests
+      run: npm run test:unit:single
