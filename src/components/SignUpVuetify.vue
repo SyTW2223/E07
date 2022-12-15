@@ -46,6 +46,7 @@
 </template>
 
 <script lang="ts">
+import { expressJS_url, expressJS_port } from "../config/env.frontend";
 export default {
   name: "SignUp",
   data() {
@@ -79,7 +80,7 @@ export default {
         return;
       }
       try {
-        const url = "http://localhost:3000/user";
+        const url = `${expressJS_url}:${expressJS_port}/user`;
         await fetch(url, {
           method: "POST",
           headers: {

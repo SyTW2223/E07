@@ -48,8 +48,9 @@ h3 {
 
 <script lang="ts">
 import { fetchWrapper } from "@/helpers";
+import { expressJS_url, expressJS_port } from "../config/env.frontend";
 
-const baseUrl = `http://localhost:3000`;
+const baseUrl = `${expressJS_url}:${expressJS_port}`;
 export default {
   name: "HomePage",
   methods: {

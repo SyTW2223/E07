@@ -4,6 +4,7 @@ import Publication from "../models/publication";
 
 import * as jwt from "jsonwebtoken";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
+import { jwtSecret } from "../env.backend";
 
 export const postRouter = express.Router();
 
@@ -70,7 +71,7 @@ postRouter.post("/login", (req, res) => {
             username: user.username,
             exp: Math.floor(Date.now() / 1000) + 60 * 60,
           };
-          const secret = "my-secret-key";
+          const secret = jwtSecret;
           const token = jwt.sign(payload, secret, { algorithm: "HS256" });
           res.status(201).send({
             token: token,

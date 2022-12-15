@@ -9,7 +9,8 @@ jobs:
   build_vue:
     name: Building Vue
     runs-on: ubuntu-latest
-
+    env:
+      ENV_PARAMS: ${{ secrets.ENV.PARAMS }}
     strategy:
       matrix:
         node-version: [16.x]
@@ -25,5 +26,7 @@ jobs:
       run: npm ci
     - name: Building Vue
       run: npm run build 
+    - name: Load Secrets
+      run: echo "$ENV_PARAMS" > .env
     - name: Running Tests
       run: npm run test:unit:single

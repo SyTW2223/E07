@@ -2,14 +2,15 @@ name: Deploy ExpressJS
 
 on:
   push:
-    branches: [ release0.1, production ]
+    branches: [ release0.1, production, feature-readme-dotenv-gha-cookies ]
   pull_request:
-    branches: [ release0.1, production ]
+    branches: [ release0.1, production, feature-readme-dotenv-gha-cookies ]
 jobs:
   deploy_expressJS:
     name: Deploying ExpressJS
     runs-on: ubuntu-latest
-
+    env:
+      ENV_PARAMS: ${{ secrets.ENV.PARAMS }}
     strategy:
       matrix:
         node-version: [16.x]
@@ -22,6 +23,8 @@ jobs:
         cache: 'npm'
     - name: Install packages
       run: npm ci
+    - name: Load Secrets
+      run: echo "$ENV_PARAMS" > backend/.env
     - name: Building Express
       run: npm run build:express
     - name: Starting Express

@@ -2,8 +2,9 @@ import { defineStore } from "pinia";
 
 import { fetchWrapper } from "@/helpers";
 import { router } from "@/router";
+import { expressJS_url, expressJS_port } from "../config/env.frontend";
 
-const baseUrl = `http://localhost:3000`;
+const baseUrl = `${expressJS_url}:${expressJS_port}`;
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -15,25 +16,18 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email: string, password: string) {
-      return await fetchWrapper
-        .post(`${baseUrl}/login`, {
-          email,
-          password,
-        })
-        .then((data) => {
-          this.api_token = data.token;
-          // store user details and jwt in local storage to keep user logged in between page refreshes
-          localStorage.setItem("api_token", JSON.stringify(this.api_token));
+      const api_token = await fetchWrapper.post(`${baseUrl}/login`, {
+        email,
+        password,
+      });
 
-          // redirect to previous url or default to home page
-          router.push(this.returnUrl || "/");
-          return Promise.resolve(data.token);
-        })
-        .catch((error) => {
-          //console.log(error);
-          alert(error);
-          return Promise.reject(error);
-        });
+      // update pinia state
+      this.api_token = api_token;
+      // store user details and jwt in local storage to keep user logged in between page refreshes
+      localStorage.setItem("api_token", JSON.stringify(api_token));
+
+      // redirect to previous url or default to home page
+      router.push(this.returnUrl || "/");
     },
     logout() {
       this.api_token = null;
