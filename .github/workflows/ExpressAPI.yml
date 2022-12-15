@@ -26,14 +26,38 @@ jobs:
       shell: bash
       env:
         ENV_PARAMS: ${{ secrets.ENV_PARAMS }}
-    - name: Check Secrets
-      run: cat backend/.env.local
+    # - name: Check Secrets
+    #   run: cat backend/.env.local
     - name: Building Express
       run: npm run build:express
     - name: Starting Express
       run: node backend/dist/src/api.js &
     - name: Testing Express
       run: npm run test:unit:backend:single
+  deploy_vue:
+    name: Deploying Vue
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install packages
+      run: npm ci
+    - name: Load Secrets
+      run: 'echo "$ENV_PARAMS_FRONT" > .env.local'
+      shell: bash
+      env:
+        ENV_PARAMS_FRONT: ${{ secrets.ENV_PARAMS_FRONT }}
+    - name: Building Vue
+      run: npm run build 
+    - name: Running Tests
+      run: npm run test:unit:single
   # test_expressJS:
   #   needs: [deploy_expressJS]
   #   name: Testing ExpressJS"
