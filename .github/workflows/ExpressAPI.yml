@@ -25,6 +25,12 @@ jobs:
       run: npm ci
     - name: Load Secrets
       run: echo "$ENV_PARAMS" > backend/.env
+    - name: Check Secrets
+      run: cat backend/.env
+    - name: Check Secrets 1
+      run: cat /backend/.env
+    - name: Check Secrets 2
+      run: cat ./backend/.env
     - name: Building Express
       run: npm run build:express
     - name: Starting Express
