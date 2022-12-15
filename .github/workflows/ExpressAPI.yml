@@ -7,7 +7,7 @@ on:
     branches: [ release0.1, production ]
 jobs:
   deploy_expressJS:
-    name: Deploying ExpressJS"
+    name: Deploying ExpressJS
     runs-on: ubuntu-latest
 
     strategy:
