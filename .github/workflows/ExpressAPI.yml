@@ -2,9 +2,9 @@ name: "Deploy ExpressJS"
 
 on:
   push:
-    branches: [ main ]
+    branches: [ release0.1, production ]
   pull_request:
-    branches: [ release0.1 ]
+    branches: [ release0.1, production ]
 jobs:
   deploy_expressJS:
     name: Deploying ExpressJS"
