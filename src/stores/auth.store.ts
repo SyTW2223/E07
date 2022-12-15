@@ -15,19 +15,25 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email: string, password: string) {
-      const api_token = await fetchWrapper.post(`${baseUrl}/login`, {
-        email,
-        password,
-      });
+      return await fetchWrapper
+        .post(`${baseUrl}/login`, {
+          email,
+          password,
+        })
+        .then((data) => {
+          this.api_token = data.token;
+          // store user details and jwt in local storage to keep user logged in between page refreshes
+          localStorage.setItem("api_token", JSON.stringify(this.api_token));
 
-      // update pinia state
-      this.api_token = api_token;
-
-      // store user details and jwt in local storage to keep user logged in between page refreshes
-      localStorage.setItem("api_token", JSON.stringify(api_token));
-
-      // redirect to previous url or default to home page
-      router.push(this.returnUrl || "/");
+          // redirect to previous url or default to home page
+          router.push(this.returnUrl || "/");
+          return Promise.resolve(data.token);
+        })
+        .catch((error) => {
+          //console.log(error);
+          alert(error);
+          return Promise.reject(error);
+        });
     },
     logout() {
       this.api_token = null;

@@ -1,12 +1,7 @@
-<script setup lang="ts">
-defineProps<{
-  msg: string;
-}>();
-</script>
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="green"></h1>
     <h3>HOMEPAGE</h3>
     <p>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -56,7 +51,7 @@ import { fetchWrapper } from "@/helpers";
 
 const baseUrl = `http://localhost:3000`;
 export default {
-  name: "LogIn",
+  name: "HomePage",
   methods: {
     async addPublication() {
       try {

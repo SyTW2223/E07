@@ -8,7 +8,6 @@ import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 export const postRouter = express.Router();
 
 postRouter.post("/user", (req, res) => {
-  console.log(req.body);
   const user = new User(req.body);
   user.date = new Date();
   user
@@ -41,17 +40,15 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
           )
             .then()
             .catch((err) => {
-              console.log(err);
+              res.status(401).send(err);
             });
         })
         .catch((err) => {
-          console.log(err);
           res.status(401).send(err);
         });
       res.status(200).send({ text: "Publication added successfully" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send(err);
     });
 });
@@ -64,9 +61,9 @@ postRouter.post("/login", (req, res) => {
   User.findOne(filter)
     .then((user) => {
       if (!user) {
-        res
-          .status(404)
-          .send("The user cannot be found or the password is not correct");
+        res.status(404).send({
+          message: "Password incorrect",
+        });
       } else {
         if (user.password == req.body.password) {
           const payload = {

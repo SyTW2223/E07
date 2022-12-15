@@ -48,19 +48,15 @@ function authHeader(url: string) {
 
 function handleResponse(response: Response) {
   return response.text().then((text) => {
-    const data = text && JSON.parse(text);
-
-    if (response.status == 200) {
-      const { api_token, logout } = useAuthStore();
-      if ([401, 403].includes(response.status) && api_token) {
-        // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-        logout();
-      }
-
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
+    const { api_token, logout } = useAuthStore();
+    if ([401, 403].includes(response.status) && api_token) {
+      // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+      logout();
     }
-
-    return data;
+    if (response.status == 201) {
+      const data = text && JSON.parse(text);
+      return Promise.resolve(data);
+    }
+    return Promise.reject(text);
   });
 }
