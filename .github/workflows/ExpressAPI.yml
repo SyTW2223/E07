@@ -1,4 +1,4 @@
-name: Deploy ExpressJS
+name: Deploy ExpressJS & Vue & Tests
 
 on:
   push:
