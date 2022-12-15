@@ -22,10 +22,9 @@ jobs:
     - name: Install packages
       run: npm ci
     - name: Load Secrets
-      run: 'echo "$ENV_PARAMS" >> backend/.env'
+      run: |
+          echo ${{ secrets.ENV.PARAMS }} > backend/.env
       shell: bash
-      env:
-        ENV_PARAMS: ${{ secrets.ENV.PARAMS }}
     - name: Check Secrets
       run: cat backend/.env
     - name: Building Express
