@@ -35,7 +35,6 @@ getRouter.get("/user", (req, res) => {
 getRouter.get("/user/:id", (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
-      console.log(user);
       if (!user) {
         res.status(404).send("The user cannot be found");
       } else {
@@ -43,7 +42,6 @@ getRouter.get("/user/:id", (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send(err);
     });
 });

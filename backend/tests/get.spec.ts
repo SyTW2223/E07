@@ -1,4 +1,4 @@
-import { describe, it, expect, assert } from "vitest";
+import { describe, it, expect } from "vitest";
 import request from "supertest";
 
 const expressAPI = request("http://localhost:3000");
