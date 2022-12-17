@@ -1,4 +1,4 @@
-name: App to DockerHub
+name: CD
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    needs: ci
     steps:
       -
         name: Set up QEMU

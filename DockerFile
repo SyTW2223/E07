@@ -1,0 +1,18 @@
+# FROM node:latest
+# WORKDIR /opt/back
+# COPY . .
+# RUN npm install
+# EXPOSE 3000
+# ENTRYPOINT ["npm", "start"]
+
+FROM node:16
+
+WORKDIR /not-twitter
+
+COPY . .
+
+RUN npm ci --only=production
+
+EXPOSE 3000
+
+ENTRYPOINT ["npm", "run", "prod:express"]
