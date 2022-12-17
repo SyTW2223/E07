@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import * as dotenv from "dotenv";
 import { defaultRouter } from "../routers/default";
 import { postRouter } from "../routers/post";
 import { getRouter } from "../routers/get";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 import "../db/mongoose";
+import { expressJS_port } from "../env.backend";
 
 const express_app = express();
 
@@ -18,9 +18,7 @@ express_app.use(defaultRouter);
 
 express_app.use(jwtAuthMiddleware);
 
-dotenv.config({ path: ".env.local" });
-
-const port = process.env.API_PORT || 3000;
-express_app.listen(port, () => {
-  console.log(`listening on ${port}`);
+express_app.listen(expressJS_port, () => {
+  console.log(`Current Timestamp ${Date()}`);
+  console.log(`listening on ${expressJS_port}`);
 });

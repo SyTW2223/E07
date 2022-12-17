@@ -35,6 +35,7 @@ describe("LogInVuetify", () => {
     // console.log(emailTextField.html());
     // await wrapper.vm.$nextTick();
     // expect(wrapper.emitted('logInResult')[0][0]).toBe('test@test.test')
+    expect(true).toBe(true);
     // expect(wrapper.emitted('logInResult')[0][1]).toBe('Test123456')
   });
 });

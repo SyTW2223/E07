@@ -48,27 +48,28 @@ h3 {
 
 <script lang="ts">
 import { fetchWrapper } from "@/helpers";
+import { expressJS_url, expressJS_port } from "../config/env.frontend";
 
-const baseUrl = `http://localhost:3000`;
+const baseUrl = `${expressJS_url}:${expressJS_port}`;
 export default {
   name: "HomePage",
   methods: {
     async addPublication() {
-      try {
-        return await fetchWrapper
-          .post(`${baseUrl}/publication`, {
-            content: {
-              text: "Publicacion de prueba",
-            },
-            date: new Date(),
-            fav_count: 0,
-          })
-          .then((message) => {
-            alert(message);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+      return await fetchWrapper
+        .post(`${baseUrl}/publication`, {
+          content: {
+            text: "Publicacion de prueba",
+          },
+          date: new Date(),
+          fav_count: 0,
+        })
+        .then((response) => {
+          alert(response.message);
+        })
+        .catch((response) => {
+          console.log(response.err);
+          alert(response.err);
+        });
     },
   },
 };

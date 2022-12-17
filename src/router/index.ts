@@ -13,12 +13,12 @@ export const router = createRouter({
     },
     {
       path: "/log-in",
-      name: "login",
+      name: "log-in",
       component: () => import("../views/LogInView.vue"),
     },
     {
       path: "/sign-up",
-      name: "signup",
+      name: "sign-up",
       component: () => import("../views/SignUpView.vue"),
     },
   ],
@@ -32,6 +32,7 @@ router.beforeEach(async (to) => {
 
   if (authRequired && !auth.api_token) {
     auth.returnUrl = to.fullPath;
+    alert("You need to be signed up");
     return "/log-in";
   }
 });

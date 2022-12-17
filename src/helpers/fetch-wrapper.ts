@@ -1,5 +1,7 @@
 import { useAuthStore } from "@/stores";
 
+import { expressJS_url, expressJS_port } from "../config/env.frontend";
+
 export const fetchWrapper = {
   get: request("GET"),
   post: request("POST"),
@@ -32,11 +34,12 @@ function request(method: string) {
 function authHeader(url: string) {
   // return auth header with jwt if user is logged in and request is to the api url
   const { api_token } = useAuthStore();
-  const isLoggedIn = !!api_token?.token;
-  const isApiUrl = url.startsWith("http://localhost:3000");
+  const isLoggedIn = !!api_token;
+  //console.log(api_token);
+  const isApiUrl = url.startsWith(`${expressJS_url}:${expressJS_port}`);
   if (isLoggedIn && isApiUrl) {
     return {
-      Authorization: `Bearer ${api_token.token}`,
+      Authorization: `Bearer ${api_token}`,
       "Content-Type": "application/json",
     };
   } else {
@@ -49,14 +52,16 @@ function authHeader(url: string) {
 function handleResponse(response: Response) {
   return response.text().then((text) => {
     const { api_token, logout } = useAuthStore();
+    const responseObject = JSON.parse(text);
     if ([401, 403].includes(response.status) && api_token) {
       // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
       logout();
     }
-    if (response.status == 201) {
+    if (response.status.toString().startsWith("2")) {
       const data = text && JSON.parse(text);
-      return Promise.resolve(data);
+      return Promise.resolve(responseObject);
     }
-    return Promise.reject(text);
+    //console.log(response.status);
+    return Promise.reject(responseObject);
   });
 }
