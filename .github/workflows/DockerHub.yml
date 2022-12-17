@@ -12,9 +12,9 @@ jobs:
     steps:
       - 
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-            ref: 'feature-gha-dockerhub-watchtower'
+           ref: feature-gha-dockerhub-watchtower
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -35,8 +35,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          # secret-files: |
-          #   "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
-          #   "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
+          file: ./Dockerfile
+          secret-files: |
+            "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
+            "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
           push: true
           tags: user/app:latest
