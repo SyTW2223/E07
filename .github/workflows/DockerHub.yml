@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - 'feature-gha-dockerhub-watchtower'
-
+defaults:
+  run:
+    working-directory: ./
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -34,8 +36,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ./Dockerfile
+          # context: .
+          # file: ./Dockerfile
           secret-files: |
             "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
             "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
