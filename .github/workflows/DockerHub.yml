@@ -16,13 +16,15 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
         with:
-           ref: feature-gha-dockerhub-watchtower
+          ref: feature-gha-dockerhub-watchtower
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          buildkitd-flags: --debug
       -
         name: LS
         run: ls -la
@@ -36,8 +38,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          # context: .
-          # file: ./Dockerfile
+          context: .
           secret-files: |
             "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
             "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
