@@ -3,7 +3,7 @@ name: CD
 on:
   push:
     branches:
-      - 'feature-gha-dockerhub-watchtower'
+      - 'production'
 
 permissions:
   contents: read
@@ -47,4 +47,4 @@ jobs:
             "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
             "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
           push: true
-          tags: dasna/not_twitter:${{ env.DATE }}
+          tags: dasna/not_twitter:latest
