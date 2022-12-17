@@ -2,9 +2,9 @@ name: Deploy ExpressJS & Vue & Tests
 
 on:
   push:
-    branches: [ release0.1, production, feature-readme-dotenv-gha-cookies ]
+    branches: [ release0.1, production ]
   pull_request:
-    branches: [ release0.1, production, feature-readme-dotenv-gha-cookies ]
+    branches: [ release0.1, production ]
 jobs:
   deploy_expressJS:
     name: Deploying ExpressJS
