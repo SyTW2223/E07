@@ -47,7 +47,7 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
         .catch((err) => {
           res.status(401).send(err);
         });
-      res.status(200).send({ text: "Publication added successfully" });
+      res.status(200).send({ message: "Publication added successfully" });
     })
     .catch((err) => {
       res.status(400).send(err);
@@ -63,27 +63,30 @@ postRouter.post("/login", (req, res) => {
     .then((user) => {
       if (!user) {
         res.status(404).send({
-          message: "Password incorrect",
+          err: "Email or password incorrect",
         });
       } else {
         if (user.password == req.body.password) {
           const payload = {
             username: user.username,
-            exp: Math.floor(Date.now() / 1000) + 60 * 60,
           };
           const secret = jwtSecret;
-          const token = jwt.sign(payload, secret, { algorithm: "HS256" });
+          const token = jwt.sign(payload, secret, {
+            algorithm: "HS256",
+            expiresIn: "1h",
+          });
           res.status(201).send({
             token: token,
           });
         } else {
           res.status(403).send({
-            message: "Password incorrect",
+            err: "Email or password incorrect",
           });
         }
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(400).send(err);
     });
 });

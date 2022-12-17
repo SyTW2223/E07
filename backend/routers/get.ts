@@ -12,14 +12,18 @@ getRouter.get("/user", (req, res) => {
     ? { username: req.query.username.toString() }
     : {};
   if (!filter.username) {
-    res.status(404).send("The username is required");
+    res.status(404).send({
+      err: "Username field is required",
+    });
     return;
   }
 
   User.findOne(filter)
     .then((user) => {
       if (!user) {
-        res.status(404).send("The user cannot be found");
+        res.status(404).send({
+          err: "The user cannot be found",
+        });
       } else {
         res.status(200).send(user);
       }
@@ -36,7 +40,9 @@ getRouter.get("/user/:id", (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
-        res.status(404).send("The user cannot be found");
+        res.status(404).send({
+          err: "The user cannot be found",
+        });
       } else {
         res.status(200).send(user);
       }
@@ -76,7 +82,9 @@ getRouter.get("/publication/:id", (req, res) => {
   Publication.findById(req.params.id)
     .then((publication) => {
       if (!publication) {
-        res.status(404).send("The user cannot be founded");
+        res.status(404).send({
+          err: "The user cannot be found",
+        });
       } else {
         res.status(200).send(publication);
       }

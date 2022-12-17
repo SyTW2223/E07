@@ -19,5 +19,6 @@ express_app.use(defaultRouter);
 express_app.use(jwtAuthMiddleware);
 
 express_app.listen(expressJS_port, () => {
+  console.log(`Current Timestamp ${Date()}`);
   console.log(`listening on ${expressJS_port}`);
 });
