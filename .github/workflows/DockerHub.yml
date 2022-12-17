@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - 'feature-gha-dockerhub-watchtower'
-defaults:
-  run:
-    working-directory: ./
+
+permissions:
+  contents: read
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -34,6 +35,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Set env
+        run: echo "DATE=$(date +%s)" >> $GITHUB_ENV
       -
         name: Build and push
         uses: docker/build-push-action@v3
@@ -43,4 +47,4 @@ jobs:
             "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
             "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
           push: true
-          tags: user/app:latest
+          tags: dasna/not_twitter:${{ env.DATE }}
