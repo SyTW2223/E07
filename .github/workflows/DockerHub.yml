@@ -30,6 +30,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          file: ./Dockerfile
           secret-files: |
             "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
             "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
