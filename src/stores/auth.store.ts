@@ -5,7 +5,7 @@ import { router } from "@/router";
 import { expressJS_url, expressJS_port } from "../config/env.frontend";
 
 
-const baseUrl = `${expressJS_url}:${expressJS_port}`;
+const baseUrl = `${expressJS_url}`;
 
 function setCookie(
   cName: string,

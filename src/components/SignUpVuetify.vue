@@ -80,7 +80,7 @@ export default {
         return;
       }
       try {
-        const url = `${expressJS_url}:${expressJS_port}/user`;
+        const url = `${expressJS_url}/user`;
         await fetch(url, {
           method: "POST",
           headers: {
