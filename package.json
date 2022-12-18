@@ -7,7 +7,7 @@
     "preview": "vite preview",
     "build:express": "tsc --project ./tsconfig.express.json",
     "dev:express": "tsc-watch --onSuccess \"node backend/dist/src/api.js\" -p tsconfig.express.json",
-    "prod:express": "node /backend/dist/api.js",
+    "prod:express": "node /backend/dist/src/api.js",
     "test:unit": "vitest --environment jsdom --root src",
     "test:unit:single": "vitest run --environment jsdom --root src",
     "test:unit:backend": "vitest --environment jsdom --root backend/tests/",
