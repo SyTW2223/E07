@@ -10,6 +10,14 @@ import { expressJS_port } from "../env.backend";
 const express_app = express();
 
 express_app.use(express.json());
+
+express_app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 express_app.use(cors());
 
 express_app.use(postRouter);

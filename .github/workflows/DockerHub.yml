@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'production'
+      - 'feature-github-pages'
 
 permissions:
   contents: read

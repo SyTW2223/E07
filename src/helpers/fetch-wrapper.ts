@@ -36,7 +36,7 @@ function authHeader(url: string) {
   const { api_token } = useAuthStore();
   const isLoggedIn = !!api_token;
   //console.log(api_token);
-  const isApiUrl = url.startsWith(`${expressJS_url}:${expressJS_port}`);
+  const isApiUrl = url.startsWith(`${expressJS_url}`);
   if (isLoggedIn && isApiUrl) {
     return {
       Authorization: `Bearer ${api_token}`,
