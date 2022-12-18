@@ -1,43 +1,62 @@
 <template>
+  <v-container>
+    <v-img
+      src="/public/logo.png"
+      style="width: 15%;"
+      class="mx-auto"
+    ></v-img> 
+  </v-container>
+
   <v-form v-model="valid">
-    <v-container>
+    <v-container
+      style="width: 50%; justify-content: center; align-items: center;"
+    >
+
       <v-text-field
+        prepend-icon="mdi-email"
         label="Email address"
         type="email"
         :rules="rules.email"
         hide-details="auto"
         v-model="email"
+        style="width: 100%; justify-content: center; align-items: center;"
       ></v-text-field>
 
       <v-text-field
+        prepend-icon="mdi-account"
         label="Account name (custom field)"
         hide-details="auto"
         v-model="username"
+        style="width: 100%; justify-content: center; align-items: center;"
       ></v-text-field>
 
       <v-text-field
+        prepend-icon="mdi-lock"
         label="Password"
         type="password"
         :rules="rules.password"
         hide-details="auto"
         v-model="password"
         required
+        style="width: 100%; justify-content: center; align-items: center;"
       ></v-text-field>
 
       <v-text-field
+        prepend-icon="mdi-lock"
         label="Verify password"
         type="password"
         :rules="rules.password"
         v-model="verify_password"
         hide-details="auto"
+        style="width: 100%; justify-content: center; align-items: center;"
       ></v-text-field>
       <v-container>
         <v-btn
           @click="signUp"
-          block
-          color="primary"
+          rounded
           elevation="2"
-          max-width="50%"
+          class="mx-auto"
+          style="display: block; background-color: #0ebbb5; color: white;"
           >Sign Up</v-btn
         >
       </v-container>
@@ -105,37 +124,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input {
-  display: block;
-  margin-bottom: 20px;
-}
-
-button {
-  display: block;
-  margin-bottom: 20px;
-}
-
-p {
-  margin-bottom: 20px;
-}
-
-a {
-  color: #42b983;
-}
-</style>
