@@ -10,7 +10,10 @@ import { expressJS_port } from "../env.backend";
 const express_app = express();
 
 express_app.use(express.json());
+
 express_app.use(cors());
+
+express_app.options("*", cors());
 
 express_app.use(postRouter);
 express_app.use(getRouter);

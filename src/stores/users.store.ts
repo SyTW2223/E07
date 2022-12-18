@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { fetchWrapper } from "@/helpers";
 import { expressJS_url, expressJS_port } from "../config/env.frontend";
 
-const baseUrl = `${expressJS_url}:${expressJS_port}/user`;
+const baseUrl = `${expressJS_url}/user`;
 
 export const useUsersStore = defineStore({
   id: "users",
