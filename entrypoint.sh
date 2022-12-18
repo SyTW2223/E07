@@ -1,5 +1,7 @@
 #!/bin/sh
 # entrypoint.sh
 npm i
-npm run build:express
+if [ ! -f /backend/dist/src/api.js ] then
+  npm run build:express
+fi
 npm run prod:express
