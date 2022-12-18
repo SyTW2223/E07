@@ -11,15 +11,17 @@ const express_app = express();
 
 express_app.use(express.json());
 
-express_app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
-
 express_app.use(cors());
 
+
+express_app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 express_app.use(postRouter);
 express_app.use(getRouter);
 express_app.use(defaultRouter);
