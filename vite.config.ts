@@ -7,6 +7,9 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), vueJsx()],
+  build: {
+    outDir: './docs'
+  },
   test: {
     coverage: {
       provider: "istanbul", // or 'c8'
