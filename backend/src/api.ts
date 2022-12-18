@@ -13,15 +13,8 @@ express_app.use(express.json());
 
 express_app.use(cors());
 
+express_app.options("*", cors());
 
-express_app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 express_app.use(postRouter);
 express_app.use(getRouter);
 express_app.use(defaultRouter);
