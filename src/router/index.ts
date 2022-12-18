@@ -3,7 +3,7 @@ import HelloWorldView from "../views/HelloWorldView.vue";
 import { useAuthStore } from "../stores/auth.store";
 
 export const router = createRouter({
-  history: createWebHistory("http://localhost:5173/"),
+  history: createWebHistory("/E07/"),
   linkActiveClass: "active",
   routes: [
     {
