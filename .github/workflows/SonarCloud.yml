@@ -31,8 +31,6 @@ jobs:
         run: node backend/dist/src/api.js &
       - name: Testing Express
         run: npm run test:unit:backend:coverage:single
-      - name: Generating coverage report
-        run: npm run coverage
       - name: Load Secrets
         run: 'echo "$ENV_PARAMS_FRONT" > .env.local'
         shell: bash
