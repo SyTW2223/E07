@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-img
-      src="/public/logo.png"
+      src="/E07/logo.png"
       style="width: 15%;"
       class="mx-auto"
     ></v-img> 

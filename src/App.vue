@@ -7,7 +7,7 @@ import { RouterView } from "vue-router";
     <v-app-bar color="white" density="compact">
       <v-tabs>
         <v-tab to="/" class="home-tabs"> 
-          <v-img src="public/logo_without_letters.png" height="50px" width="50px" />
+          <v-img src="/E07/logo_without_letters.png" height="50px" width="50px" />
         </v-tab>
         <v-tab to="/log-in"> Log in </v-tab>
         <v-tab to="/sign-up"> Sign Up </v-tab>

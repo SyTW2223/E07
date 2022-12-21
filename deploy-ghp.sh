@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-
-# abort on errors
+message="deploy"
+# # abort on errors
 set -e
 
 # build
@@ -12,13 +12,16 @@ cd docs
 # place .nojekyll to bypass Jekyll processing
 echo > .nojekyll
 
-# if you are deploying to a custom domain
-# echo 'www.example.com' > CNAME
+# # if you are deploying to a custom domain
+# # echo 'www.example.com' > CNAME
+
+echo ----Enter commit message-----
+read message
 
 git init
 git checkout -B gh-pages-staging
 git add -A
-git commit -m 'deploy'
+git commit -m $1
 
 # if you are deploying to https://<USERNAME>.github.io
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
