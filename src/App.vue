@@ -6,7 +6,7 @@ import { RouterView } from "vue-router";
   <v-app>
     <v-app-bar color="white" density="compact">
       <v-tabs>
-        <v-tab to="/" class="home-tabs">
+        <v-tab to="/" class="home-tabs" :hide-slider="true">
           <v-img
             src="/E07/logo_without_letters.png"
             height="50px"

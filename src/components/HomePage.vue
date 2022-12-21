@@ -1,8 +1,12 @@
 <template>
   <div class="greetings">
     <v-container>
-      <TweetVuetify v-for="tweet in tweets" :key="tweet.id" :tweet="tweet"
-        style="border-bottom: 1px solid grey"/>
+      <TweetVuetify 
+        v-for="tweet in tweets"
+        :key="tweet.id"
+        :tweet="tweet"
+        style="border-bottom: 1px solid grey"
+      />
     </v-container>
     <v-container>
       <v-btn @click="addPublication" block color="primary" elevation="2"
