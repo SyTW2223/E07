@@ -30,7 +30,7 @@ jobs:
       - name: Starting Express
         run: node backend/dist/src/api.js &
       - name: Testing Express
-        run: npm run test:unit:coverage:backend:single
+        run: npm run test:unit:backend:coverage:single
       - name: Generating coverage report
         run: npm run coverage
       - name: Load Secrets

@@ -8,6 +8,8 @@
 <style>
 .date {
   font-weight: normal;
+  font-size: 60%;
+  text-align: right;
 }
 </style>
 

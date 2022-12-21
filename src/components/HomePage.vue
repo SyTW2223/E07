@@ -49,8 +49,8 @@ export default {
   },
   data: () => ({
     tweets: [
-      { id: 1, username: 'Sergio', text: '🎲Hoy he estado jugando con la lotería de Navidad.' },
-      { id: 2, username: 'Mario', text: 'CYA es muy facil' }
+      { id: 1, username: 'Sergio', text: '🎲Hoy he estado jugando con la lotería de Navidad.', date: '2022-01-02'},
+      { id: 2, username: 'Mario', text: 'CYA es muy facil', date: '2022-01-02' }
     ]
   }),
   methods: {
