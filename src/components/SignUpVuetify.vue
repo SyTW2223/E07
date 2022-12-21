@@ -1,17 +1,12 @@
 <template>
   <v-container>
-    <v-img
-      src="/E07/logo.png"
-      style="width: 15%;"
-      class="mx-auto"
-    ></v-img> 
+    <v-img src="/E07/logo.png" style="width: 15%" class="mx-auto"></v-img>
   </v-container>
 
   <v-form v-model="valid">
     <v-container
-      style="width: 50%; justify-content: center; align-items: center;"
+      style="width: 50%; justify-content: center; align-items: center"
     >
-
       <v-text-field
         prepend-icon="mdi-email"
         label="Email address"
@@ -19,7 +14,7 @@
         :rules="rules.email"
         hide-details="auto"
         v-model="email"
-        style="width: 100%; justify-content: center; align-items: center;"
+        style="width: 100%; justify-content: center; align-items: center"
       ></v-text-field>
 
       <v-text-field
@@ -27,7 +22,7 @@
         label="Account name (custom field)"
         hide-details="auto"
         v-model="username"
-        style="width: 100%; justify-content: center; align-items: center;"
+        style="width: 100%; justify-content: center; align-items: center"
       ></v-text-field>
 
       <v-text-field
@@ -38,7 +33,7 @@
         hide-details="auto"
         v-model="password"
         required
-        style="width: 100%; justify-content: center; align-items: center;"
+        style="width: 100%; justify-content: center; align-items: center"
       ></v-text-field>
 
       <v-text-field
@@ -48,7 +43,7 @@
         :rules="rules.password"
         v-model="verify_password"
         hide-details="auto"
-        style="width: 100%; justify-content: center; align-items: center;"
+        style="width: 100%; justify-content: center; align-items: center"
       ></v-text-field>
       <v-container>
         <v-btn
@@ -56,7 +51,7 @@
           rounded
           elevation="2"
           class="mx-auto"
-          style="display: block; background-color: #0ebbb5; color: white;"
+          style="display: block; background-color: #0ebbb5; color: white"
           >Sign Up</v-btn
         >
       </v-container>
@@ -65,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { expressJS_url, expressJS_port } from "../config/env.frontend";
+import { expressJS_url } from "../config/env.frontend";
 export default {
   name: "SignUp",
   data() {

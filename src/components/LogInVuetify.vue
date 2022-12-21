@@ -65,7 +65,6 @@
 
 <script lang="ts">
 import { useAuthStore } from "@/stores";
-
 export default {
   name: "LogIn",
   data() {
@@ -109,7 +108,6 @@ export default {
         console.log(error);
       }
     },
-
     goToSignUpPage() {
       this.$router.push("/sign-up");
     }
