@@ -2,6 +2,10 @@
   <v-card style="width: 80%; margin: 0 auto; border-radius: 2px;">
     <v-card-title>{{ tweet.username }} <span class="date">{{ tweet.date }}</span></v-card-title>
     <v-card-text>{{ tweet.text }}</v-card-text>
+    <v-card-actions>
+      <v-btn @click="likeTweet(tweet.id)" color="primary">Like</v-btn>
+      <v-btn @click="commentOnTweet(tweet.id)" color="secondary">Comment</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
