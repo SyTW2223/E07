@@ -1,7 +1,13 @@
 <template>
+  <v-container>
+    <v-img src="/E07/logo.png" style="width: 15%" class="mx-auto"></v-img>
+  </v-container>
+
   <div>
     <v-form v-model="valid">
-      <v-container>
+      <v-container
+        style="width: 50%; justify-content: center; align-items: center"
+      >
         <v-text-field
           label="Email"
           type="email"
@@ -10,6 +16,9 @@
           v-model="email"
           data-email
           data-test="email-text-box"
+          prepend-icon="mdi-email"
+          
+          style="width: 100%; justify-content: center; align-items: center"
         ></v-text-field>
         <v-text-field
           label="Password"
@@ -19,10 +28,34 @@
           v-model="password"
           data-password
           data-test="password-text-box"
+          prepend-icon="mdi-lock"
+          style="width: 100%; justify-content: center; align-items: center"
         ></v-text-field>
-        <v-container>
-          <v-btn @click="logIn" block color="primary" elevation="2"
+        <v-container
+          style="
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+          "
+        >
+          <v-btn
+            @click="logIn"
+            elevation="2"
+            class="mx-auto"
+            style="display: block; background-color: #0ebbb5; color: white"
+            rounded
             >Log In</v-btn
+          >
+
+          <v-card-text> or if you don't have an account yet </v-card-text>
+
+          <v-btn
+            @click="goToSignUpPage"
+            elevation="2"
+            class="mx-auto"
+            style="display: block; background-color: #1f548b; color: white"
+            rounded
+            >Sign Up</v-btn
           >
         </v-container>
       </v-container>
@@ -32,7 +65,6 @@
 
 <script lang="ts">
 import { useAuthStore } from "@/stores";
-
 export default {
   name: "LogIn",
   data() {
@@ -76,6 +108,9 @@ export default {
         console.log(error);
       }
     },
+    goToSignUpPage() {
+      this.$router.push("/sign-up");
+    }
   },
 };
 </script>
