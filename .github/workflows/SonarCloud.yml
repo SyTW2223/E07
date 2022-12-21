@@ -1,7 +1,7 @@
 name: SonarCloud
 on:
   push:
-    branches: [ release0.2, release0.3 ]
+    branches: [ production, release0.2, release0.3 ]
   pull_request:
     branches: [ production ]
 
