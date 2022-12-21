@@ -1,19 +1,9 @@
-
 <template>
   <div class="greetings">
-    <h1 class="green"></h1>
-    <h3>HOMEPAGE</h3>
-    <p>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      Lorem Ipsum has been the industry's standard dummy text ever since the
-      1500s, when an unknown printer took a galley of type and scrambled it to
-      make a type specimen book. It has survived not only five centuries, but
-      also the leap into electronic typesetting, remaining essentially
-      unchanged. It was popularised in the 1960s with the release of Letraset
-      sheets containing Lorem Ipsum passages, and more recently with desktop
-      publishing software like Aldus PageMaker including versions of Lorem
-      Ipsum.
-    </p>
+    <v-container>
+      <TweetVuetify v-for="tweet in tweets" :key="tweet.id" :tweet="tweet"
+        style="border-bottom: 1px solid grey"/>
+    </v-container>
     <v-container>
       <v-btn @click="addPublication" block color="primary" elevation="2"
         >Test Middleware</v-btn
@@ -48,11 +38,21 @@ h3 {
 
 <script lang="ts">
 import { fetchWrapper } from "@/helpers";
-import { expressJS_url, expressJS_port } from "../config/env.frontend";
+import { expressJS_url } from "../config/env.frontend";
+import TweetVuetify from './TweetVuetify.vue'
 
 const baseUrl = `${expressJS_url}`;
 export default {
   name: "HomePage",
+  components: {
+    TweetVuetify,
+  },
+  data: () => ({
+    tweets: [
+      { id: 1, username: 'Sergio', text: '🎲Hoy he estado jugando con la lotería de Navidad.' },
+      { id: 2, username: 'Mario', text: 'CYA es muy facil' }
+    ]
+  }),
   methods: {
     async addPublication() {
       return await fetchWrapper

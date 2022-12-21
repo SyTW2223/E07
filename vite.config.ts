@@ -14,6 +14,8 @@ export default defineConfig({
   test: {
     coverage: {
       provider: "istanbul", // or 'c8'
+      reporter: ["lcov", "text"],
+      reportsDirectory: "./coverage",
     },
     setupFiles: "../vuetify.config.ts",
     deps: {
