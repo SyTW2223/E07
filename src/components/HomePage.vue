@@ -53,8 +53,8 @@ export default {
   },
   data: () => ({
     tweets: [
-      { id: 1, username: 'Sergio', text: '🎲Hoy he estado jugando con la lotería de Navidad.', date: '2022-01-02'},
-      { id: 2, username: 'Mario', text: 'CYA es muy facil', date: '2022-01-02' }
+      { id: 1, username: 'Sergio', text: '🎲Hoy he estado jugando con la lotería de Navidad.', date: '2022-01-02', numLikes: 50,  Url: "/E07/logo_without_letters.png"},
+      { id: 2, username: 'Mario', text: 'CYA es muy facil', date: '2022-01-02', numLikes: 178, Url: "/E07/Solid_black.png" }
     ]
   }),
   methods: {
