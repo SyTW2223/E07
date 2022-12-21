@@ -21,7 +21,7 @@ read message
 git init
 git checkout -B gh-pages-staging
 git add -A
-git commit -m $1
+git commit -m "$message"
 
 # if you are deploying to https://<USERNAME>.github.io
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
