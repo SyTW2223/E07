@@ -1,11 +1,11 @@
 <template>
-  <v-card style="width: 80%; margin: 0 auto; border-radius: 2px">
+  <v-card style="width: 100%; margin: 0 auto; border-radius: 2px">
     <v-card-title>
       <v-avatar size="40px">
         <v-img v-bind:src="tweet.Url"></v-img>
       </v-avatar>
       {{ tweet.username }}
-      <span class="date">{{ tweet.date }}</span>
+      <span class="date">{{ tweet.date.slice(0, 10) }}</span>
     </v-card-title>
     <v-card-text>{{ tweet.text }}</v-card-text>
     <v-card-actions>
