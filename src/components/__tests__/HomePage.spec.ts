@@ -19,8 +19,8 @@ describe("HomePage", () => {
   // });
 
   it("contains a test button", () => {
-  //   const middlewareButton = wrapper.find(".v-btn");
-  //   expect(middlewareButton.text()).toContain("Middleware");
+    //   const middlewareButton = wrapper.find(".v-btn");
+    //   expect(middlewareButton.text()).toContain("Middleware");
     expect(true).toBe(true);
   });
 });

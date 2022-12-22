@@ -47,7 +47,7 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
         .catch((err) => {
           res.status(401).send(err);
         });
-      res.status(200).send({"publication": publication, "username": username});
+      res.status(200).send({ publication: publication, username: username });
     })
     .catch((err) => {
       res.status(400).send(err);

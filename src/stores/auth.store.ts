@@ -4,7 +4,6 @@ import { fetchWrapper } from "@/helpers";
 import { router } from "@/router";
 import { expressJS_url, expressJS_port } from "../config/env.frontend";
 
-
 const baseUrl = `${expressJS_url}`;
 
 function setCookie(
@@ -70,9 +69,9 @@ export const useAuthStore = defineStore({
     },
     logout() {
       this.api_token = null;
-      JSON.parse(document.cookie).api_token =
+      document.cookie =
         "api_token" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-      router.push("/login");
+      router.push("/log-in");
     },
   },
 });

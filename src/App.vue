@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import { useAuthStore } from "@/stores";
 </script>
 
 <template>
@@ -13,8 +14,11 @@ import { RouterView } from "vue-router";
             width="50px"
           />
         </v-tab>
-        <v-tab to="/log-in"> Log in </v-tab>
-        <v-tab to="/sign-up"> Sign Up </v-tab>
+        <v-tab v-if="!isLogged()" to="/log-in"> Log in </v-tab>
+        <v-tab v-if="!isLogged()" to="/sign-up"> Sign Up </v-tab>
+        <v-tab v-if="isLogged()" @click="useAuthStore().logout()">
+          Log Out
+        </v-tab>
       </v-tabs>
     </v-app-bar>
 
@@ -23,3 +27,18 @@ import { RouterView } from "vue-router";
     </v-container>
   </v-app>
 </template>
+
+<script lang="ts">
+export default {
+  props: [],
+  data: () => ({}),
+
+  created() {},
+
+  methods: {
+    isLogged() {
+      return useAuthStore().api_token !== null || undefined ? true : false;
+    },
+  },
+};
+</script>

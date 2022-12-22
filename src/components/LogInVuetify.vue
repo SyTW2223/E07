@@ -17,7 +17,6 @@
           data-email
           data-test="email-text-box"
           prepend-icon="mdi-email"
-          
           style="width: 100%; justify-content: center; align-items: center"
         ></v-text-field>
         <v-text-field
@@ -110,7 +109,7 @@ export default {
     },
     goToSignUpPage() {
       this.$router.push("/sign-up");
-    }
+    },
   },
 };
 </script>
