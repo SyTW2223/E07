@@ -10,7 +10,7 @@ export const fetchWrapper = {
 };
 
 function request(method: string) {
-  return (url: string, body: object) => {
+  return (url: string, body: any) => {
     let requestOptions: object = {};
     if (body) {
       requestOptions = {
@@ -22,7 +22,7 @@ function request(method: string) {
       requestOptions = {
         method,
         headers: authHeader(url),
-        body: {},
+        body: null,
       };
     }
     return fetch(url, requestOptions).then(handleResponse);

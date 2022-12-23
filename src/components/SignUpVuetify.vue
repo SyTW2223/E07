@@ -47,7 +47,7 @@
       ></v-text-field>
       <v-container>
         <v-btn
-          @click="signUp"
+          @click="onSubmit"
           rounded
           elevation="2"
           class="mx-auto"
@@ -61,6 +61,7 @@
 
 <script lang="ts">
 import { expressJS_url } from "../config/env.frontend";
+import { useUsersStore } from "@/stores";
 export default {
   name: "SignUp",
   data() {
@@ -88,34 +89,48 @@ export default {
   },
 
   methods: {
-    async signUp() {
+    async onSubmit() {
       if (this.password !== this.verify_password) {
         alert("Passwords do not match");
         return;
       }
-      try {
-        const url = `${expressJS_url}/user`;
-        await fetch(url, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json;charset=UTF-8",
-          },
-          body: JSON.stringify({
-            email: this.email,
-            username: this.username,
-            password: this.password,
-          }),
-        }).then((response) => {
-          response.json().then((obj) => {
-            alert(obj.message);
-            this.$router.push({ name: "login" });
-          });
+      const userStore = useUsersStore();
+      await userStore
+        .register(this)
+        .then((response) => {
+          this.$router.push({ name: "log-in" });
+        })
+        .catch((response) => {
+          console.log(response.err);
         });
-      } catch (error) {
-        console.log(error);
-      }
     },
   },
 };
 </script>
+
+<!-- if (this.password !== this.verify_password) {
+  alert("Passwords do not match");
+  return;
+}
+try {
+  const url = `${expressJS_url}/user`;
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify({
+      email: this.email,
+      username: this.username,
+      password: this.password,
+    }),
+  }).then((response) => {
+    response.json().then((obj) => {
+      alert(obj.message);
+      this.$router.push({ name: "login" });
+    });
+  });
+} catch (error) {
+  console.log(error);
+} -->

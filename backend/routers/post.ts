@@ -18,8 +18,11 @@ postRouter.post("/user", (req, res) => {
         message: "User saved successfully",
       });
     })
-    .catch((err) => {
-      res.status(400).send(err);
+    .catch((error) => {
+      console.log(error);
+      res.status(400).send({
+        err: "Bad request \n" + error.errmsg,
+      });
     });
 });
 
@@ -68,7 +71,7 @@ postRouter.post("/login", (req, res) => {
       } else {
         if (user.password == req.body.password) {
           const payload = {
-            username: user.username,
+            id: user._id,
           };
           const secret = jwtSecret;
           const token = jwt.sign(payload, secret, {

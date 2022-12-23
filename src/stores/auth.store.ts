@@ -35,6 +35,7 @@ export const useAuthStore = defineStore({
     // initialize state from local storage to enable user to stay logged in
     api_token: getCookie("api_token") || null, //JSON.parse(localStorage.getItem("api_token") || "null"),
     // store the url of the page user tried to access before being redirected to login page
+    user_id: getCookie("user_id") || null,
     returnUrl: "/",
   }),
   actions: {
@@ -51,7 +52,9 @@ export const useAuthStore = defineStore({
             .replace("-", "+")
             .replace("_", "/");
           const body: any = JSON.parse(window.atob(base64body));
+          console.log(body);
           this.api_token = setCookie("api_token", response.token, body.exp);
+          this.user_id = setCookie("user_id", body.id, body.exp);
           // store user details and jwt in local storage to keep user logged in between page refreshes
           //localStorage.setItem("api_token", JSON.stringify(api_token));
           // redirect to previous url or default to home page

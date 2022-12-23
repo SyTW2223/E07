@@ -16,6 +16,7 @@ import { useAuthStore } from "@/stores";
         </v-tab>
         <v-tab v-if="!isLogged()" to="/log-in"> Log in </v-tab>
         <v-tab v-if="!isLogged()" to="/sign-up"> Sign Up </v-tab>
+        <v-tab v-if="isLogged()" to="/account">Account</v-tab>
         <v-tab v-if="isLogged()" @click="useAuthStore().logout()">
           Log Out
         </v-tab>
