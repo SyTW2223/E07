@@ -1,5 +1,8 @@
-import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
-import HomePage from "../views/HomePage.vue";
+import {
+  createRouter,
+  createWebHistory,
+  createWebHashHistory,
+} from "vue-router";
 import { useAuthStore } from "../stores/auth.store";
 
 export const router = createRouter({
@@ -9,7 +12,7 @@ export const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomePage,
+      component: () => import("../views/HomePage.vue"),
     },
     {
       path: "/log-in",

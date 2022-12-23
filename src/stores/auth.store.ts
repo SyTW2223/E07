@@ -11,7 +11,7 @@ function setCookie(
   cValue: string,
   expFromEpoch: number
 ): string {
-  console.log(expFromEpoch);
+  //console.log(expFromEpoch);
   const date: Date = new Date(expFromEpoch * 1000);
   const expires: string = "expires=" + date.toUTCString();
   document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore({
             .replace("-", "+")
             .replace("_", "/");
           const body: any = JSON.parse(window.atob(base64body));
-          console.log(body);
+          //console.log(body);
           this.api_token = setCookie("api_token", response.token, body.exp);
           this.user_id = setCookie("user_id", body.id, body.exp);
           // store user details and jwt in local storage to keep user logged in between page refreshes
@@ -61,7 +61,7 @@ export const useAuthStore = defineStore({
           if (response.message) {
             alert(response.message);
           }
-          console.log(getCookie("api_token"));
+          //console.log(getCookie("api_token"));
           router.push(this.returnUrl || "/");
         })
         .catch((response) => {

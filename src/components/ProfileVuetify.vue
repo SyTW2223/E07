@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col align="center">
-        <h1>Account</h1>
+        <h1>{{ user.username }}</h1>
       </v-col>
     </v-row>
     <v-row v-if="!user?.loading && !user?.error">

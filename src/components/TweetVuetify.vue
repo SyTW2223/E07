@@ -15,10 +15,11 @@
       >
         <v-icon>mdi-heart</v-icon>
       </v-btn>
-      <span class="num">{{ numLikes }}</span>
+      <span class="num">{{ fav_count }}</span>
       <v-btn @click="commentOnTweet(tweet.id)" color="blue">
         <v-icon>mdi-comment</v-icon>
       </v-btn>
+      <!-- <span class="num">{{ tweet.id }}</span> -->
     </v-card-actions>
   </v-card>
 </template>
@@ -39,17 +40,17 @@ export default {
   props: ["tweet"],
   data: () => ({
     liked: false,
-    numLikes: 0,
+    fav_count: 0,
   }),
 
   created() {
-    this.numLikes = this.tweet.numLikes;
+    this.fav_count = this.tweet.fav_count;
   },
 
   methods: {
     likeTweet(tweetId: any) {
       this.liked = !this.liked;
-      this.numLikes += this.liked ? 1 : -1;
+      this.fav_count += this.liked ? 1 : -1;
 
       // rellenar esto
     },

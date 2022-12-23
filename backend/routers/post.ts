@@ -28,32 +28,44 @@ postRouter.post("/user", (req, res) => {
 
 postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
   const publication = new Publication(req.body);
+  // console.log(req.body);
+  // console.log(res.locals);
   publication
     .save()
     .then((savedDoc) => {
       const id_publication = savedDoc._id;
-      const username = res.locals.user.username;
-      User.findOne({ username: username })
+      const userID = res.locals.payload.id;
+      User.findById(userID)
         .then((user) => {
           // eslint-disable-next-line prefer-const
           let publications_copy = user.publications;
           publications_copy.push(id_publication.toString());
           User.updateOne(
-            { username: username },
+            { username: user.username },
             { publications: publications_copy }
           )
-            .then()
-            .catch((err) => {
-              res.status(401).send(err);
+            .then(() => {
+              res
+                .status(200)
+                .send({ publication: publication, username: user.username });
+            })
+            .catch((error) => {
+              res.status(400).send({
+                err: "Bad request \n" + error._message,
+              });
             });
         })
-        .catch((err) => {
-          res.status(401).send(err);
+        .catch((error) => {
+          res.status(400).send({
+            err: "Bad request \n" + error._message,
+          });
         });
-      res.status(200).send({ publication: publication, username: username });
     })
-    .catch((err) => {
-      res.status(400).send(err);
+    .catch((error) => {
+      console.log(error);
+      res.status(400).send({
+        err: "Bad request \n" + error._message,
+      });
     });
 });
 
@@ -88,8 +100,10 @@ postRouter.post("/login", (req, res) => {
         }
       }
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).send(err);
+    .catch((error) => {
+      console.log(error);
+      res.status(400).send({
+        err: "Bad request \n" + error.errmsg,
+      });
     });
 });

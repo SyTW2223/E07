@@ -5,11 +5,17 @@ import { useAuthStore } from "@/stores";
 import { expressJS_url } from "@/config/env.frontend";
 
 const baseUrl = `${expressJS_url}/user`;
+interface User {
+  username?: string;
+  loading: boolean;
+  error: string | null;
+}
 
 export const useUsersStore = defineStore({
   id: "user",
   state: () => ({
-    user: { loading: false, error: null },
+    user: {} as User,
+    tweets: null,
   }),
   actions: {
     async register(user: any) {
@@ -44,6 +50,7 @@ export const useUsersStore = defineStore({
           response["loading"] = false;
           response["error"] = null;
           this.user = response;
+          this.tweets = response.publications;
         })
         .catch((response) => {
           //console.log(response.err);
