@@ -1,15 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HelloWorldView from "../views/HelloWorldView.vue";
+import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
+import HomePage from "../views/HomePage.vue";
 import { useAuthStore } from "../stores/auth.store";
 
 export const router = createRouter({
-  history: createWebHistory("/E07/"),
+  history: createWebHashHistory("/E07/"),
   linkActiveClass: "active",
   routes: [
     {
       path: "/",
       name: "home",
-      component: HelloWorldView,
+      component: HomePage,
     },
     {
       path: "/log-in",
