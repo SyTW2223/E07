@@ -19,7 +19,12 @@
       <v-btn @click="commentOnTweet(tweet.id)" color="blue">
         <v-icon>mdi-comment</v-icon>
       </v-btn>
-      <!-- <span class="num">{{ tweet.id }}</span> -->
+
+      <v-btn @click="deleteTweet(tweet.id)" class="delete-button">
+        <v-icon
+          style=" margin-left: auto;"
+        >mdi-delete</v-icon>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -28,6 +33,10 @@
 .date {
   font-size: 60%;
   float: right;
+}
+
+.delete-button:hover {
+  color: red;
 }
 
 .num {
@@ -58,15 +67,28 @@ export default {
       try {
         await fetchWrapper
           .put(`${baseUrl}/publication/${tweetId}`, {liked: this.liked})
+          .then(() => {
+            //hacer que se borre de la pantalla
+          })
       } catch (err) {
         console.log(err)
       }
       //dentro de un .then() no consegui que funcionara :/
       this.fav_count += this.liked ? 1 : -1;
     },
+
     commentOnTweet(tweetId: any) {
       // y esto
     },
+
+    async deleteTweet(tweetId: any) {
+      try {
+        await fetchWrapper
+          .delete(`${baseUrl}/publication/${tweetId}`, {})
+      } catch (err) {
+        console.log(err)
+      }
+    }
   },
 };
 </script>
