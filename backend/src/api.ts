@@ -3,6 +3,7 @@ import cors from "cors";
 import { defaultRouter } from "../routers/default";
 import { postRouter } from "../routers/post";
 import { getRouter } from "../routers/get";
+import { putRouter } from "../routers/put";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 import "../db/mongoose";
 import { expressJS_port } from "../env.backend";
@@ -17,6 +18,7 @@ express_app.options("*", cors());
 
 express_app.use(postRouter);
 express_app.use(getRouter);
+express_app.use(putRouter);
 express_app.use(defaultRouter);
 
 express_app.use(jwtAuthMiddleware);

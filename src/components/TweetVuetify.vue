@@ -36,6 +36,11 @@
 </style>
 
 <script lang="ts">
+import { fetchWrapper } from "@/helpers";
+import { expressJS_url } from "../config/env.frontend";
+
+const baseUrl = `${expressJS_url}`;
+
 export default {
   props: ["tweet"],
   data: () => ({
@@ -48,11 +53,16 @@ export default {
   },
 
   methods: {
-    likeTweet(tweetId: any) {
+    async likeTweet(tweetId: string) {
       this.liked = !this.liked;
+      try {
+        await fetchWrapper
+          .put(`${baseUrl}/publication/${tweetId}`, {liked: this.liked})
+      } catch (err) {
+        console.log(err)
+      }
+      //dentro de un .then() no consegui que funcionara :/
       this.fav_count += this.liked ? 1 : -1;
-
-      // rellenar esto
     },
     commentOnTweet(tweetId: any) {
       // y esto

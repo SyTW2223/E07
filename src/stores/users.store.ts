@@ -7,6 +7,7 @@ import { expressJS_url } from "@/config/env.frontend";
 const baseUrl = `${expressJS_url}/user`;
 interface User {
   username?: string;
+  url?: string;
   loading: boolean;
   error: string | null;
 }
