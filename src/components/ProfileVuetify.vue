@@ -24,7 +24,7 @@
       </v-btn>
      <v-container>
       <TweetVuetify
-        v-for="tweet in publications"
+        v-for="tweet in sortedPublications"
         :key="tweet.id"
         :tweet="tweet"
         style="border-bottom: 1px solid grey"
@@ -66,6 +66,23 @@ export default {
       followClicked: false
     };
   },
+
+  computed: {
+    sortedPublications() {
+      return this.publications.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        if (dateA < dateB) {
+          return 1;
+        } else if (dateA > dateB) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    },
+  },
+
   methods: {
     addTweetFirst(tweet: publication) {
       this.publications.unshift({
