@@ -32,7 +32,7 @@ jobs:
       run: npm run ci:coverage
     -
       name: LS 
-      run: ls -la
+      run: ls -la ${{ github.workspace }}/
     -
       name: LS 2
       run: ls -la coverage
