@@ -30,6 +30,12 @@ jobs:
       run: node backend/dist/src/api.js &
     - name: Generating coverage information
       run: npm run ci:coverage
+    -
+      name: LS 
+      run: ls -la
+    -
+      name: LS 2
+      run: ls -la coverage
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@master
       with:
