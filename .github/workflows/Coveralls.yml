@@ -1,0 +1,37 @@
+name: Coveralls
+
+on: ["push", "pull_request"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Cloning repo
+      uses: actions/checkout@v3
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+        cache-dependency-path: ./package-lock.json
+    - name: Installing dependencies
+      run: npm install
+    - name: Load Secrets
+      run: 'echo "$ENV_PARAMS" > backend/.env.local'
+      shell: bash
+      env:
+        ENV_PARAMS: ${{ secrets.ENV_PARAMS }}
+    # - name: Check Secrets
+    #   run: cat backend/.env.local
+    - name: Building Express
+      run: npm run build:express
+    - name: Starting Express
+      run: node backend/dist/src/api.js &
+    - name: Generating coverage information
+      run: npm run ci:coverage
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        path-to-lcov: ${{ github.workspace }}/coverage/lcov.info

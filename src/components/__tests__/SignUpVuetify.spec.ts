@@ -3,10 +3,19 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { mount } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
+import { useAuthStore } from "@/stores";
 
-import HomePage from "../HomePage.vue";
+import SignUp from "../SignUpVuetify.vue";
 
-describe("HomePage", () => {
+const vuetify = createVuetify({ components, directives });
+const wrapper = mount(SignUp, {
+  global: {
+    plugins: [vuetify, createTestingPinia()],
+  },
+});
+
+describe("SignUp", () => {
   //   const vuetify = createVuetify({ components, directives });
 
   it("renders properly", () => {
