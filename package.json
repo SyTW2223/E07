@@ -18,7 +18,7 @@
     "test:unit:backend:coverage:single": "vitest run --environment jsdom --root backend/ --coverage",
     "test:e2e": "start-server-and-test preview :4173 'cypress run --e2e'",
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
-    "ci:coverage": "vitest --environment jsdom --coverage",
+    "ci:coverage": "vitest --environment jsdom --coverage --config ./vite.config.ts",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
@@ -45,6 +45,7 @@
     "@types/supertest": "^2.0.12",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
+    "@vitest/coverage-c8": "^0.26.2",
     "@vitest/coverage-istanbul": "^0.25.3",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
