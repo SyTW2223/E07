@@ -50,6 +50,7 @@ const baseUrl = `${expressJS_url}`;
 
 export default {
   props: ["tweet"],
+  emits: ["error", "remove"],
   data: () => ({
     liked: false,
     fav_count: 0,
@@ -88,8 +89,8 @@ export default {
           this.$emit("remove", tweetId);
         })
         .catch((response) => {
+          this.$emit("error", response.err);
           console.log(response.err);
-          alert(response.err);
         });
     },
   },

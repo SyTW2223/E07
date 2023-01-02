@@ -1,6 +1,9 @@
 <template>
   <div class="greetings">
     <v-container>
+      <v-alert closable v-model="errorAlertEnabled" type="error">{{
+        errorAlertText
+      }}</v-alert>
       <v-card-text>
         <v-text-field
           density="compact"
@@ -11,10 +14,10 @@
           hide-details
           v-model="textAreaValue"
           @click:append-inner="postTweet"
+          @error="homePageAlert"
         ></v-text-field>
       </v-card-text>
     </v-container>
-
     <v-container>
       <transition name="fade">
         <v-container>
@@ -24,6 +27,7 @@
             :tweet="tweet"
             style="border-bottom: 1px solid grey"
             @remove="removeTweetComponent"
+            @error="homePageAlert"
           />
         </v-container>
       </transition>
@@ -61,6 +65,8 @@ export default {
   data() {
     return {
       textAreaValue: "",
+      errorAlertText: "undefined",
+      errorAlertEnabled: false,
       user: storeToRefs(userStore).user,
       publications: new Array(),
     };
@@ -80,6 +86,10 @@ export default {
       console.log("removing form element", tweetID);
       const index = this.publications.findIndex((f) => f.id === tweetID);
       this.publications.splice(index, 1);
+    },
+    async homePageAlert(err: string) {
+      this.errorAlertText = err;
+      this.errorAlertEnabled = true;
     },
     async postTweet() {
       return await fetchWrapper
@@ -104,6 +114,7 @@ export default {
           this.textAreaValue = "";
         })
         .catch((response) => {
+          this.$emit("error", response.err);
           console.log(response.err);
           alert(response.err);
         });
