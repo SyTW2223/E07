@@ -21,9 +21,7 @@
       </v-btn>
 
       <v-btn @click="deleteTweet(tweet.id)" class="delete-button">
-        <v-icon
-          style=" margin-left: auto;"
-        >mdi-delete</v-icon>
+        <v-icon style="margin-left: auto">mdi-delete</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -59,6 +57,7 @@ export default {
 
   created() {
     this.fav_count = this.tweet.fav_count;
+    this.liked = this.tweet.liked;
   },
 
   methods: {
@@ -66,15 +65,16 @@ export default {
       this.liked = !this.liked;
       try {
         await fetchWrapper
-          .put(`${baseUrl}/publication/${tweetId}`, {liked: this.liked})
+          .put(`${baseUrl}/publication/${tweetId}`, { liked: this.liked })
           .then(() => {
             //hacer que se borre de la pantalla
-          })
+          });
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
       //dentro de un .then() no consegui que funcionara :/
       this.fav_count += this.liked ? 1 : -1;
+      console.log(this.fav_count);
     },
 
     commentOnTweet(tweetId: any) {
@@ -82,13 +82,16 @@ export default {
     },
 
     async deleteTweet(tweetId: any) {
-      try {
-        await fetchWrapper
-          .delete(`${baseUrl}/publication/${tweetId}`, {})
-      } catch (err) {
-        console.log(err)
-      }
-    }
+      await fetchWrapper
+        .delete(`${baseUrl}/publication/${tweetId}`, null)
+        .then(() => {
+          this.$emit("remove", tweetId);
+        })
+        .catch((response) => {
+          console.log(response.err);
+          alert(response.err);
+        });
+    },
   },
 };
 </script>

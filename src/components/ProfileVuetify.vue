@@ -1,8 +1,7 @@
 <template>
   <v-container>
     <v-img src="/E07/logo.png" aspect-ratio="6" class="mx-auto" />
-    <v-card-title
-      style="text-align: center; font-size: 33px;"
+    <v-card-title style="text-align: center; font-size: 33px"
       >{{ user.username }}
     </v-card-title>
     <v-btn
@@ -11,7 +10,7 @@
       class="mx-auto text-xs-center"
       style="display: flex; width: 150px; height: 40px; color: white"
       rounded
-      :style="{ 'background-color': followClicked ? 'grey' : '#1f548b'}"
+      :style="{ 'background-color': followClicked ? 'grey' : '#1f548b' }"
     >
       <template v-if="followClicked">
         <v-icon>mdi-account-check</v-icon>
@@ -20,9 +19,9 @@
       <template v-else>
         <v-icon>mdi-account-circle</v-icon>
         Follow
-      </template>      
-      </v-btn>
-     <v-container>
+      </template>
+    </v-btn>
+    <v-container>
       <TweetVuetify
         v-for="tweet in sortedPublications"
         :key="tweet.id"
@@ -63,7 +62,7 @@ export default {
       textAreaValue: "",
       user: storeToRefs(userStore).user,
       publications: new Array(),
-      followClicked: false
+      followClicked: false,
     };
   },
 
@@ -97,7 +96,7 @@ export default {
 
     async followUser() {
       this.followClicked = !this.followClicked;
-    }
+    },
   },
   async beforeMount() {
     if (authStore.user_id) {

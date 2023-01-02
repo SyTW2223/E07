@@ -1,4 +1,5 @@
 import { Document, Schema, model } from "mongoose";
+import { PublicationInterface } from "./publication";
 
 export interface UserInterface extends Document {
   date: Date;
@@ -6,18 +7,18 @@ export interface UserInterface extends Document {
   avatar_path: string;
   email: string;
   password: string;
-  lastlogin: Date;
+  lastLogin: Date;
   personalInfo: {
-    firstname: string;
-    lastname: string;
-    birthdate: Date;
+    firstName: string;
+    lastName: string;
+    birthDate: Date;
   };
   stats: {
     follower_count: number;
     following_count: number;
     publication_counter: number;
   };
-  publications: string[];
+  publications: PublicationInterface[];
 }
 
 const UserSchema = new Schema<UserInterface>({
@@ -63,24 +64,24 @@ const UserSchema = new Schema<UserInterface>({
     },
   },
 
-  lastlogin: {
+  lastLogin: {
     type: Date,
     required: false,
     trim: true,
   },
 
   personalInfo: {
-    firstname: {
+    firstName: {
       type: String,
       required: false,
       trim: true,
     },
-    lastname: {
+    lastName: {
       type: String,
       required: false,
       trim: true,
     },
-    birthdate: {
+    birthDate: {
       type: Date,
       required: false,
       trim: true,
@@ -106,10 +107,8 @@ const UserSchema = new Schema<UserInterface>({
   },
 
   publications: {
-    type: [String],
+    type: [{ type: Schema.Types.ObjectId, ref: "Publication" }],
     required: false,
-    trim: true,
   },
 });
-
 export default model<UserInterface>("User", UserSchema);

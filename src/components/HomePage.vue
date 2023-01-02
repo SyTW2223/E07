@@ -10,7 +10,7 @@
           single-line
           hide-details
           v-model="textAreaValue"
-          @click:append-inner="addTweet"
+          @click:append-inner="postTweet"
         ></v-text-field>
       </v-card-text>
     </v-container>
@@ -23,6 +23,7 @@
             :key="tweet.id"
             :tweet="tweet"
             style="border-bottom: 1px solid grey"
+            @remove="removeTweetComponent"
           />
         </v-container>
       </transition>
@@ -43,11 +44,13 @@ const authStore = useAuthStore();
 
 interface publication {
   id: string;
+  username: string;
   content: {
     text: string;
   };
   date: string;
   fav_count: number;
+  liked: boolean;
 }
 
 export default {
@@ -73,17 +76,31 @@ export default {
   //   },
   // ],
   methods: {
-    async addTweet() {
+    async removeTweetComponent(tweetID: string) {
+      console.log("removing form element", tweetID);
+      const index = this.publications.findIndex((f) => f.id === tweetID);
+      this.publications.splice(index, 1);
+    },
+    async postTweet() {
       return await fetchWrapper
         .post(`${baseUrl}/publication`, {
           content: {
             text: this.textAreaValue,
           },
           date: new Date(),
-          fav_count: 0,
         })
-        .then((response) => {
-          this.addTweetFirst(response);
+        .then((entry) => {
+          let aux: publication = {
+            id: entry._id,
+            username: entry.owner_username,
+            content: {
+              text: entry.content.text,
+            },
+            date: entry.date,
+            fav_count: entry.fav_count,
+            liked: entry.liked,
+          };
+          this.addTweetFirst(aux);
           this.textAreaValue = "";
         })
         .catch((response) => {
@@ -91,57 +108,40 @@ export default {
           alert(response.err);
         });
     },
-
     addTweetFirst(tweet: publication) {
       this.publications.unshift({
         id: tweet.id,
-        username: this.user.username,
+        username: tweet.username,
         text: tweet.content.text,
         date: tweet.date,
         fav_count: tweet.fav_count,
+        liked: tweet.liked,
         Url: "/E07/logo_without_letters.png",
       });
     },
   },
   async beforeMount() {
-    if (authStore.user_id) {
-      await userStore.getById(authStore.user_id);
-    }
-    const tweets = userStore.tweets;
-    if (tweets !== null) {
-      const copy: String[] = tweets;
-      copy.forEach(async (id) => {
-        await fetchWrapper
-          .get(`${baseUrl}/publication/${id}`, null)
-          .then((response) => {
-            if (response.message) {
-              alert(response.message);
-            }
-            //   {
-            //     id: 1,
-            //     username: "Sergio",
-            //     text: "🎲Hoy he estado jugando con la lotería de Navidad.",
-            //     date: "2022-01-02",
-            //     numLikes: 50,
-            //     Url: "/E07/logo_without_letters.png",
-            //   },
-            //console.log(response);
-            let aux: publication = {
-              id: response._id,
-              content: {
-                text: response.content.text,
-              },
-              date: response.date,
-              fav_count: response.fav_count,
-            };
-            this.addTweetFirst(aux);
-          })
-          .catch((response) => {
-            //console.log(response.err);
-            alert(response.err);
-          });
+    await fetchWrapper
+      .get(`${baseUrl}/publication/`, null)
+      .then((publications) => {
+        publications.forEach((entry: any) => {
+          let aux: publication = {
+            id: entry._id,
+            username: entry.owner_username,
+            content: {
+              text: entry.content.text,
+            },
+            date: entry.date,
+            fav_count: entry.fav_count,
+            liked: entry.liked,
+          };
+          this.addTweetFirst(aux);
+        });
+      })
+      .catch((response) => {
+        //console.log(response.err);
+        alert(response.err);
       });
-    }
   },
 };
 </script>

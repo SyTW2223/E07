@@ -1,10 +1,11 @@
 import * as express from "express";
 import User from "../models/user";
-import Publication from "../models/publication";
+import Publication, { PublicationInterface } from "../models/publication";
 
 import * as jwt from "jsonwebtoken";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 import { jwtSecret } from "../env.backend";
+import { ObjectID } from "bson";
 
 export const postRouter = express.Router();
 
@@ -27,46 +28,63 @@ postRouter.post("/user", (req, res) => {
 });
 
 postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
-  const publication = new Publication(req.body);
-  // console.log(req.body);
-  // console.log(res.locals);
-  publication
-    .save()
-    .then((savedDoc) => {
-      const id_publication = savedDoc._id;
-      const userID = res.locals.payload.id;
-      User.findById(userID)
-        .then((user) => {
-          // eslint-disable-next-line prefer-const
-          let publications_copy = user.publications;
-          publications_copy.push(id_publication.toString());
-          User.updateOne(
-            { username: user.username },
-            { publications: publications_copy }
-          )
-            .then(() => {
-              res
-                .status(200)
-                .send({ publication: publication, username: user.username });
-            })
-            .catch((error) => {
-              res.status(400).send({
-                err: "Bad request \n" + error._message,
+  User.findById({ _id: res.locals.payload.id }).then((user) => {
+    const newPublication = {
+      content: {
+        text: req.body.content.text,
+        media_path: req.body.content.media_path,
+      },
+      owner_username: user.username,
+      date: req.body.date,
+      fav_users: [],
+      comments: [],
+    };
+    const dbPublication = new Publication(newPublication);
+    dbPublication
+      .save()
+      .then((savedDoc) => {
+        const id_publication = savedDoc._id;
+        const userID = res.locals.payload.id;
+        User.findById(userID)
+          .then((user) => {
+            // eslint-disable-next-line prefer-const
+            let publications_copy = user.publications;
+            publications_copy.push(id_publication.toString());
+            User.updateOne(
+              { username: user.username },
+              { publications: publications_copy }
+            )
+              .then(() => {
+                const publication = {
+                  _id: dbPublication.id,
+                  content: dbPublication.content,
+                  owner_username: dbPublication.owner_username,
+                  date: dbPublication.date,
+                  fav_count: 0,
+                  comments: [],
+                  liked: false,
+                };
+                res.status(200).send(publication);
+              })
+              .catch((error) => {
+                res.status(400).send({
+                  err: "Bad request \n" + error._message,
+                });
               });
+          })
+          .catch((error) => {
+            res.status(400).send({
+              err: "Bad request \n" + error._message,
             });
-        })
-        .catch((error) => {
-          res.status(400).send({
-            err: "Bad request \n" + error._message,
           });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(400).send({
+          err: "Bad request \n" + error._message,
         });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(400).send({
-        err: "Bad request \n" + error._message,
       });
-    });
+  });
 });
 
 /*
