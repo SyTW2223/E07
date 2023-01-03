@@ -20,6 +20,7 @@ postRouter.post("/user", (req, res) => {
       });
     })
     .catch((error) => {
+      // HAY QUE MANEJAR TODOS LOS ERRORES AL CREAR LA CUENTA
       console.log(error);
       res.status(400).send({
         err: "Bad request \n" + error.errmsg,

@@ -27,6 +27,7 @@
         :key="tweet.id"
         :tweet="tweet"
         style="border-bottom: 1px solid grey"
+        @remove="removeTweetComponent"
       />
     </v-container>
   </v-container>
@@ -37,12 +38,12 @@ import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
 import TweetVuetify from "./TweetVuetify.vue";
 import { storeToRefs } from "pinia";
-import { useUsersStore, useAuthStore } from "@/stores";
+import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 
 const baseUrl = `${expressJS_url}`;
 const userStore = useUsersStore();
 const authStore = useAuthStore();
-
+const alertStore = useAlertStore();
 interface publication {
   id: string;
   content: {
@@ -66,23 +67,29 @@ export default {
     };
   },
 
-  computed: {
-    sortedPublications() {
-      return this.publications.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        if (dateA < dateB) {
-          return 1;
-        } else if (dateA > dateB) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-    },
-  },
+  // computed: {
+  //   sortedPublications() {
+  //     return this.publications.sort((a, b) => {
+  //       const dateA = new Date(a.date);
+  //       const dateB = new Date(b.date);
+  //       if (dateA < dateB) {
+  //         return 1;
+  //       } else if (dateA > dateB) {
+  //         return -1;
+  //       } else {
+  //         return 0;
+  //       }
+  //     });
+  //   },
+  // },
 
   methods: {
+    async removeTweetComponent(tweetID: string) {
+      console.log("removing form element", tweetID);
+      const index = this.publications.findIndex((f) => f.id === tweetID);
+      this.publications.splice(index, 1);
+      alertStore.successSnackbar("Tweet deleted");
+    },
     addTweetFirst(tweet: publication) {
       this.publications.unshift({
         id: tweet.id,
@@ -111,7 +118,7 @@ export default {
           .get(`${baseUrl}/publication/${id}`, null)
           .then((response) => {
             if (response.message) {
-              alert(response.message);
+              alertStore.successSnackbar(response.message);
             }
             let aux: publication = {
               id: response._id,
@@ -125,7 +132,7 @@ export default {
           })
           .catch((response) => {
             //console.log(response.err);
-            alert(response.err);
+            alertStore.error(response.err);
           });
       });
     }

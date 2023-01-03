@@ -1,37 +1,36 @@
+<script setup lang="ts">
+import SnackbarAlert from "./SnackbarAlert.vue";
+</script>
+
 <template>
   <div class="greetings">
     <v-container>
-      <v-alert closable v-model="errorAlertEnabled" type="error">{{
-        errorAlertText
-      }}</v-alert>
       <v-card-text>
         <v-text-field
           density="compact"
           variant="solo"
           label="Write here to add a publication..."
-          append-inner-icon="mdi-pencil"
+          :append-inner-icon="
+            textAreaValue.length > 0 ? 'mdi-pencil' : 'undefined'
+          "
           single-line
           hide-details
           v-model="textAreaValue"
           @click:append-inner="postTweet"
-          @error="homePageAlert"
         ></v-text-field>
       </v-card-text>
     </v-container>
-    <v-container>
-      <transition name="fade">
-        <v-container>
-          <TweetVuetify
-            v-for="tweet in publications"
-            :key="tweet.id"
-            :tweet="tweet"
-            style="border-bottom: 1px solid grey"
-            @remove="removeTweetComponent"
-            @error="homePageAlert"
-          />
-        </v-container>
-      </transition>
-    </v-container>
+    <transition name="fade">
+      <v-container>
+        <TweetVuetify
+          v-for="tweet in publications"
+          :key="tweet.id"
+          :tweet="tweet"
+          style="border-bottom: 1px solid grey"
+          @remove="removeTweetComponent"
+        />
+      </v-container>
+    </transition>
   </div>
 </template>
 
@@ -40,12 +39,12 @@ import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
 import TweetVuetify from "./TweetVuetify.vue";
 import { storeToRefs } from "pinia";
-import { useUsersStore, useAuthStore } from "@/stores";
+import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 
 const baseUrl = `${expressJS_url}`;
 const userStore = useUsersStore();
 const authStore = useAuthStore();
-
+const alertStore = useAlertStore();
 interface publication {
   id: string;
   username: string;
@@ -86,10 +85,7 @@ export default {
       console.log("removing form element", tweetID);
       const index = this.publications.findIndex((f) => f.id === tweetID);
       this.publications.splice(index, 1);
-    },
-    async homePageAlert(err: string) {
-      this.errorAlertText = err;
-      this.errorAlertEnabled = true;
+      alertStore.successSnackbar("Tweet deleted");
     },
     async postTweet() {
       return await fetchWrapper
@@ -112,11 +108,10 @@ export default {
           };
           this.addTweetFirst(aux);
           this.textAreaValue = "";
+          alertStore.successSnackbar("Tweet added");
         })
         .catch((response) => {
-          this.$emit("error", response.err);
-          console.log(response.err);
-          alert(response.err);
+          alertStore.error(response.err);
         });
     },
     addTweetFirst(tweet: publication) {
@@ -151,7 +146,7 @@ export default {
       })
       .catch((response) => {
         //console.log(response.err);
-        alert(response.err);
+        alertStore.error(response.err);
       });
   },
 };

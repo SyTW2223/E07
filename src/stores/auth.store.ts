@@ -3,9 +3,9 @@ import { defineStore } from "pinia";
 import { fetchWrapper } from "@/helpers";
 import { router } from "@/router";
 import { expressJS_url, expressJS_port } from "../config/env.frontend";
+import { useAlertStore } from "./alert.store";
 
 const baseUrl = `${expressJS_url}`;
-
 function setCookie(
   cName: string,
   cValue: string,
@@ -40,6 +40,7 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email: string, password: string) {
+      const alertStore = useAlertStore();
       const request = await fetchWrapper
         .post(`${baseUrl}/login`, {
           email,
@@ -59,14 +60,15 @@ export const useAuthStore = defineStore({
           //localStorage.setItem("api_token", JSON.stringify(api_token));
           // redirect to previous url or default to home page
           if (response.message) {
-            alert(response.message);
+            alertStore.successSnackbar(response.message);
           }
+          alertStore.successSnackbar("You have logged in");
           //console.log(getCookie("api_token"));
           router.push(this.returnUrl || "/");
         })
         .catch((response) => {
           //console.log(response.err);
-          alert(response.err);
+          alertStore.error(response.err);
         });
       // update pinia state
     },

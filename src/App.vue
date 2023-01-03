@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import { useAuthStore } from "@/stores";
+import { useAuthStore, useAlertStore } from "@/stores";
+import CustomAlertVue from "./components/CustomAlert.vue";
+import SnackbarAlert from "./components/SnackbarAlert.vue";
 </script>
 
 <template>
@@ -24,8 +26,10 @@ import { useAuthStore } from "@/stores";
     </v-app-bar>
 
     <v-container>
+      <CustomAlertVue v-show="useAlertStore().customAlert.enabled" />
       <RouterView />
     </v-container>
+    <SnackbarAlert />
   </v-app>
 </template>
 

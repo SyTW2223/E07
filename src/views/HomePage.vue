@@ -4,6 +4,6 @@ import HomePage from "../components/HomePage.vue";
 
 <template>
   <main>
-    <HomePage msg="" />
+    <HomePage />
   </main>
 </template>

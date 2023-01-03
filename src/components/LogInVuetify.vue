@@ -4,7 +4,7 @@
   </v-container>
 
   <div>
-    <v-form v-model="valid">
+    <v-form ref="form" v-model="form">
       <v-container
         style="width: 50%; justify-content: center; align-items: center"
       >
@@ -41,6 +41,7 @@
             @click="logIn"
             elevation="2"
             class="mx-auto"
+            :disabled="!form"
             style="display: block; background-color: #0ebbb5; color: white"
             rounded
             >Log In</v-btn
@@ -64,11 +65,14 @@
 
 <script lang="ts">
 import { useAuthStore } from "@/stores";
+import { useAlertStore } from "@/stores";
+
+const alertStore = useAlertStore();
 export default {
   name: "LogIn",
   data() {
     return {
-      valid: false,
+      form: false,
       email: "",
       password: "",
       rules: {
@@ -89,23 +93,16 @@ export default {
   },
   methods: {
     async logIn() {
-      try {
-        const authStore = useAuthStore();
-        const email: string = this.email;
-        const password: string = this.password;
-        return await authStore
-          .login(email, password)
-          .then(() => {
-            this.valid == true;
-            return Promise.resolve(this.valid);
-          })
-          .catch((error) => {
-            console.log(error);
-            alert(error);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+      const authStore = useAuthStore();
+      const email: string = this.email;
+      const password: string = this.password;
+      return await authStore
+        .login(email, password)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+          alertStore.error(error);
+        });
     },
     goToSignUpPage() {
       this.$router.push("/sign-up");

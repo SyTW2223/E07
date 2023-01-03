@@ -45,12 +45,13 @@
 <script lang="ts">
 import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
+import { useAlertStore } from "@/stores";
 
 const baseUrl = `${expressJS_url}`;
-
+const alertStore = useAlertStore();
 export default {
   props: ["tweet"],
-  emits: ["error", "remove"],
+  emits: ["remove"],
   data: () => ({
     liked: false,
     fav_count: 0,
@@ -79,7 +80,7 @@ export default {
     },
 
     commentOnTweet(tweetId: any) {
-      // y esto
+      alertStore.successSnackbar("HOLA");
     },
 
     async deleteTweet(tweetId: any) {
@@ -89,7 +90,7 @@ export default {
           this.$emit("remove", tweetId);
         })
         .catch((response) => {
-          this.$emit("error", response.err);
+          alertStore.error(response.err);
           console.log(response.err);
         });
     },

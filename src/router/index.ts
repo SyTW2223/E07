@@ -4,7 +4,7 @@ import {
   createWebHashHistory,
 } from "vue-router";
 import { useAuthStore } from "../stores/auth.store";
-
+import { useAlertStore } from "@/stores";
 export const router = createRouter({
   history: createWebHashHistory("/E07/"),
   linkActiveClass: "active",
@@ -37,10 +37,10 @@ router.beforeEach(async (to) => {
   const publicPages = ["/log-in", "/sign-up"];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
-
+  const alertStore = useAlertStore();
   if (authRequired && !auth.api_token) {
     auth.returnUrl = to.fullPath;
-    alert("You need to be signed up");
+    alertStore.successSnackbar("You need to be logged in");
     return "/log-in";
   }
 });
