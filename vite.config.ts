@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
+import { configDefaults } from 'vitest/config'
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 
@@ -12,12 +13,11 @@ export default defineConfig({
     outDir: "./docs",
   },
   test: {
+    exclude:[...configDefaults.exclude],
     coverage: {
-      provider: "istanbul", // or 'c8'
       reporter: ["lcov", "text"],
       reportsDirectory: "./coverage",
     },
-    setupFiles: "../vuetify.config.ts",
     deps: {
       inline: ["vuetify"],
     },

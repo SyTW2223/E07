@@ -10,7 +10,7 @@ export const fetchWrapper = {
 };
 
 function request(method: string) {
-  return (url: string, body: object) => {
+  return (url: string, body: any) => {
     let requestOptions: object = {};
     if (body) {
       requestOptions = {
@@ -22,7 +22,7 @@ function request(method: string) {
       requestOptions = {
         method,
         headers: authHeader(url),
-        body: {},
+        body: null,
       };
     }
     return fetch(url, requestOptions).then(handleResponse);
@@ -53,7 +53,7 @@ function handleResponse(response: Response) {
   return response.text().then((text) => {
     const { api_token, logout } = useAuthStore();
     const responseObject = JSON.parse(text);
-    if ([401, 403].includes(response.status) && api_token) {
+    if ([401].includes(response.status) && api_token) {
       // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
       logout();
     }
@@ -61,7 +61,6 @@ function handleResponse(response: Response) {
       const data = text && JSON.parse(text);
       return Promise.resolve(responseObject);
     }
-    //console.log(response.status);
     return Promise.reject(responseObject);
   });
 }
