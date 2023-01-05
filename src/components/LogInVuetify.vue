@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useUsersStore, useAuthStore,useAlertStore } from "@/stores";
+const authStore = useAuthStore();
+const alertStore = useAlertStore();
+</script>
+
 <template>
   <v-container>
     <v-img src="/E07/logo.png" style="width: 15%" class="mx-auto"></v-img>
@@ -64,10 +70,6 @@
 </template>
 
 <script lang="ts">
-import { useAuthStore } from "@/stores";
-import { useAlertStore } from "@/stores";
-
-const alertStore = useAlertStore();
 export default {
   name: "LogIn",
   data() {

@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { useUsersStore, useAlertStore } from "@/stores";
+const alertStore = useAlertStore();
+</script>
 <template>
   <v-container>
     <v-img src="/E07/logo.png" style="width: 15%" class="mx-auto"></v-img>
@@ -61,8 +65,6 @@
 </template>
 
 <script lang="ts">
-import { useUsersStore, useAlertStore } from "@/stores";
-const alertStore = useAlertStore();
 export default {
   name: "SignUp",
   data() {

@@ -18,7 +18,6 @@ export default defineConfig({
       reporter: ["lcov", "text"],
       reportsDirectory: "./coverage",
     },
-    setupFiles: "/backend/vuetify.config.ts",
     deps: {
       inline: ["vuetify"],
     },
