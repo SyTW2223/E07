@@ -1,15 +1,18 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HelloWorldView from "../views/HelloWorldView.vue";
+import {
+  createRouter,
+  createWebHistory,
+  createWebHashHistory,
+} from "vue-router";
 import { useAuthStore } from "../stores/auth.store";
-
+import { useAlertStore } from "@/stores";
 export const router = createRouter({
-  history: createWebHistory("/E07/"),
+  history: createWebHashHistory("/E07/"),
   linkActiveClass: "active",
   routes: [
     {
       path: "/",
       name: "home",
-      component: HelloWorldView,
+      component: () => import("../views/HomePageView.vue"),
     },
     {
       path: "/log-in",
@@ -21,6 +24,16 @@ export const router = createRouter({
       name: "sign-up",
       component: () => import("../views/SignUpView.vue"),
     },
+    {
+      path: "/profile/:userID",
+      name: "profile",
+      component: () => import("../views/ProfileView.vue"),
+    },
+    {
+      path: "/:userName",
+      name: "user",
+      component: () => import("../views/UserPageView.vue"),
+    },
   ],
 });
 
@@ -29,10 +42,10 @@ router.beforeEach(async (to) => {
   const publicPages = ["/log-in", "/sign-up"];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
-
+  const alertStore = useAlertStore();
   if (authRequired && !auth.api_token) {
     auth.returnUrl = to.fullPath;
-    alert("You need to be signed up");
+    alertStore.successSnackbar("You need to be logged in");
     return "/log-in";
   }
 });

@@ -1,11 +1,13 @@
 import * as express from "express";
 import User from "../models/user";
 import Publication from "../models/publication";
+import { jwtAuthMiddleware } from "../middleware/jwt-auth";
+import { resolve } from "path";
 
 export const getRouter = express.Router();
 
 /*
- * Busca un usuario por su nombre de usuario
+ * Busca un usuario por su nombre de usuario y devuelve sus publicaciones
  */
 getRouter.get("/user", (req, res) => {
   const filter = req.query.username
@@ -25,7 +27,11 @@ getRouter.get("/user", (req, res) => {
           err: "The user cannot be found",
         });
       } else {
-        res.status(200).send(user);
+        const selectedUserData = {
+          publications: user.publications,
+          pfp_url: user.pfp_url,
+        };
+        res.status(200).send(selectedUserData);
       }
     })
     .catch((err) => {
@@ -36,7 +42,14 @@ getRouter.get("/user", (req, res) => {
 /*
  * Devuelve un usuario a partir de su id
  */
-getRouter.get("/user/:id", (req, res) => {
+getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
+  const userID: string = res.locals.payload.id;
+  if (userID !== req.params.id) {
+    res.status(403).send({
+      err: "Unauthorized",
+    });
+    return;
+  }
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
@@ -53,40 +66,82 @@ getRouter.get("/user/:id", (req, res) => {
 });
 
 /*
- * Busca una publicación por su id
+ * Todas las publicaciones
  */
-// getRouter.get("/publication", (req, res) => {
-//   const filter = req.query.id ? { id: req.query.id.toString() } : {};
-
-//   if (!filter.id) {
-//     res.status(404).send("The id is required");
-//     return;
-//   }
-//   Publication.findOne(filter)
-//     .then((publication) => {
-//       if (!publication) {
-//         res.status(404).send("The publication cannot be found");
-//       } else {
-//         res.status(201).send(publication);
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(400).send(err);
-//     });
-// });
+getRouter.get("/publication", jwtAuthMiddleware, (req, res) => {
+  const userID: string = res.locals.payload.id;
+  Publication.find({})
+    .then(async (dbPublications) => {
+      if (!dbPublications) {
+        res.status(404).send({
+          err: "The publications can not be found",
+        });
+      } else {
+        const publications = await Promise.all(
+          dbPublications.map(async (publication) => {
+            const requesterLiked = Boolean(
+              publication.fav_users.filter(
+                (user) => user._id.toString() == userID
+              ).length
+            );
+            return await User.findOne({
+              username: publication.owner_username,
+            }).then((dbUser) => {
+              return Promise.resolve({
+                _id: publication.id,
+                content: publication.content,
+                owner_username: publication.owner_username,
+                date: publication.date,
+                fav_count: publication.fav_users.length,
+                comments: publication.comments,
+                liked: requesterLiked,
+                pfp_url: dbUser.pfp_url,
+              });
+            });
+          })
+        );
+        res.status(200).send(publications);
+      }
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
 
 /*
  * Devuelve una publicación a partir de su id
  */
-getRouter.get("/publication/:id", (req, res) => {
+getRouter.get("/publication/:id", jwtAuthMiddleware, (req, res) => {
+  const userID: string = res.locals.payload.id;
   Publication.findById(req.params.id)
-    .then((publication) => {
-      if (!publication) {
+    .then((dbPublication) => {
+      if (!dbPublication) {
         res.status(404).send({
-          err: "The user cannot be found",
+          err: "The publication cannot be found",
         });
       } else {
-        res.status(200).send(publication);
+        const requesterLiked = Boolean(
+          dbPublication.fav_users.filter(
+            (user) => user._id.toString() == userID
+          ).length
+        );
+        User.findOne({ username: dbPublication.owner_username })
+          .then((dbUser) => {
+            const publication = {
+              _id: dbPublication.id,
+              content: dbPublication.content,
+              owner_username: dbPublication.owner_username,
+              date: dbPublication.date,
+              fav_count: dbPublication.fav_users.length,
+              comments: dbPublication.comments,
+              liked: requesterLiked,
+              pfp_url: dbUser.pfp_url,
+            };
+            res.status(200).send(publication);
+          })
+          .catch((err) => {
+            res.status(400).send(err);
+          });
       }
     })
     .catch((err) => {

@@ -1,10 +1,16 @@
+<script setup lang="ts">
+import { useUsersStore, useAuthStore,useAlertStore } from "@/stores";
+const authStore = useAuthStore();
+const alertStore = useAlertStore();
+</script>
+
 <template>
   <v-container>
     <v-img src="/E07/logo.png" style="width: 15%" class="mx-auto"></v-img>
   </v-container>
 
   <div>
-    <v-form v-model="valid">
+    <v-form ref="form" v-model="form">
       <v-container
         style="width: 50%; justify-content: center; align-items: center"
       >
@@ -17,7 +23,6 @@
           data-email
           data-test="email-text-box"
           prepend-icon="mdi-email"
-          
           style="width: 100%; justify-content: center; align-items: center"
         ></v-text-field>
         <v-text-field
@@ -42,6 +47,7 @@
             @click="logIn"
             elevation="2"
             class="mx-auto"
+            :disabled="!form"
             style="display: block; background-color: #0ebbb5; color: white"
             rounded
             >Log In</v-btn
@@ -64,12 +70,11 @@
 </template>
 
 <script lang="ts">
-import { useAuthStore } from "@/stores";
 export default {
   name: "LogIn",
   data() {
     return {
-      valid: false,
+      form: false,
       email: "",
       password: "",
       rules: {
@@ -90,27 +95,20 @@ export default {
   },
   methods: {
     async logIn() {
-      try {
-        const authStore = useAuthStore();
-        const email: string = this.email;
-        const password: string = this.password;
-        return await authStore
-          .login(email, password)
-          .then(() => {
-            this.valid == true;
-            return Promise.resolve(this.valid);
-          })
-          .catch((error) => {
-            console.log(error);
-            alert(error);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+      const authStore = useAuthStore();
+      const email: string = this.email;
+      const password: string = this.password;
+      return await authStore
+        .login(email, password)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+          alertStore.error(error);
+        });
     },
     goToSignUpPage() {
       this.$router.push("/sign-up");
-    }
+    },
   },
 };
 </script>
