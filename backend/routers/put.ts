@@ -1,5 +1,6 @@
 import * as express from "express";
 import Publication from "../models/publication";
+import User from "../models/user";
 
 import * as jwt from "jsonwebtoken";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
@@ -57,4 +58,25 @@ putRouter.put("/publication/:id", jwtAuthMiddleware, (req, res) => {
   // //     err: "Bad request \n" + error._message,
   // //   });
   // });
+});
+
+putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
+  const id = req.params.id;
+  const profile_changes = req.body.changes;
+  if (profile_changes.pfp_url) {
+    const update = {
+      pfp_url: profile_changes.pfp_url,
+    };
+    User.findByIdAndUpdate(id, update)
+      .then(() => {
+        res.status(200).send({
+          message: "PfP updated",
+        });
+      })
+      .catch((error) => {
+        res.status(400).send({
+          err: "Bad request \n" + error._message,
+        });
+      });
+  }
 });

@@ -33,9 +33,9 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
     // initialize state from local storage to enable user to stay logged in
-    api_token: getCookie("api_token") || null, //JSON.parse(localStorage.getItem("api_token") || "null"),
+    api_token: getCookie("api_token"), //JSON.parse(localStorage.getItem("api_token") || "null"),
     // store the url of the page user tried to access before being redirected to login page
-    user_id: getCookie("user_id") || null,
+    user_id: getCookie("user_id"),
     returnUrl: "/",
   }),
   actions: {
@@ -73,9 +73,11 @@ export const useAuthStore = defineStore({
       // update pinia state
     },
     logout() {
-      this.api_token = null;
+      this.api_token = "";
       document.cookie =
         "api_token" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      document.cookie =
+        "user_id" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
       router.push("/log-in");
     },
   },

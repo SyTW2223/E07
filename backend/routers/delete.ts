@@ -36,7 +36,6 @@ deleteRouter.delete("/publication/:id", jwtAuthMiddleware, (req, res) => {
                 //     return;
                 //   }
                 // });
-                console.log(filtered_publications);
                 User.updateOne(
                   { username: user.username },
                   { publications: filtered_publications }

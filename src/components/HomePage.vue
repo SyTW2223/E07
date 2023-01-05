@@ -52,8 +52,9 @@ interface publication {
     text: string;
   };
   date: string;
-  fav_count: number;
-  liked: boolean;
+  fav_count?: number;
+  liked?: boolean;
+  pfp_url?: string;
 }
 
 export default {
@@ -66,20 +67,10 @@ export default {
       textAreaValue: "",
       errorAlertText: "undefined",
       errorAlertEnabled: false,
-      user: storeToRefs(userStore).user,
+      user: storeToRefs(userStore).logged_user,
       publications: new Array(),
     };
   },
-  //[
-  //   {
-  //     id: 1,
-  //     username: "Sergio",
-  //     text: "🎲Hoy he estado jugando con la lotería de Navidad.",
-  //     date: "2022-01-02",
-  //     numLikes: 50,
-  //     Url: "/E07/logo_without_letters.png",
-  //   },
-  // ],
   methods: {
     async removeTweetComponent(tweetID: string) {
       console.log("removing form element", tweetID);
@@ -105,6 +96,7 @@ export default {
             date: entry.date,
             fav_count: entry.fav_count,
             liked: entry.liked,
+            pfp_url: entry.pfp_url,
           };
           this.addTweetFirst(aux);
           this.textAreaValue = "";
@@ -122,15 +114,18 @@ export default {
         date: tweet.date,
         fav_count: tweet.fav_count,
         liked: tweet.liked,
-        Url: "/E07/logo_without_letters.png",
+        pfp_url: tweet.pfp_url,
       });
     },
   },
   async beforeMount() {
+    await userStore.getById(authStore.user_id);
+
     await fetchWrapper
       .get(`${baseUrl}/publication/`, null)
       .then((publications) => {
         publications.forEach((entry: any) => {
+          if (!entry.pfp_url) entry.pfp_url = "/E07/logo_without_letters.png";
           let aux: publication = {
             id: entry._id,
             username: entry.owner_username,
@@ -140,6 +135,7 @@ export default {
             date: entry.date,
             fav_count: entry.fav_count,
             liked: entry.liked,
+            pfp_url: entry.pfp_url,
           };
           this.addTweetFirst(aux);
         });

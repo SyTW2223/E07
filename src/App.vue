@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import { useAuthStore, useAlertStore } from "@/stores";
+import { useAuthStore, useAlertStore, useUsersStore } from "@/stores";
 import CustomAlertVue from "./components/CustomAlert.vue";
 import SnackbarAlert from "./components/SnackbarAlert.vue";
 </script>
@@ -18,7 +18,9 @@ import SnackbarAlert from "./components/SnackbarAlert.vue";
         </v-tab>
         <v-tab v-if="!isLogged()" to="/log-in"> Log in </v-tab>
         <v-tab v-if="!isLogged()" to="/sign-up"> Sign Up </v-tab>
-        <v-tab v-if="isLogged()" to="/account">Account</v-tab>
+        <v-tab v-if="isLogged()" :to="`/profile/${useAuthStore().user_id}`"
+          >Profile</v-tab
+        >
         <v-tab v-if="isLogged()" @click="useAuthStore().logout()">
           Log Out
         </v-tab>

@@ -64,6 +64,7 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
                   fav_count: 0,
                   comments: [],
                   liked: false,
+                  pfp_url: user.pfp_url,
                 };
                 res.status(200).send(publication);
               })

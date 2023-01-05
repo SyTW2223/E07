@@ -23,7 +23,7 @@ export const useAlertStore = defineStore({
     snackbarAlert: {
       msg: "",
       enabled: false,
-      timeout: 2000,
+      timeout: 2000, // BUGGED, DOESN'T RESET TIMER ON CHANGE
     } as SnackBarInterface,
   }),
   actions: {
@@ -44,19 +44,19 @@ export const useAlertStore = defineStore({
       this.customAlert = { msg: empty, type: "success", enabled: false };
     },
     successSnackbar(message: any) {
+      this.clearSnackbar();
       this.snackbarAlert = {
         msg: message,
         enabled: true,
-        timeout: this.snackbarAlert.timeout,
+        timeout: 2000,
       };
-      console.log(this.snackbarAlert)
     },
     clearSnackbar() {
       const empty = "";
       this.snackbarAlert = {
         msg: empty,
         enabled: false,
-        timeout: this.snackbarAlert.timeout,
+        timeout: 0,
       };
     },
   },

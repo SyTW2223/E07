@@ -1,10 +1,22 @@
+<script setup lang="ts">
+import { RouterLink } from "vue-router";
+</script>
 <template>
   <v-card style="width: 100%; margin: 0 auto; border-radius: 2px">
     <v-card-title>
       <v-avatar size="40px">
-        <v-img v-bind:src="tweet.Url"></v-img>
+        <router-link :to="`/${tweet.username}`">
+          <!-- <v-img v-bind:src="tweet.Url"></v-img>  BUGGED, IMG DOESN'T LOAD-->
+          <img
+            style="max-width: 100%; max-height: 100%"
+            :src="tweet.pfp_url"
+            alt=""
+          />
+        </router-link>
       </v-avatar>
-      {{ tweet.username }}
+      <router-link style="margin-left:5px" class="username-link" :to="`/${tweet.username}`">
+        {{ tweet.username }}
+      </router-link>
       <span class="date">{{ tweet.date.slice(0, 10) }}</span>
     </v-card-title>
     <v-card-text>{{ tweet.text }}</v-card-text>
@@ -20,7 +32,11 @@
         <v-icon>mdi-comment</v-icon>
       </v-btn>
 
-      <v-btn @click="deleteTweet(tweet.id)" class="delete-button">
+      <v-btn
+        v-if="tweet.username == usersStore.logged_user.username"
+        @click="deleteTweet(tweet.id)"
+        class="delete-button"
+      >
         <v-icon style="margin-left: auto">mdi-delete</v-icon>
       </v-btn>
     </v-card-actions>
@@ -37,6 +53,15 @@
   color: red;
 }
 
+.username-link {
+  color: black;
+}
+
+.username-link:hover {
+  background-color: transparent;
+  text-decoration: underline;
+}
+
 .num {
   font-size: 90%;
 }
@@ -45,10 +70,11 @@
 <script lang="ts">
 import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
-import { useAlertStore } from "@/stores";
+import { useAlertStore, useUsersStore } from "@/stores";
 
 const baseUrl = `${expressJS_url}`;
 const alertStore = useAlertStore();
+const usersStore = useUsersStore();
 export default {
   props: ["tweet"],
   emits: ["remove"],
@@ -65,18 +91,22 @@ export default {
   methods: {
     async likeTweet(tweetId: string) {
       this.liked = !this.liked;
-      try {
-        await fetchWrapper
-          .put(`${baseUrl}/publication/${tweetId}`, { liked: this.liked })
-          .then(() => {
-            //hacer que se borre de la pantalla
-          });
-      } catch (err) {
-        console.log(err);
-      }
-      //dentro de un .then() no consegui que funcionara :/
-      this.fav_count += this.liked ? 1 : -1;
-      console.log(this.fav_count);
+      await fetchWrapper
+        .put(`${baseUrl}/publication/${tweetId}`, { liked: this.liked })
+        .then(() => {
+          if (this.liked) {
+            alertStore.successSnackbar("Tweet liked");
+            this.fav_count += 1;
+          } else {
+            alertStore.successSnackbar("Like removed from tweet");
+            this.fav_count += -1;
+          }
+          console.log(this.fav_count);
+        })
+        .catch((response) => {
+          alertStore.error(response.err);
+          console.log(response.err);
+        });
     },
 
     commentOnTweet(tweetId: any) {

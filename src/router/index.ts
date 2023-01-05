@@ -12,7 +12,7 @@ export const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => import("../views/HomePage.vue"),
+      component: () => import("../views/HomePageView.vue"),
     },
     {
       path: "/log-in",
@@ -25,9 +25,14 @@ export const router = createRouter({
       component: () => import("../views/SignUpView.vue"),
     },
     {
-      path: "/account",
-      name: "account",
+      path: "/profile/:userID",
+      name: "profile",
       component: () => import("../views/ProfileView.vue"),
+    },
+    {
+      path: "/:userName",
+      name: "user",
+      component: () => import("../views/UserPageView.vue"),
     },
   ],
 });

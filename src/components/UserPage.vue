@@ -1,34 +1,19 @@
 <script setup lang="ts">
-import EditProfilePopUp from "./EditProfilePopUp.vue";
+// eslint-disable-next-line no-redeclare
+const userStore = useUsersStore();
 </script>
 
 <template>
   <v-container>
-    <EditProfilePopUp
-      :show="showEditProfilePopUp"
-      @closeEditPopUp="showEditProfilePopUp = false"
-    />
     <v-row>
       <v-col align-self="center">
-        <v-img :src="userStore.logged_user.pfp_url" aspect-ratio="6" />
+        <v-img :src="userStore.searched_user.pfp_url" aspect-ratio="6" />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col align-self="center">
-        <v-card-title style="text-align: center; font-size: 33px"
-          >{{ user.username }}
-          <v-btn
-            @click="showEditProfilePopUp = !showEditProfilePopUp"
-            prepend-icon="mdi-pencil"
-            color="grey"
-            size="small"
-          >
-            Edit
-          </v-btn>
-        </v-card-title>
-      </v-col>
-    </v-row>
-    <!-- <v-btn
+    <v-card-title style="text-align: center; font-size: 33px"
+      >{{ user.username }}
+    </v-card-title>
+    <v-btn
       @click="followUser"
       elevation="2"
       class="mx-auto text-xs-center"
@@ -44,7 +29,7 @@ import EditProfilePopUp from "./EditProfilePopUp.vue";
         <v-icon>mdi-account-circle</v-icon>
         Follow
       </template>
-    </v-btn> -->
+    </v-btn>
     <v-container>
       <TweetVuetify
         v-for="tweet in publications"
@@ -80,6 +65,7 @@ interface publication {
   pfp_url?: string;
 }
 
+
 export default {
   name: "SignUp",
   components: {
@@ -88,10 +74,9 @@ export default {
   data() {
     return {
       textAreaValue: "",
-      user: storeToRefs(userStore).logged_user,
-      showEditProfilePopUp: false,
+      user: storeToRefs(userStore).searched_user,
       publications: new Array(),
-      // followClicked: false,
+      followClicked: false,
     };
   },
 
@@ -125,13 +110,17 @@ export default {
         text: tweet.content.text,
         date: tweet.date,
         fav_count: tweet.fav_count,
-        liked: tweet.liked,
         pfp_url: tweet.pfp_url,
       });
     },
+
+    async followUser() {
+      this.followClicked = !this.followClicked;
+    },
   },
   async beforeMount() {
-    await userStore.getById(this.$route.params.userID as string);
+    await userStore.getByUserName(this.$route.params.userName as string);
+    if (!userStore.searched_user.pfp_url) userStore.searched_user.pfp_url = "/E07/logo_without_letters.png";
     const tweets = userStore.tweets;
     if (tweets !== null) {
       const copy: String[] = tweets;
@@ -151,7 +140,6 @@ export default {
               },
               date: response.date,
               fav_count: response.fav_count,
-              liked: response.liked,
               pfp_url: response.pfp_url,
             };
             this.addTweetFirst(aux);

@@ -11,13 +11,13 @@ const { snackbarAlert } = storeToRefs(alertStore);
   <v-snackbar
     rounded="pill"
     v-model="snackbarAlert.enabled"
-    :timeout="snackbarAlert.timeout"
+    v-bind:timeout="snackbarAlert.timeout"
   >
     {{ snackbarAlert.msg }}
 
     <template v-slot:actions>
       <v-btn
-        color="green"
+        color="cyan"
         variant="text"
         @click="snackbarAlert.enabled = !snackbarAlert.enabled"
       >

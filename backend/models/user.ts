@@ -4,7 +4,7 @@ import { PublicationInterface } from "./publication";
 export interface UserInterface extends Document {
   date: Date;
   username: string;
-  avatar_path: string;
+  pfp_url: string;
   email: string;
   password: string;
   lastLogin: Date;
@@ -35,7 +35,7 @@ const UserSchema = new Schema<UserInterface>({
     trim: true,
   },
 
-  avatar_path: {
+  pfp_url: {
     type: String,
     required: false,
     trim: true,
