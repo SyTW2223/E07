@@ -12,8 +12,8 @@ export interface PublicationInterface extends Document {
   fav_users: UserInterface[];
   comments: [
     {
-      id: string;
-      content: string;
+      user: UserInterface;
+      text: string;
     }
   ];
 }
@@ -48,15 +48,11 @@ const publicationSchema = new Schema<PublicationInterface>({
 
   comments: [
     {
-      id: {
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      text: {
         type: String,
-        required: false,
-        trim: true,
-      },
-      content: {
-        type: String,
-        required: false,
-        trim: true,
+        required: true,
+        trim: false,
       },
     },
   ],

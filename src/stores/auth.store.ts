@@ -73,6 +73,8 @@ export const useAuthStore = defineStore({
       // update pinia state
     },
     logout() {
+      const alertStore = useAlertStore();
+      alertStore.error("Session timed out, log-in again");
       this.api_token = "";
       document.cookie =
         "api_token" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";

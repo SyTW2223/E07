@@ -14,14 +14,15 @@ const userStore = useUsersStore();
       >{{ user.username }}
     </v-card-title>
     <v-btn
-      @click="followUser"
+      v-if="!is_logged_user"
+      @click.prevent="followUser(user.username as string)"
       elevation="2"
       class="mx-auto text-xs-center"
       style="display: flex; width: 150px; height: 40px; color: white"
       rounded
-      :style="{ 'background-color': followClicked ? 'grey' : '#1f548b' }"
+      :style="{ 'background-color': followed ? 'grey' : '#1f548b' }"
     >
-      <template v-if="followClicked">
+      <template v-if="followed">
         <v-icon>mdi-account-check</v-icon>
         Followed
       </template>
@@ -61,10 +62,10 @@ interface publication {
   };
   date: string;
   fav_count?: number;
+  comments_count?: number;
   liked?: boolean;
   pfp_url?: string;
 }
-
 
 export default {
   name: "SignUp",
@@ -76,10 +77,10 @@ export default {
       textAreaValue: "",
       user: storeToRefs(userStore).searched_user,
       publications: new Array(),
-      followClicked: false,
+      followed: false,
+      is_logged_user: false,
     };
   },
-
   // computed: {
   //   sortedPublications() {
   //     return this.publications.sort((a, b) => {
@@ -109,18 +110,45 @@ export default {
         username: this.user.username,
         text: tweet.content.text,
         date: tweet.date,
+        liked: tweet.liked,
+        comments_count: tweet.comments_count,
         fav_count: tweet.fav_count,
         pfp_url: tweet.pfp_url,
       });
     },
 
-    async followUser() {
-      this.followClicked = !this.followClicked;
+    async followUser(userName: string) {
+      this.followed = !this.followed;
+      await fetchWrapper
+        .put(`${baseUrl}/user/${authStore.user_id}`, {
+          changes: {
+            follows: {
+              username: userName,
+              follow_status: this.followed,
+            },
+          },
+        })
+        .then((response) => {
+          if (response.message) {
+            alertStore.successSnackbar(response.message);
+          }
+        })
+        .catch((response) => {
+          alertStore.error(response.err);
+          console.log(response.err);
+        });
     },
   },
   async beforeMount() {
+    if (this.$route.params.userName == userStore.logged_user.username) {
+      this.is_logged_user = true;
+    }
+
     await userStore.getByUserName(this.$route.params.userName as string);
-    if (!userStore.searched_user.pfp_url) userStore.searched_user.pfp_url = "/E07/logo_without_letters.png";
+    if (userStore.searched_user.followed)
+      this.followed = userStore.searched_user.followed;
+    if (!userStore.searched_user.pfp_url)
+      userStore.searched_user.pfp_url = "/E07/logo_without_letters.png";
     const tweets = userStore.tweets;
     if (tweets !== null) {
       const copy: String[] = tweets;
@@ -131,7 +159,8 @@ export default {
             if (response.message) {
               alertStore.successSnackbar(response.message);
             }
-            if (!response.pfp_url) response.pfp_url = "/E07/logo_without_letters.png";
+            if (!response.pfp_url)
+              response.pfp_url = "/E07/logo_without_letters.png";
             let aux: publication = {
               id: response._id,
               username: response.owner_username,
@@ -139,6 +168,8 @@ export default {
                 text: response.content.text,
               },
               date: response.date,
+              liked: response.liked,
+              comments_count: response.comments_count,
               fav_count: response.fav_count,
               pfp_url: response.pfp_url,
             };

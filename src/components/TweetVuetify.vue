@@ -2,7 +2,7 @@
 import { RouterLink } from "vue-router";
 </script>
 <template>
-  <v-card style="width: 100%; margin: 0 auto; border-radius: 2px">
+  <v-card style="width: 100%; margin: 0 auto; border-radius: 2px" :to="`/tweet/${tweet.id}`">
     <v-card-title>
       <v-avatar size="40px">
         <router-link :to="`/${tweet.username}`">
@@ -14,7 +14,11 @@ import { RouterLink } from "vue-router";
           />
         </router-link>
       </v-avatar>
-      <router-link style="margin-left:5px" class="username-link" :to="`/${tweet.username}`">
+      <router-link
+        style="margin-left: 5px"
+        class="username-link"
+        :to="`/${tweet.username}`"
+      >
         {{ tweet.username }}
       </router-link>
       <span class="date">{{ tweet.date.slice(0, 10) }}</span>
@@ -22,19 +26,19 @@ import { RouterLink } from "vue-router";
     <v-card-text>{{ tweet.text }}</v-card-text>
     <v-card-actions>
       <v-btn
-        @click="likeTweet(tweet.id)"
+        @click.prevent="likeTweet(tweet.id)"
         :style="{ color: liked ? 'red' : 'grey' }"
       >
         <v-icon>mdi-heart</v-icon>
       </v-btn>
       <span class="num">{{ fav_count }}</span>
-      <v-btn @click="commentOnTweet(tweet.id)" color="blue">
+      <v-btn @click.prevent="commentOnTweet(tweet.id)" color="blue">
         <v-icon>mdi-comment</v-icon>
       </v-btn>
-
+      <span class="num">{{ comments_count }}</span>
       <v-btn
         v-if="tweet.username == usersStore.logged_user.username"
-        @click="deleteTweet(tweet.id)"
+        @click.prevent="deleteTweet(tweet.id)"
         class="delete-button"
       >
         <v-icon style="margin-left: auto">mdi-delete</v-icon>
@@ -71,6 +75,7 @@ import { RouterLink } from "vue-router";
 import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
 import { useAlertStore, useUsersStore } from "@/stores";
+import { tSMethodSignature } from "@babel/types";
 
 const baseUrl = `${expressJS_url}`;
 const alertStore = useAlertStore();
@@ -81,10 +86,12 @@ export default {
   data: () => ({
     liked: false,
     fav_count: 0,
+    comments_count: 0,
   }),
 
   created() {
     this.fav_count = this.tweet.fav_count;
+    this.comments_count = this.tweet.comments_count;
     this.liked = this.tweet.liked;
   },
 
@@ -92,7 +99,7 @@ export default {
     async likeTweet(tweetId: string) {
       this.liked = !this.liked;
       await fetchWrapper
-        .put(`${baseUrl}/publication/${tweetId}`, { liked: this.liked })
+        .put(`${baseUrl}/publication/like/${tweetId}`, { liked: this.liked })
         .then(() => {
           if (this.liked) {
             alertStore.successSnackbar("Tweet liked");
@@ -110,7 +117,10 @@ export default {
     },
 
     commentOnTweet(tweetId: any) {
-      alertStore.successSnackbar("HOLA");
+      this.$router.push({
+        name: "tweet",
+        params: { tweetID: this.tweet.id },
+      });
     },
 
     async deleteTweet(tweetId: any) {
@@ -123,6 +133,9 @@ export default {
           alertStore.error(response.err);
           console.log(response.err);
         });
+    },
+    async beforeCreate() {
+      console.log(this.tweet.date);
     },
   },
 };
