@@ -6,6 +6,7 @@ export const jwtAuthMiddleware = function authenticateToken(req, res, next) {
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.status(401).send({ err: "Missing token" });
   jwt.verify(token, jwtSecret, (err: any, payload: any) => {
+    console.log(token)
     if (err) {
       return res.status(403).send({ err: "Invalid token" });
     }

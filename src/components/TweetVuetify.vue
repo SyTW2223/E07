@@ -14,7 +14,11 @@ import { RouterLink } from "vue-router";
           />
         </router-link>
       </v-avatar>
-      <router-link style="margin-left:5px" class="username-link" :to="`/${tweet.username}`">
+      <router-link
+        style="margin-left: 5px"
+        class="username-link"
+        :to="`/${tweet.username}`"
+      >
         {{ tweet.username }}
       </router-link>
       <span class="date">{{ tweet.date.slice(0, 10) }}</span>
@@ -71,6 +75,7 @@ import { RouterLink } from "vue-router";
 import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
 import { useAlertStore, useUsersStore } from "@/stores";
+import { tSMethodSignature } from "@babel/types";
 
 const baseUrl = `${expressJS_url}`;
 const alertStore = useAlertStore();
@@ -92,7 +97,7 @@ export default {
     async likeTweet(tweetId: string) {
       this.liked = !this.liked;
       await fetchWrapper
-        .put(`${baseUrl}/publication/${tweetId}`, { liked: this.liked })
+        .put(`${baseUrl}/publication/like/${tweetId}`, { liked: this.liked })
         .then(() => {
           if (this.liked) {
             alertStore.successSnackbar("Tweet liked");
@@ -111,6 +116,10 @@ export default {
 
     commentOnTweet(tweetId: any) {
       alertStore.successSnackbar("HOLA");
+      this.$router.push({
+        name: "tweet",
+        params: { tweetID: this.tweet.id },
+      });
     },
 
     async deleteTweet(tweetId: any) {
@@ -123,6 +132,9 @@ export default {
           alertStore.error(response.err);
           console.log(response.err);
         });
+    },
+    async beforeCreate() {
+      console.log(this.tweet.date);
     },
   },
 };

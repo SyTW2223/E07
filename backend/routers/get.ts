@@ -44,12 +44,6 @@ getRouter.get("/user", (req, res) => {
  */
 getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
-  if (userID !== req.params.id) {
-    res.status(403).send({
-      err: "Unauthorized",
-    });
-    return;
-  }
   User.findById(req.params.id)
     .then((user) => {
       if (!user) {
@@ -57,6 +51,12 @@ getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
           err: "The user cannot be found",
         });
       } else {
+        if (userID !== req.params.id) {
+          res.status(403).send({
+            err: "Unauthorized",
+          });
+          return;
+        }
         res.status(200).send(user);
       }
     })
@@ -114,7 +114,15 @@ getRouter.get("/publication", jwtAuthMiddleware, (req, res) => {
 getRouter.get("/publication/:id", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
   Publication.findById(req.params.id)
-    .then((dbPublication) => {
+    .populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    })
+    .exec(function (err, dbPublication) {
+      if (err) throw err;
       if (!dbPublication) {
         res.status(404).send({
           err: "The publication cannot be found",
@@ -127,13 +135,24 @@ getRouter.get("/publication/:id", jwtAuthMiddleware, (req, res) => {
         );
         User.findOne({ username: dbPublication.owner_username })
           .then((dbUser) => {
+            const comments = dbPublication.comments.map((comment: any) => {
+              let pfp_url = dbUser.pfp_url;
+              if (!dbUser.pfp_url) pfp_url = "/E07/logo_without_letters.png";
+              return {
+                user: {
+                  username: dbUser.username,
+                  pfp_url: pfp_url,
+                },
+                text: comment.text,
+              };
+            });
             const publication = {
               _id: dbPublication.id,
               content: dbPublication.content,
               owner_username: dbPublication.owner_username,
               date: dbPublication.date,
               fav_count: dbPublication.fav_users.length,
-              comments: dbPublication.comments,
+              comments: comments,
               liked: requesterLiked,
               pfp_url: dbUser.pfp_url,
             };
@@ -143,8 +162,5 @@ getRouter.get("/publication/:id", jwtAuthMiddleware, (req, res) => {
             res.status(400).send(err);
           });
       }
-    })
-    .catch((err) => {
-      res.status(400).send(err);
     });
 });

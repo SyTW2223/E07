@@ -34,6 +34,11 @@ export const router = createRouter({
       name: "user",
       component: () => import("../views/UserPageView.vue"),
     },
+    {
+      path: "/tweet/:tweetID",
+      name: "tweet",
+      component: () => import("../views/TweetPageView.vue"),
+    },
   ],
 });
 

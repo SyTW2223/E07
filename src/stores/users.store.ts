@@ -12,6 +12,24 @@ interface User {
   error: string | null;
 }
 
+interface publication {
+  id: string;
+  username: string;
+  content: {
+    text: string;
+  };
+  date: string;
+  fav_count?: number;
+  liked?: boolean;
+  pfp_url?: string;
+  comments?: [
+    {
+      id: string;
+      text: string;
+    }
+  ];
+}
+
 interface UserProfileChanges {
   username?: string;
   pfp_url?: string;
@@ -23,6 +41,7 @@ export const useUsersStore = defineStore({
     logged_user: {} as User,
     tweets: null,
     searched_user: {} as User,
+    searched_tweet: {} as publication,
     user_profile_changes: {} as UserProfileChanges,
   }),
   actions: {
@@ -88,6 +107,32 @@ export const useUsersStore = defineStore({
           //console.log(response.err);
           alertStore.error(response.err);
           this.searched_user = { loading: false, error: response.err };
+        });
+    },
+    async getTweetById(tweetID: string) {
+      const alertStore = useAlertStore();
+      await fetchWrapper
+        .get(`${baseUrl}/publication/${tweetID}`, null)
+        .then((entry) => {
+          if (!entry.pfp_url) entry.pfp_url = "/E07/logo_without_letters.png";
+          const aux: publication = {
+            id: entry._id,
+            username: entry.owner_username,
+            content: {
+              text: entry.content.text,
+            },
+            date: entry.date,
+            fav_count: entry.fav_count,
+            liked: entry.liked,
+            pfp_url: entry.pfp_url,
+            comments: entry.comments,
+          };
+          this.searched_tweet = aux;
+          console.log(aux);
+        })
+        .catch((response) => {
+          //console.log(response.err);
+          alertStore.error(response.err);
         });
     },
   },
