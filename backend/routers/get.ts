@@ -90,11 +90,19 @@ getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Todas las publicaciones
+ * Todas las publicaciones  o las que cumplan el termino de busqueda
  */
-getRouter.get("/publication", jwtAuthMiddleware, (req, res) => {
+getRouter.get("/publications", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
-  Publication.find({})
+  const filter = req.query.searchTerm
+    ? {
+        "content.text": new RegExp(
+          "\\b" + req.query.searchTerm.toString() + "\\b",
+          "i"
+        ),
+      }
+    : {};
+  Publication.find(filter)
     .then(async (dbPublications) => {
       if (!dbPublications) {
         res.status(404).send({

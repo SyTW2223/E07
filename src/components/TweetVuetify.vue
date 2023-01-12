@@ -2,7 +2,10 @@
 import { RouterLink } from "vue-router";
 </script>
 <template>
-  <v-card style="width: 100%; margin: 0 auto; border-radius: 2px" :to="`/tweet/${tweet.id}`">
+  <v-card
+    style="width: 100%; margin: 0 auto; border-radius: 2px"
+    :to="`/tweet/${tweet.id}`"
+  >
     <v-card-title>
       <v-avatar size="40px">
         <router-link :to="`/${tweet.username}`">

@@ -2,7 +2,10 @@
 import { RouterLink } from "vue-router";
 </script>
 <template>
-  <v-card style="width: 100%; margin: 0 auto; border-radius: 2px" :to="`/${user.username}`">
+  <v-card
+    style="width: 100%; margin: 0 auto; border-radius: 2px"
+    :to="`/${user.username}`"
+  >
     <v-card-title>
       <v-avatar size="40px">
         <router-link :to="`/${user.username}`">
@@ -81,10 +84,8 @@ const usersStore = useUsersStore();
 export default {
   props: ["user"],
   emits: ["remove"],
-  data: () => ({
-  }),
+  data: () => ({}),
 
-  methods: {
-  },
+  methods: {},
 };
 </script>

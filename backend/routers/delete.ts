@@ -12,7 +12,8 @@ deleteRouter.delete("/publication/:id", jwtAuthMiddleware, (req, res) => {
   const userID = res.locals.payload.id;
   User.findById(userID).then((user) => {
     if (
-      user.publications.filter((obj) => obj._id.toString() == req.params.id).length
+      user.publications.filter((obj) => obj._id.toString() == req.params.id)
+        .length
     ) {
       Publication.findByIdAndDelete(req.params.id)
         .then((publication) => {

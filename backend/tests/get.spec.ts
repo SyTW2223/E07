@@ -2,7 +2,6 @@ import { describe, it, expect, beforeAll } from "vitest";
 import request from "supertest";
 const expressAPI = request("http://localhost:3000");
 
-
 async function getJWT() {
   const login = await expressAPI.post("/login").send({
     email: "test@test.test",
@@ -36,7 +35,8 @@ describe("GET (/users) tests", () => {
   });
 
   it("Trying to get a user that exists should respond with the user and 200", async () => {
-    const response = await expressAPI.get("/user?username=test")
+    const response = await expressAPI
+      .get("/user?username=test")
       .set("Authorization", `Bearer ${jwt}`)
       .send();
     expect(response.status).toBe(200);

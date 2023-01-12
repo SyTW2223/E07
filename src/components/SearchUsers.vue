@@ -116,7 +116,10 @@ export default {
     },
   },
   async beforeMount() {
-    this.delayedSearchFunc = debounce(this.getUserBySearchTerm, this.searchDelay);
+    this.delayedSearchFunc = debounce(
+      this.getUserBySearchTerm,
+      this.searchDelay
+    );
     await fetchWrapper
       .get(`${baseUrl}/users/`, null)
       .then((users) => {

@@ -99,7 +99,8 @@ export default {
           changes: userStore.user_profile_changes,
         })
         .then((response) => {
-          userStore.logged_user.pfp_url = userStore.user_profile_changes.pfp_url;
+          userStore.logged_user.pfp_url =
+            userStore.user_profile_changes.pfp_url;
           alertStore.successSnackbar(response.message);
         })
         .catch((response) => {
