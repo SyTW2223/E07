@@ -40,11 +40,16 @@ getRouter.get("/user", (req, res) => {
 });
 
 /*
- * Busca todos los usuarios
+ * Busca todos los usuarios o los que cumplan el termino de busqueda
  */
 getRouter.get("/users", jwtAuthMiddleware, (req, res) => {
-  User.find({})
+  const filter = req.query.searchTerm
+    ? { username: new RegExp("^" + req.query.searchTerm.toString()) }
+    : {};
+  User.find(filter)
     .then((users) => {
+      // console.log("---------------------------------------------------------------------");
+      // console.log("called");
       const filteredUserList = users.map((user) => {
         return {
           username: user.username,
