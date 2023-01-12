@@ -79,6 +79,72 @@ putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
         });
       });
   }
+  if (profile_changes.follows) {
+    User.findById(id)
+      .then((dbUser) => {
+        const filter = profile_changes.follows.name
+          ? { username: profile_changes.follows.name.toString() }
+          : {};
+        User.findOne(filter)
+          .then((dbFollowedUser) => {
+            if (profile_changes.follows.follow_status == true) {
+              dbUser.follows.push(dbFollowedUser._id);
+              dbFollowedUser.followed_by.push(dbUser._id);
+              dbUser
+                .save()
+                .then(() => {
+                  dbFollowedUser.save();
+                  res.status(200).send({
+                    message: "User followed",
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res.status(400).send({
+                    err: "Bad request \n" + error._message,
+                  });
+                });
+            }
+            if (profile_changes.follows.follow_status == false) {
+              const index: number = dbUser.follows.indexOf(dbFollowedUser.id);
+              if (index !== -1) {
+                dbUser.follows.splice(index, 1);
+              }
+              const index2: number = dbFollowedUser.followed_by.indexOf(
+                dbUser.id
+              );
+              if (index !== -1) {
+                dbFollowedUser.followed_by.splice(index2, 1);
+              }
+              dbUser
+                .save()
+                .then(() => {
+                  dbFollowedUser.save();
+                  res.status(200).send({
+                    message: "User unfollowed",
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res.status(400).send({
+                    err: "Bad request \n" + error._message,
+                  });
+                });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(400).send({
+              err: "Bad request \n" + error._message,
+            });
+          });
+      })
+      .catch((error) => {
+        res.status(400).send({
+          err: "Bad request \n" + error._message,
+        });
+      });
+  }
 });
 
 putRouter.put("/publication/comment/:id", jwtAuthMiddleware, (req, res) => {

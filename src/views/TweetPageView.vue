@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TweetPage from "../components/TweetPage.vue";
+import TweetPage from "../components/CommentPage.vue";
 </script>
 
 <template>

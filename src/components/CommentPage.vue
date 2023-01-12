@@ -80,6 +80,7 @@ interface publication {
   fav_count?: number;
   liked?: boolean;
   pfp_url?: string;
+  comments_count?: number;
   comments?: [
     {
       user: {
@@ -195,6 +196,7 @@ export default {
           date: entry.date,
           fav_count: entry.fav_count,
           liked: entry.liked,
+          comments_count: entry.comments_count,
           pfp_url: entry.pfp_url,
           comments: entry.comments,
         };
@@ -230,7 +232,6 @@ export default {
         //   };
         // });
         this.tweet_loaded = true;
-        console.log(aux);
       })
       .catch((response) => {
         //console.log(response.err);

@@ -21,6 +21,7 @@ import SnackbarAlert from "./components/SnackbarAlert.vue";
         <v-tab v-if="isLogged()" :to="`/profile/${useAuthStore().user_id}`"
           >Profile</v-tab
         >
+        <v-tab v-if="isLogged()" :to="`/search`">Search</v-tab>
         <v-tab v-if="isLogged()" @click="useAuthStore().logout()">
           Log Out
         </v-tab>

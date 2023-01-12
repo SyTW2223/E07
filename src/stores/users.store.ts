@@ -8,6 +8,7 @@ const baseUrl = `${expressJS_url}`;
 interface User {
   username?: string;
   pfp_url?: string;
+  followed?: boolean;
   loading: boolean;
   error: string | null;
 }
@@ -92,15 +93,15 @@ export const useUsersStore = defineStore({
       this.searched_user = { loading: true, error: null };
       await fetchWrapper
         .get(`${baseUrl}/user?username=${userName}`, null)
-        .then((response) => {
+        .then(async(response) => {
           if (response.message) {
             alertStore.successSnackbar(response.message);
           }
           response["loading"] = false;
           response["error"] = null;
           this.searched_user = response;
+          await this.userFollows(userName);
           this.searched_user.username = userName;
-          console.log(response)
           this.tweets = response.publications;
         })
         .catch((response) => {
@@ -133,6 +134,22 @@ export const useUsersStore = defineStore({
         .catch((response) => {
           //console.log(response.err);
           alertStore.error(response.err);
+        });
+    },
+    async userFollows(userName: string) {
+      const alertStore = useAlertStore();
+      await fetchWrapper
+        .get(`${baseUrl}/user/follows/${userName}`, null)
+        .then((response) => {
+          if (response.message) {
+            alertStore.successSnackbar(response.message);
+          }
+          this.searched_user.followed = response;
+        })
+        .catch((response) => {
+          //console.log(response.err);
+          alertStore.error(response.err);
+          this.searched_user = { loading: false, error: response.err };
         });
     },
   },

@@ -5,7 +5,8 @@ import SnackbarAlert from "./SnackbarAlert.vue";
 <template>
   <div>
     <v-container>
-      <v-card-text>
+      <v-card title="All published tweets" variant="tonal"></v-card>
+      <!-- <v-card-text>
         <v-text-field
           density="compact"
           variant="solo"
@@ -18,7 +19,7 @@ import SnackbarAlert from "./SnackbarAlert.vue";
           v-model="textAreaValue"
           @click:append-inner="postTweet"
         ></v-text-field>
-      </v-card-text>
+      </v-card-text> -->
     </v-container>
     <transition name="fade">
       <v-container>
@@ -79,36 +80,6 @@ export default {
       this.publications.splice(index, 1);
       alertStore.successSnackbar("Tweet deleted");
     },
-    async postTweet() {
-      return await fetchWrapper
-        .post(`${baseUrl}/publication`, {
-          content: {
-            text: this.textAreaValue,
-          },
-          date: new Date(),
-        })
-        .then((entry) => {
-          if (!entry.pfp_url) entry.pfp_url = "/E07/logo_without_letters.png";
-          let aux: publication = {
-            id: entry._id,
-            username: entry.owner_username,
-            content: {
-              text: entry.content.text,
-            },
-            date: entry.date,
-            fav_count: entry.fav_count,
-            comments_count: entry.comments_count,
-            liked: entry.liked,
-            pfp_url: entry.pfp_url,
-          };
-          this.addTweetFirst(aux);
-          this.textAreaValue = "";
-          alertStore.successSnackbar("Tweet added");
-        })
-        .catch((response) => {
-          alertStore.error(response.err);
-        });
-    },
     addTweetFirst(tweet: publication) {
       this.publications.push({
         id: tweet.id,
@@ -126,11 +97,10 @@ export default {
     await userStore.getById(authStore.user_id);
 
     await fetchWrapper
-      .get(`${baseUrl}/userfeed/${authStore.user_id}`, null)
+      .get(`${baseUrl}/publication/`, null)
       .then((publications) => {
         publications.forEach((entry: any) => {
           if (!entry.pfp_url) entry.pfp_url = "/E07/logo_without_letters.png";
-          // if (entry.owner_username == userStore.logged_user.username) entry.owner_username += " (you)";
           let aux: publication = {
             id: entry._id,
             username: entry.owner_username,
