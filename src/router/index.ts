@@ -40,9 +40,14 @@ export const router = createRouter({
       component: () => import("../views/TweetPageView.vue"),
     },
     {
-      path: "/search",
-      name: "search",
+      path: "/search/tweets",
+      name: "search-tweets",
       component: () => import("../views/SearchTweetsView.vue"),
+    },
+    {
+      path: "/search/users",
+      name: "search-users",
+      component: () => import("../views/SearchUsersView.vue"),
     },
   ],
 });

@@ -40,6 +40,25 @@ getRouter.get("/user", (req, res) => {
 });
 
 /*
+ * Busca todos los usuarios
+ */
+getRouter.get("/users", jwtAuthMiddleware, (req, res) => {
+  User.find({})
+    .then((users) => {
+      const filteredUserList = users.map((user) => {
+        return {
+          username: user.username,
+          pfp_url: user.pfp_url,
+        };
+      });
+      res.status(200).send(filteredUserList);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+/*
  * Devuelve un usuario a partir de su id
  */
 getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
