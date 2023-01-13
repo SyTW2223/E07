@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'production'
+      - 'chore-versionNumber'
 permissions:
   contents: read
 
@@ -34,7 +35,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - 
         name: Set env
-        run: echo "DATE=$(date +%s)" >> $GITHUB_ENV
+        run: echo "PROJECTVERSION=$(grep version package.json | awk -F \" '{print $4}')" >> $GITHUB_ENV
       -
         name: Build and push
         uses: docker/build-push-action@v3
@@ -44,4 +45,5 @@ jobs:
             "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
             "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
           push: true
-          tags: dasna/not_twitter:latest
+          tags: dasna/not_twitter:latest , dasna/not_twitter:${{ env.PROJECTVERSION }}
+          
