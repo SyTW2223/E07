@@ -18,6 +18,8 @@ export interface UserInterface extends Document {
     following_count: number;
     publication_counter: number;
   };
+  follows: UserInterface[];
+  followed_by: UserInterface[];
   publications: PublicationInterface[];
 }
 
@@ -105,7 +107,14 @@ const UserSchema = new Schema<UserInterface>({
       trim: true,
     },
   },
-
+  follows: {
+    type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    required: false,
+  },
+  followed_by: {
+    type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    required: false,
+  },
   publications: {
     type: [{ type: Schema.Types.ObjectId, ref: "Publication" }],
     required: false,

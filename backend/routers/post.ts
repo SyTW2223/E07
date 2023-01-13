@@ -62,6 +62,7 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
                   owner_username: dbPublication.owner_username,
                   date: dbPublication.date,
                   fav_count: 0,
+                  comments_count: 0,
                   comments: [],
                   liked: false,
                   pfp_url: user.pfp_url,

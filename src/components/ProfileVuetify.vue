@@ -142,7 +142,8 @@ export default {
             if (response.message) {
               alertStore.successSnackbar(response.message);
             }
-            if (!response.pfp_url) response.pfp_url = "/E07/logo_without_letters.png";
+            if (!response.pfp_url)
+              response.pfp_url = "/E07/logo_without_letters.png";
             let aux: publication = {
               id: response._id,
               username: response.owner_username,

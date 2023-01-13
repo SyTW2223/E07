@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ release0.2, release0.3 ]
+    branches: [ feature-userCards-searchUsers ]
   pull_request:
-    branches: [ production ]
+    branches: [ production, release0.2, release0.3, release0.4 ]
 jobs:
   deploy_expressJS:
     name: Deploying ExpressJS
