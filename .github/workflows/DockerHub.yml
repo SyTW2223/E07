@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'production'
-      - 'chore-versionNumber'
 permissions:
   contents: read
 
@@ -45,5 +44,5 @@ jobs:
             "ENV_PARAMS=${{ secrets.ENV_PARAMS }}"
             "ENV_PARAMS_FRONT=${{ secrets.ENV_PARAMS_FRONT }}"
           push: true
-          tags: dasna/not_twitter:latest , dasna/not_twitter:${{ env.PROJECTVERSION }}
+          tags: dasna/not_twitter:${{ env.PROJECTVERSION }}, dasna/not_twitter:latest
           
