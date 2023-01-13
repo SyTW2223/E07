@@ -23,7 +23,7 @@ export interface UserInterface extends Document {
   publications: PublicationInterface[];
 }
 
-const UserSchema = new Schema<UserInterface>({
+const userSchema = new Schema<UserInterface>({
   date: {
     type: Date,
     required: false,
@@ -120,4 +120,21 @@ const UserSchema = new Schema<UserInterface>({
     required: false,
   },
 });
-export default model<UserInterface>("User", UserSchema);
+
+userSchema.pre("validate", function (next) {
+  const follows_copy = this.follows;
+  //console.log(fav_users_copy);
+  if (follows_copy.length === 0) next();
+  const lookUp = follows_copy.map((user) => {
+    return user.id;
+  });
+  const isDuplicated = lookUp.some((item, idx) => {
+    return lookUp.indexOf(item) != idx;
+  });
+  if (isDuplicated) {
+    next(new Error("The user already follows this user"));
+    console.log("The user already follows this user");
+  } else next();
+});
+
+export default model<UserInterface>("User", userSchema);
