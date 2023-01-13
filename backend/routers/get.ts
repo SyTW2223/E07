@@ -40,6 +40,30 @@ getRouter.get("/user", (req, res) => {
 });
 
 /*
+ * Busca todos los usuarios o los que cumplan el termino de busqueda
+ */
+getRouter.get("/users", jwtAuthMiddleware, (req, res) => {
+  const filter = req.query.searchTerm
+    ? { username: new RegExp("^" + req.query.searchTerm.toString()) }
+    : {};
+  User.find(filter)
+    .then((users) => {
+      // console.log("---------------------------------------------------------------------");
+      // console.log("called");
+      const filteredUserList = users.map((user) => {
+        return {
+          username: user.username,
+          pfp_url: user.pfp_url,
+        };
+      });
+      res.status(200).send(filteredUserList);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
+/*
  * Devuelve un usuario a partir de su id
  */
 getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
@@ -66,11 +90,19 @@ getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Todas las publicaciones
+ * Todas las publicaciones  o las que cumplan el termino de busqueda
  */
-getRouter.get("/publication", jwtAuthMiddleware, (req, res) => {
+getRouter.get("/publications", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
-  Publication.find({})
+  const filter = req.query.searchTerm
+    ? {
+        "content.text": new RegExp(
+          "\\b" + req.query.searchTerm.toString() + "\\b",
+          "i"
+        ),
+      }
+    : {};
+  Publication.find(filter)
     .then(async (dbPublications) => {
       if (!dbPublications) {
         res.status(404).send({

@@ -4,15 +4,15 @@ import { RouterLink } from "vue-router";
 <template>
   <v-card
     style="width: 100%; margin: 0 auto; border-radius: 2px"
-    :to="`/tweet/${tweet.id}`"
+    :to="`/${user.username}`"
   >
     <v-card-title>
       <v-avatar size="40px">
-        <router-link :to="`/${tweet.username}`">
+        <router-link :to="`/${user.username}`">
           <!-- <v-img v-bind:src="tweet.Url"></v-img>  BUGGED, IMG DOESN'T LOAD-->
           <img
             style="max-width: 100%; max-height: 100%"
-            :src="tweet.pfp_url"
+            :src="user.pfp_url"
             alt=""
           />
         </router-link>
@@ -20,13 +20,12 @@ import { RouterLink } from "vue-router";
       <router-link
         style="margin-left: 5px"
         class="username-link"
-        :to="`/${tweet.username}`"
+        :to="`/${user.username}`"
       >
-        {{ tweet.username }}
+        {{ user.username }}
       </router-link>
-      <span class="date">{{ tweet.date.slice(0, 10) }}</span>
     </v-card-title>
-    <v-card-text>{{ tweet.text }}</v-card-text>
+    <!-- <v-card-text>{{ tweet.text }}</v-card-text>
     <v-card-actions>
       <v-btn
         @click.prevent="likeTweet(tweet.id)"
@@ -46,7 +45,7 @@ import { RouterLink } from "vue-router";
       >
         <v-icon style="margin-left: auto">mdi-delete</v-icon>
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </template>
 
@@ -78,68 +77,15 @@ import { RouterLink } from "vue-router";
 import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
 import { useAlertStore, useUsersStore } from "@/stores";
-import { tSMethodSignature } from "@babel/types";
 
 const baseUrl = `${expressJS_url}`;
 const alertStore = useAlertStore();
 const usersStore = useUsersStore();
 export default {
-  props: ["tweet"],
+  props: ["user"],
   emits: ["remove"],
-  data: () => ({
-    liked: false,
-    fav_count: 0,
-    comments_count: 0,
-  }),
+  data: () => ({}),
 
-  created() {
-    this.fav_count = this.tweet.fav_count;
-    this.comments_count = this.tweet.comments_count;
-    this.liked = this.tweet.liked;
-  },
-
-  methods: {
-    async likeTweet(tweetId: string) {
-      this.liked = !this.liked;
-      await fetchWrapper
-        .put(`${baseUrl}/publication/like/${tweetId}`, { liked: this.liked })
-        .then(() => {
-          if (this.liked) {
-            alertStore.successSnackbar("Tweet liked");
-            this.fav_count += 1;
-          } else {
-            alertStore.successSnackbar("Like removed from tweet");
-            this.fav_count += -1;
-          }
-          console.log(this.fav_count);
-        })
-        .catch((response) => {
-          alertStore.error(response.err);
-          console.log(response.err);
-        });
-    },
-
-    commentOnTweet(tweetId: any) {
-      this.$router.push({
-        name: "tweet",
-        params: { tweetID: this.tweet.id },
-      });
-    },
-
-    async deleteTweet(tweetId: any) {
-      await fetchWrapper
-        .delete(`${baseUrl}/publication/${tweetId}`, null)
-        .then(() => {
-          this.$emit("remove", tweetId);
-        })
-        .catch((response) => {
-          alertStore.error(response.err);
-          console.log(response.err);
-        });
-    },
-    async beforeCreate() {
-      console.log(this.tweet.date);
-    },
-  },
+  methods: {},
 };
 </script>

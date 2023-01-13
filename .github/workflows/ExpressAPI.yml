@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ feature-followUser-comments ]
+    branches: [ feature-userCards-searchUsers ]
   pull_request:
     branches: [ production, release0.2, release0.3, release0.4 ]
 jobs:

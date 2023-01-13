@@ -93,7 +93,7 @@ export const useUsersStore = defineStore({
       this.searched_user = { loading: true, error: null };
       await fetchWrapper
         .get(`${baseUrl}/user?username=${userName}`, null)
-        .then(async(response) => {
+        .then(async (response) => {
           if (response.message) {
             alertStore.successSnackbar(response.message);
           }
