@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+const alertStore = useAlertStore();
+const usersStore = useUsersStore();
 </script>
 
 <template>
@@ -27,13 +29,7 @@ import { RouterLink } from "vue-router";
 </template>
 
 <script lang="ts">
-import { fetchWrapper } from "@/helpers";
-import { expressJS_url } from "../config/env.frontend";
 import { useAlertStore, useUsersStore } from "@/stores";
-
-const baseUrl = `${expressJS_url}`;
-const alertStore = useAlertStore();
-const usersStore = useUsersStore();
 
 export default {
   props: ["comment"],

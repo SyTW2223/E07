@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+const alertStore = useAlertStore();
+const usersStore = useUsersStore();
 </script>
 <template>
   <v-card
@@ -29,6 +31,7 @@ import { RouterLink } from "vue-router";
     <v-card-text>{{ tweet.text }}</v-card-text>
     <v-card-actions>
       <v-btn
+        data-test="like-button"
         @click.prevent="likeTweet(tweet.id)"
         :style="{ color: liked ? 'red' : 'grey' }"
       >
@@ -81,8 +84,7 @@ import { useAlertStore, useUsersStore } from "@/stores";
 import { tSMethodSignature } from "@babel/types";
 
 const baseUrl = `${expressJS_url}`;
-const alertStore = useAlertStore();
-const usersStore = useUsersStore();
+
 export default {
   props: ["tweet"],
   emits: ["remove"],

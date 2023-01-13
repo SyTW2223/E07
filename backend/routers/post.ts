@@ -1,11 +1,10 @@
 import * as express from "express";
 import User from "../models/user";
-import Publication, { PublicationInterface } from "../models/publication";
+import Publication from "../models/publication";
 
 import * as jwt from "jsonwebtoken";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 import { jwtSecret } from "../env.backend";
-import { ObjectID } from "bson";
 
 export const postRouter = express.Router();
 
@@ -91,7 +90,7 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Inicio de sesion
+ * LogIn
  */
 postRouter.post("/login", (req, res) => {
   const filter = req.body.email ? { email: req.body.email.toString() } : {};
