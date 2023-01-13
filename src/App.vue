@@ -46,7 +46,7 @@ export default {
 
   methods: {
     isLogged() {
-      return useAuthStore().api_token !== null || undefined ? true : false;
+      return useAuthStore().api_token !== "";
     },
   },
 };

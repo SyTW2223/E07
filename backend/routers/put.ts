@@ -81,11 +81,13 @@ putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
   }
   if (profile_changes.follows) {
     User.findById(id)
+    .populate("follows")
       .then((dbUser) => {
-        const filter = profile_changes.follows.name
-          ? { username: profile_changes.follows.name.toString() }
+        const filter = profile_changes.follows.username
+          ? { username: profile_changes.follows.username.toString() }
           : {};
         User.findOne(filter)
+        .populate("followed_by")
           .then((dbFollowedUser) => {
             if (profile_changes.follows.follow_status == true) {
               dbUser.follows.push(dbFollowedUser._id);
@@ -106,13 +108,15 @@ putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
                 });
             }
             if (profile_changes.follows.follow_status == false) {
-              const index: number = dbUser.follows.indexOf(dbFollowedUser.id);
+              const index: number = dbUser.follows.map((user) => {
+                return user.id;
+              }).indexOf(dbFollowedUser.id);
               if (index !== -1) {
                 dbUser.follows.splice(index, 1);
               }
-              const index2: number = dbFollowedUser.followed_by.indexOf(
-                dbUser.id
-              );
+              const index2: number = dbFollowedUser.followed_by.map((user) => {
+                return user.id;
+              }).indexOf(dbUser.id);
               if (index !== -1) {
                 dbFollowedUser.followed_by.splice(index2, 1);
               }
