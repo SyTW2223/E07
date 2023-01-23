@@ -124,7 +124,7 @@ export default {
       alertStore.successSnackbar("Tweet deleted");
     },
     addTweetFirst(tweet: publication) {
-      this.publications.unshift({
+      this.publications.push({
         id: tweet.id,
         username: this.user.username,
         text: tweet.content.text,
