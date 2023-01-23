@@ -110,8 +110,20 @@ export default {
           alertStore.error(response.err);
         });
     },
-    addTweetFirst(tweet: publication) {
+    addTweetLast(tweet: publication) {
       this.publications.push({
+        id: tweet.id,
+        username: tweet.username,
+        text: tweet.content.text,
+        date: tweet.date,
+        fav_count: tweet.fav_count,
+        comments_count: tweet.comments_count,
+        liked: tweet.liked,
+        pfp_url: tweet.pfp_url,
+      });
+    },
+    addTweetFirst(tweet: publication) {
+      this.publications.unshift({
         id: tweet.id,
         username: tweet.username,
         text: tweet.content.text,
@@ -144,7 +156,7 @@ export default {
             liked: entry.liked,
             pfp_url: entry.pfp_url,
           };
-          this.addTweetFirst(aux);
+          this.addTweetLast(aux);
         });
       })
       .catch((response) => {
