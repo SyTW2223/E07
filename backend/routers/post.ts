@@ -1,13 +1,16 @@
 import * as express from "express";
 import User from "../models/user";
-import Publication, { PublicationInterface } from "../models/publication";
+import Publication from "../models/publication";
 
 import * as jwt from "jsonwebtoken";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 import { jwtSecret } from "../env.backend";
-import { ObjectID } from "bson";
 
 export const postRouter = express.Router();
+
+/*
+ * Creates an account
+ */
 
 postRouter.post("/user", (req, res) => {
   const user = new User(req.body);
@@ -20,13 +23,55 @@ postRouter.post("/user", (req, res) => {
       });
     })
     .catch((error) => {
-      // HAY QUE MANEJAR TODOS LOS ERRORES AL CREAR LA CUENTA
       console.log(error);
       res.status(400).send({
         err: "Bad request \n" + error.errmsg,
       });
     });
 });
+
+/*
+ * LogIn
+ */
+postRouter.post("/login", (req, res) => {
+  const filter = req.body.email ? { email: req.body.email.toString() } : {};
+  User.findOne(filter)
+    .then((user) => {
+      if (!user) {
+        res.status(404).send({
+          err: "Email or password incorrect",
+        });
+      } else {
+        if (user.password == req.body.password) {
+          const payload = {
+            id: user._id,
+          };
+          const secret = jwtSecret;
+          const token = jwt.sign(payload, secret, {
+            algorithm: "HS256",
+            expiresIn: "1h",
+          });
+          res.status(201).send({
+            token: token,
+          });
+        } else {
+          res.status(403).send({
+            err: "Email or password incorrect",
+          });
+        }
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(400).send({
+        err: "Bad request \n" + error.errmsg,
+      });
+    });
+});
+
+/*
+ * Adds a new publication to the user that made the petition
+ */
 
 postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
   User.findById({ _id: res.locals.payload.id }).then((user) => {
@@ -88,43 +133,4 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
         });
       });
   });
-});
-
-/*
- * Inicio de sesion
- */
-postRouter.post("/login", (req, res) => {
-  const filter = req.body.email ? { email: req.body.email.toString() } : {};
-  User.findOne(filter)
-    .then((user) => {
-      if (!user) {
-        res.status(404).send({
-          err: "Email or password incorrect",
-        });
-      } else {
-        if (user.password == req.body.password) {
-          const payload = {
-            id: user._id,
-          };
-          const secret = jwtSecret;
-          const token = jwt.sign(payload, secret, {
-            algorithm: "HS256",
-            expiresIn: "1h",
-          });
-          res.status(201).send({
-            token: token,
-          });
-        } else {
-          res.status(403).send({
-            err: "Email or password incorrect",
-          });
-        }
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(400).send({
-        err: "Bad request \n" + error.errmsg,
-      });
-    });
 });

@@ -2,18 +2,16 @@ import * as express from "express";
 import Publication from "../models/publication";
 import User from "../models/user";
 
-import * as jwt from "jsonwebtoken";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
 
 export const putRouter = express.Router();
 
+/*
+ * Like petition, receives like status
+ */
 putRouter.put("/publication/like/:id", jwtAuthMiddleware, (req, res) => {
   const id = req.params.id;
   const liked = req.body.liked;
-  // AÑADIR FILTRO PARA DECREMENTAR O INCREMENTAR SI EL USUARIO YA LE HA DADO LIKE O NO
-  // const update = liked
-  //   ? { $inc: { fav_count: 1 } }
-  //   : { $inc: { fav_count: -1 } };
   Publication.findById(id)
     .populate("fav_users")
     .exec(function (err, publication) {
@@ -52,14 +50,11 @@ putRouter.put("/publication/like/:id", jwtAuthMiddleware, (req, res) => {
           });
       }
     });
-  // // .catch((error) => {
-  // //   console.error(error);
-  // //   res.status(400).send({
-  // //     err: "Bad request \n" + error._message,
-  // //   });
-  // });
 });
 
+/*
+ * Profile update petition, it can be a pfp update or a new follow
+ */
 putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
   const id = req.params.id;
   const profile_changes = req.body.changes;
@@ -81,13 +76,13 @@ putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
   }
   if (profile_changes.follows) {
     User.findById(id)
-    .populate("follows")
+      .populate("follows")
       .then((dbUser) => {
         const filter = profile_changes.follows.username
           ? { username: profile_changes.follows.username.toString() }
           : {};
         User.findOne(filter)
-        .populate("followed_by")
+          .populate("followed_by")
           .then((dbFollowedUser) => {
             if (profile_changes.follows.follow_status == true) {
               dbUser.follows.push(dbFollowedUser._id);
@@ -108,15 +103,19 @@ putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
                 });
             }
             if (profile_changes.follows.follow_status == false) {
-              const index: number = dbUser.follows.map((user) => {
-                return user.id;
-              }).indexOf(dbFollowedUser.id);
+              const index: number = dbUser.follows
+                .map((user) => {
+                  return user.id;
+                })
+                .indexOf(dbFollowedUser.id);
               if (index !== -1) {
                 dbUser.follows.splice(index, 1);
               }
-              const index2: number = dbFollowedUser.followed_by.map((user) => {
-                return user.id;
-              }).indexOf(dbUser.id);
+              const index2: number = dbFollowedUser.followed_by
+                .map((user) => {
+                  return user.id;
+                })
+                .indexOf(dbUser.id);
               if (index !== -1) {
                 dbFollowedUser.followed_by.splice(index2, 1);
               }
@@ -151,6 +150,9 @@ putRouter.put("/user/:id", jwtAuthMiddleware, (req, res) => {
   }
 });
 
+/*
+ * Petition to add a comment to a publication
+ */
 putRouter.put("/publication/comment/:id", jwtAuthMiddleware, (req, res) => {
   const id = req.params.id;
   const comment = req.body;
@@ -204,10 +206,4 @@ putRouter.put("/publication/comment/:id", jwtAuthMiddleware, (req, res) => {
           res.status(400).send(err);
         });
     });
-  // // .catch((error) => {
-  // //   console.error(error);
-  // //   res.status(400).send({
-  // //     err: "Bad request \n" + error._message,
-  // //   });
-  // });
 });
