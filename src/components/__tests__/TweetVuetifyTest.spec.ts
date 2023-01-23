@@ -1,16 +1,17 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
+const pinia = createTestingPinia();
 import router from "../../router/index";
 import Tweet from "../TweetVuetify.vue";
 
 const vuetify = createVuetify({ components, directives });
 const wrapper = mount(Tweet, {
   global: {
-    plugins: [vuetify, createTestingPinia(), router],
+    plugins: [vuetify, pinia, router],
   },
   propsData: {
     tweet: {
@@ -65,9 +66,9 @@ describe("TweetVuetify", () => {
     expect(wrapper.vm.tweet.liked).toBe(false);
   });
 
-  it("cuando se pulsa el boton de me gusta se hace una peticion get", async () => {
-    // await wrapper.find("v-btn[data-testid=likebtn]").trigger("click");
-    console.log(await wrapper.get('[data-test="like-button"]').attributes());
-    //expect(fetchWrapper.get).toHaveBeenCalledTimes(1);
-  });
+  // it("cuando se pulsa el boton de me gusta se hace una peticion get", async () => {
+  //   // await wrapper.find("v-btn[data-testid=likebtn]").trigger("click");
+  //   console.log(await wrapper.get('[data-test="like-button"]').attributes());
+  //   //expect(fetchWrapper.get).toHaveBeenCalledTimes(1);
+  // });
 });

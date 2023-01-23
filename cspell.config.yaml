@@ -5,12 +5,14 @@ ignorePaths:
   - tsconfig.*
   - yarn.lock
   - .eslintrc.cjs
+  - README.md
 dictionaryDefinitions: []
 dictionaries: []
 words:
   - Avenir
   - iconsets
   - Pinia
+  - testid
   - unfollowed
   - Vuetify
 ignoreWords: []

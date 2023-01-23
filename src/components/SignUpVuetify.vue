@@ -4,64 +4,70 @@ const alertStore = useAlertStore();
 </script>
 <template>
   <v-container>
-    <v-img src="/E07/logo.png" style="width: 15%" class="mx-auto"></v-img>
+    <v-img
+      @load="imageLoaded"
+      src="/E07/logo.png"
+      style="width: 15%"
+      class="mx-auto"
+    ></v-img>
   </v-container>
+  <div v-if="showForm">
+    <v-form ref="form" v-model="form">
+      <v-container
+        style="width: 50%; justify-content: center; align-items: center"
+      >
+        <v-text-field
+          prepend-icon="mdi-email"
+          label="Email address"
+          type="email"
+          :rules="rules.email"
+          hide-details="auto"
+          v-model="email"
+          style="width: 100%; justify-content: center; align-items: center"
+        ></v-text-field>
 
-  <v-form ref="form" v-model="form">
-    <v-container
-      style="width: 50%; justify-content: center; align-items: center"
-    >
-      <v-text-field
-        prepend-icon="mdi-email"
-        label="Email address"
-        type="email"
-        :rules="rules.email"
-        hide-details="auto"
-        v-model="email"
-        style="width: 100%; justify-content: center; align-items: center"
-      ></v-text-field>
+        <v-text-field
+          prepend-icon="mdi-account"
+          label="Account name (custom field)"
+          hide-details="auto"
+          v-model="username"
+          style="width: 100%; justify-content: center; align-items: center"
+        ></v-text-field>
 
-      <v-text-field
-        prepend-icon="mdi-account"
-        label="Account name (custom field)"
-        hide-details="auto"
-        v-model="username"
-        style="width: 100%; justify-content: center; align-items: center"
-      ></v-text-field>
+        <v-text-field
+          prepend-icon="mdi-lock"
+          label="Password"
+          type="password"
+          :rules="rules.passwd"
+          hide-details="auto"
+          v-model="password"
+          required
+          style="width: 100%; justify-content: center; align-items: center"
+        ></v-text-field>
 
-      <v-text-field
-        prepend-icon="mdi-lock"
-        label="Password"
-        type="password"
-        :rules="rules.passwd"
-        hide-details="auto"
-        v-model="password"
-        required
-        style="width: 100%; justify-content: center; align-items: center"
-      ></v-text-field>
-
-      <v-text-field
-        prepend-icon="mdi-lock"
-        label="Verify password"
-        type="password"
-        :rules="[rules.v_passwd(password, verify_password)]"
-        v-model="verify_password"
-        hide-details="auto"
-        style="width: 100%; justify-content: center; align-items: center"
-      ></v-text-field>
-      <v-container>
-        <v-btn
-          @click="onSubmit"
-          rounded
-          :disabled="!form"
-          elevation="2"
-          class="mx-auto"
-          style="display: block; background-color: #0ebbb5; color: white"
-          >Sign Up</v-btn
-        >
+        <v-text-field
+          prepend-icon="mdi-lock"
+          label="Verify password"
+          type="password"
+          :rules="[rules.v_passwd(password, verify_password)]"
+          v-model="verify_password"
+          hide-details="auto"
+          style="width: 100%; justify-content: center; align-items: center"
+        ></v-text-field>
+        <v-container>
+          <v-btn
+            @click="onSubmit"
+            rounded
+            :disabled="!form"
+            elevation="2"
+            class="mx-auto"
+            style="display: block; background-color: #0ebbb5; color: white"
+            >Sign Up</v-btn
+          >
+        </v-container>
       </v-container>
-    </v-container>
-  </v-form>
+    </v-form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -70,6 +76,7 @@ export default {
   data() {
     return {
       form: false,
+      showForm: false,
       email: "",
       username: "",
       password: "",
@@ -94,6 +101,9 @@ export default {
   },
 
   methods: {
+    async imageLoaded() {
+      this.showForm = true;
+    },
     async onSubmit() {
       if (this.password !== this.verify_password) {
         alertStore.error("Passwords do not match");
@@ -102,7 +112,7 @@ export default {
       const userStore = useUsersStore();
       await userStore
         .register(this)
-        .then((response) => {
+        .then(() => {
           this.$router.push({ name: "log-in" });
         })
         .catch((response) => {

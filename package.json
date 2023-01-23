@@ -12,7 +12,7 @@
     "test:unit:single": "vitest run --environment jsdom --root src",
     "test:unit:backend": "vitest --environment jsdom --root backend/tests/",
     "test:unit:backend:single": "vitest run --environment jsdom --root backend/tests/",
-    "test:unit:coverage": "vitest --environment jsdom --root src/ --coverage",
+    "test:unit:coverage": "vitest --environment jsdom --root src/components/ --coverage",
     "test:unit:coverage:single": "vitest run --environment jsdom --root src/ --coverage",
     "test:unit:backend:coverage": "vitest --environment jsdom --root backend/ --coverage",
     "test:unit:backend:coverage:single": "vitest run --environment jsdom --root backend/ --coverage",

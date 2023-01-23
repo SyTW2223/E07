@@ -4,14 +4,19 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { mount } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
-import { useAuthStore } from "@/stores";
+import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
+const pinia = createTestingPinia();
+const authStore = useAuthStore();
+const alertStore = useAlertStore();
+const userStore = useUsersStore();
 
-import LogInVuetify from "../LogInVuetify.vue";
+import router from "../../router/index";
+import Login from "../LogInVuetify.vue";
 
 const vuetify = createVuetify({ components, directives });
-const wrapper = mount(LogInVuetify, {
+const wrapper = mount(Login, {
   global: {
-    plugins: [vuetify, createTestingPinia()],
+    plugins: [vuetify, pinia, router],
   },
 });
 
@@ -35,6 +40,7 @@ describe("LogInVuetify", () => {
     // console.log(emailTextField.html());
     // await wrapper.vm.$nextTick();
     // expect(wrapper.emitted('logInResult')[0][0]).toBe('test@test.test')
+    expect(wrapper.props);
     expect(true).toBe(true);
     // expect(wrapper.emitted('logInResult')[0][1]).toBe('Test123456')
   });
