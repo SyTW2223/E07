@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ feature-userCards-searchUsers ]
+    branches: [ feature-text-unit-e2e-chores ]
   pull_request:
     branches: [ production, release0.2, release0.3, release0.4 ]
 jobs:
