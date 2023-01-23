@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores";
 
-import { expressJS_url, expressJS_port } from "../config/env.frontend";
+import { expressJS_url } from "../config/env.frontend";
 
 export const fetchWrapper = {
   get: request("GET"),
@@ -58,7 +58,7 @@ function handleResponse(response: Response) {
       logout();
     }
     if (response.status.toString().startsWith("2")) {
-      const data = text && JSON.parse(text);
+      //const data = text && JSON.parse(text);
       return Promise.resolve(responseObject);
     }
     return Promise.reject(responseObject);

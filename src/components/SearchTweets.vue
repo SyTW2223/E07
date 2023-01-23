@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SnackbarAlert from "./SnackbarAlert.vue";
 import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 </script>
 

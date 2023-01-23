@@ -5,6 +5,7 @@ ignorePaths:
   - tsconfig.*
   - yarn.lock
   - .eslintrc.cjs
+  - README.md
 dictionaryDefinitions: []
 dictionaries: []
 words:

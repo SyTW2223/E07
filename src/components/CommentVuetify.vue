@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-const alertStore = useAlertStore();
-const usersStore = useUsersStore();
 </script>
 
 <template>
@@ -29,7 +27,6 @@ const usersStore = useUsersStore();
 </template>
 
 <script lang="ts">
-import { useAlertStore, useUsersStore } from "@/stores";
 
 export default {
   props: ["comment"],

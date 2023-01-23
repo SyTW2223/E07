@@ -10,7 +10,11 @@ import EditProfilePopUp from "./EditProfilePopUp.vue";
     />
     <v-row>
       <v-col align-self="center">
-        <v-img data-testid="profile-user-pfp" :src="user.pfp_url" aspect-ratio="6" />
+        <v-img
+          data-testid="profile-user-pfp"
+          :src="user.pfp_url"
+          aspect-ratio="6"
+        />
       </v-col>
     </v-row>
     <v-row>
@@ -68,7 +72,6 @@ import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 
 const baseUrl = `${expressJS_url}`;
 const userStore = useUsersStore();
-const authStore = useAuthStore();
 const alertStore = useAlertStore();
 interface publication {
   id: string;

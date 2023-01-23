@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import TweetVuetify from "./TweetVuetify.vue";
 import CommentVuetify from "./CommentVuetify.vue";
 </script>
@@ -67,7 +66,6 @@ import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 
 const baseUrl = `${expressJS_url}`;
 const userStore = useUsersStore();
-const authStore = useAuthStore();
 const alertStore = useAlertStore();
 
 interface publication {

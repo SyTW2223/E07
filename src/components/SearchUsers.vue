@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import SnackbarAlert from "./SnackbarAlert.vue";
-</script>
-
 <template>
   <div>
     <v-container>
@@ -61,7 +57,6 @@ import { debounce } from "lodash";
 
 const baseUrl = `${expressJS_url}`;
 const userStore = useUsersStore();
-const authStore = useAuthStore();
 const alertStore = useAlertStore();
 
 export default {

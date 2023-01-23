@@ -23,14 +23,14 @@ describe("Visual Tests", () => {
 describe("Input Tests", () => {
   it("writing an invalid email", () => {
     cy.get('[data-testid="login-email-field"]').type("test@test.test");
-    cy.get('[data-testid="login-email-field"]').get('input').clear();
+    cy.get('[data-testid="login-email-field"]').get("input").clear();
   });
   it("login button should be disabled", () => {
     cy.get('[data-testid="login-button"]').should("be.disabled");
   });
   it("writing an invalid password", () => {
     cy.get('[data-testid="login-password-field"]').type("Test123456");
-    cy.get('[data-testid="login-password-field"]').get('input').clear();
+    cy.get('[data-testid="login-password-field"]').get("input").clear();
   });
   it("login button should be disabled", () => {
     cy.get('[data-testid="login-button"]').should("be.disabled");

@@ -112,7 +112,7 @@ export default {
       const userStore = useUsersStore();
       await userStore
         .register(this)
-        .then((response) => {
+        .then(() => {
           this.$router.push({ name: "log-in" });
         })
         .catch((response) => {

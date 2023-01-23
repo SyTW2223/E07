@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 import { fetchWrapper, setCookie, getCookie } from "@/helpers";
 import { router } from "@/router";
-import { expressJS_url, expressJS_port } from "../config/env.frontend";
+import { expressJS_url } from "../config/env.frontend";
 import { useAlertStore } from "./alert.store";
 
 const baseUrl = `${expressJS_url}`;
@@ -19,7 +19,7 @@ export const useAuthStore = defineStore({
   actions: {
     async login(email: string, password: string) {
       const alertStore = useAlertStore();
-      const request = await fetchWrapper
+      await fetchWrapper
         .post(`${baseUrl}/login`, {
           email,
           password,

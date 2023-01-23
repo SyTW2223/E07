@@ -1,5 +1,4 @@
 import { Document, Schema, model } from "mongoose";
-import User from "./user";
 import { UserInterface } from "./user";
 
 export interface PublicationInterface extends Document {

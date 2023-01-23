@@ -3,7 +3,6 @@ export function setCookie(
   cValue: string,
   expFromEpoch: number
 ): string {
-  //console.log(expFromEpoch);
   const date: Date = new Date(expFromEpoch * 1000);
   const expires: string = "expires=" + date.toUTCString();
   document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";

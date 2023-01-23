@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import { useAuthStore, useAlertStore, useUsersStore } from "@/stores";
+import { useAuthStore, useAlertStore } from "@/stores";
 import CustomAlertVue from "./components/CustomAlert.vue";
 import SnackbarAlert from "./components/SnackbarAlert.vue";
 </script>

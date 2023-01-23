@@ -21,7 +21,8 @@ const userStore = useUsersStore();
       <v-container
         style="width: 50%; justify-content: center; align-items: center"
       >
-        <v-text-field data-testid="login-email-field"
+        <v-text-field
+          data-testid="login-email-field"
           label="Email"
           type="email"
           :rules="rules.email"
@@ -32,7 +33,8 @@ const userStore = useUsersStore();
           prepend-icon="mdi-email"
           style="width: 100%; justify-content: center; align-items: center"
         ></v-text-field>
-        <v-text-field data-testid="login-password-field"
+        <v-text-field
+          data-testid="login-password-field"
           label="Password"
           type="password"
           :rules="rules.password"
@@ -50,7 +52,8 @@ const userStore = useUsersStore();
             text-align: center;
           "
         >
-          <v-btn data-testid="login-button"
+          <v-btn
+            data-testid="login-button"
             @click="logIn"
             elevation="2"
             class="mx-auto"
@@ -62,7 +65,8 @@ const userStore = useUsersStore();
 
           <v-card-text> or if you don't have an account yet </v-card-text>
 
-          <v-btn data-testid="signup-button"
+          <v-btn
+            data-testid="signup-button"
             @click="goToSignUpPage"
             elevation="2"
             class="mx-auto"

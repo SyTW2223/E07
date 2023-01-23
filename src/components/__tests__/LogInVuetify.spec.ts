@@ -13,7 +13,6 @@ const userStore = useUsersStore();
 import router from "../../router/index";
 import Login from "../LogInVuetify.vue";
 
-
 const vuetify = createVuetify({ components, directives });
 const wrapper = mount(Login, {
   global: {

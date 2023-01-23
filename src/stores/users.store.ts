@@ -79,7 +79,8 @@ export const useUsersStore = defineStore({
           }
           response["loading"] = false;
           response["error"] = null;
-          if (!response.pfp_url) response.pfp_url = "/E07/logo_without_letters.png";
+          if (!response.pfp_url)
+            response.pfp_url = "/E07/logo_without_letters.png";
           this.logged_user = response;
           this.tweets = response.publications;
         })
