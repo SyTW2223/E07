@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SnackbarAlert from "./SnackbarAlert.vue";
+import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 </script>
 
 <template>
@@ -57,13 +58,13 @@ import { fetchWrapper } from "@/helpers";
 import { expressJS_url } from "../config/env.frontend";
 import TweetVuetify from "./TweetVuetify.vue";
 import { storeToRefs } from "pinia";
-import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 import { debounce } from "lodash";
-
-const baseUrl = `${expressJS_url}`;
-const userStore = useUsersStore();
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
+const userStore = useUsersStore();
+
+const baseUrl = `${expressJS_url}`;
+
 interface publication {
   id: string;
   username: string;

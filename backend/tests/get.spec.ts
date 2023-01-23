@@ -52,14 +52,4 @@ describe("GET (/users/:id) tests", () => {
       .send();
     expect(response.status).toBe(404);
   });
-
-  // it("Trying to get an user with an ID that exists should return the user and 200", async () => {
-  //   const response = await expressAPI
-  //     .get("/user/63b315a36a74a2d2e88c2814")
-  //     .send();
-  //   expect(response.status).toBe(200);
-  //   expect(response.body.username).toBe("test");
-  //   expect(response.body.password).toBe("Test123456");
-  //   expect(response.body.email).toBe("test@test.test");
-  // });
 });

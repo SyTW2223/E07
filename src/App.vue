@@ -18,7 +18,10 @@ import SnackbarAlert from "./components/SnackbarAlert.vue";
         </v-tab>
         <v-tab v-if="!isLogged()" to="/log-in"> Log in </v-tab>
         <v-tab v-if="!isLogged()" to="/sign-up"> Sign Up </v-tab>
-        <v-tab v-if="isLogged()" :to="`/profile/${useAuthStore().user_id}`"
+        <v-tab
+          data-testid="top-navbar-profile"
+          v-if="isLogged()"
+          :to="`/profile/${useAuthStore().user_id}`"
           >Profile</v-tab
         >
         <v-tab v-if="isLogged()" :to="`/search/tweets`">Tweets</v-tab>
@@ -33,7 +36,7 @@ import SnackbarAlert from "./components/SnackbarAlert.vue";
       <CustomAlertVue v-show="useAlertStore().customAlert.enabled" />
       <RouterView />
     </v-container>
-    <SnackbarAlert />
+    <SnackbarAlert data-testid="snackbar" />
   </v-app>
 </template>
 

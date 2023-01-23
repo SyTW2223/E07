@@ -10,12 +10,14 @@ import EditProfilePopUp from "./EditProfilePopUp.vue";
     />
     <v-row>
       <v-col align-self="center">
-        <v-img :src="userStore.logged_user.pfp_url" aspect-ratio="6" />
+        <v-img data-testid="profile-user-pfp" :src="user.pfp_url" aspect-ratio="6" />
       </v-col>
     </v-row>
     <v-row>
       <v-col align-self="center">
-        <v-card-title style="text-align: center; font-size: 33px"
+        <v-card-title
+          data-testid="profile-user-name"
+          style="text-align: center; font-size: 33px"
           >{{ user.username }}
           <v-btn
             @click="showEditProfilePopUp = !showEditProfilePopUp"

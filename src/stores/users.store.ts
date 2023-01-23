@@ -5,7 +5,7 @@ import { useAuthStore, useAlertStore } from "@/stores";
 import { expressJS_url } from "@/config/env.frontend";
 
 const baseUrl = `${expressJS_url}`;
-interface User {
+export interface User {
   username?: string;
   pfp_url?: string;
   followed?: boolean;
@@ -13,7 +13,7 @@ interface User {
   error: string | null;
 }
 
-interface publication {
+export interface publication {
   id: string;
   username: string;
   content: {
@@ -31,7 +31,7 @@ interface publication {
   ];
 }
 
-interface UserProfileChanges {
+export interface UserProfileChanges {
   username?: string;
   pfp_url?: string;
 }
@@ -79,6 +79,7 @@ export const useUsersStore = defineStore({
           }
           response["loading"] = false;
           response["error"] = null;
+          if (!response.pfp_url) response.pfp_url = "/E07/logo_without_letters.png";
           this.logged_user = response;
           this.tweets = response.publications;
         })

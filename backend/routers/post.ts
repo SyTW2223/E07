@@ -8,6 +8,10 @@ import { jwtSecret } from "../env.backend";
 
 export const postRouter = express.Router();
 
+/*
+ * Creates an account
+ */
+
 postRouter.post("/user", (req, res) => {
   const user = new User(req.body);
   user.date = new Date();
@@ -26,6 +30,50 @@ postRouter.post("/user", (req, res) => {
       });
     });
 });
+
+/*
+ * LogIn
+ */
+postRouter.post("/login", (req, res) => {
+  const filter = req.body.email ? { email: req.body.email.toString() } : {};
+  User.findOne(filter)
+    .then((user) => {
+      if (!user) {
+        res.status(404).send({
+          err: "Email or password incorrect",
+        });
+      } else {
+        if (user.password == req.body.password) {
+          const payload = {
+            id: user._id,
+          };
+          const secret = jwtSecret;
+          const token = jwt.sign(payload, secret, {
+            algorithm: "HS256",
+            expiresIn: "1h",
+          });
+          res.status(201).send({
+            token: token,
+          });
+        } else {
+          res.status(403).send({
+            err: "Email or password incorrect",
+          });
+        }
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(400).send({
+        err: "Bad request \n" + error.errmsg,
+      });
+    });
+});
+
+
+/*
+ * Adds a new publication to the user that made the petition
+ */
 
 postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
   User.findById({ _id: res.locals.payload.id }).then((user) => {
@@ -87,43 +135,4 @@ postRouter.post("/publication", jwtAuthMiddleware, (req, res) => {
         });
       });
   });
-});
-
-/*
- * LogIn
- */
-postRouter.post("/login", (req, res) => {
-  const filter = req.body.email ? { email: req.body.email.toString() } : {};
-  User.findOne(filter)
-    .then((user) => {
-      if (!user) {
-        res.status(404).send({
-          err: "Email or password incorrect",
-        });
-      } else {
-        if (user.password == req.body.password) {
-          const payload = {
-            id: user._id,
-          };
-          const secret = jwtSecret;
-          const token = jwt.sign(payload, secret, {
-            algorithm: "HS256",
-            expiresIn: "1h",
-          });
-          res.status(201).send({
-            token: token,
-          });
-        } else {
-          res.status(403).send({
-            err: "Email or password incorrect",
-          });
-        }
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(400).send({
-        err: "Bad request \n" + error.errmsg,
-      });
-    });
 });

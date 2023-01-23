@@ -16,8 +16,9 @@ export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude],
     coverage: {
-      reporter: ["lcov", "text"],
+      reporter: ["text", "json", "html"],
       reportsDirectory: "./coverage",
+      exclude: ["**/helpers/*", "**/__tests__/*"],
     },
     // setupFiles: "vuetify.config.js",
     deps: {

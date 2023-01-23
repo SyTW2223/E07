@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import SnackbarAlert from "./SnackbarAlert.vue";
-</script>
-
 <template>
   <div>
     <v-container>
@@ -40,11 +36,10 @@ import { expressJS_url } from "../config/env.frontend";
 import TweetVuetify from "./TweetVuetify.vue";
 import { storeToRefs } from "pinia";
 import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
-
-const baseUrl = `${expressJS_url}`;
-const userStore = useUsersStore();
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
+const userStore = useUsersStore();
+const baseUrl = `${expressJS_url}`;
 interface publication {
   id: string;
   username: string;
@@ -63,15 +58,21 @@ export default {
   components: {
     TweetVuetify,
   },
+  // computed: {
+  //   ...mapStores(useAlertStore, useAuthStore, useUsersStore),
+  // },
   data() {
     return {
       textAreaValue: "",
       errorAlertText: "undefined",
       errorAlertEnabled: false,
-      user: storeToRefs(userStore).logged_user,
+      user: storeToRefs(useUsersStore()).logged_user,
       publications: new Array(),
     };
   },
+  // created() {
+  //   console.log(getActivePinia());
+  // },
   methods: {
     async removeTweetComponent(tweetID: string) {
       console.log("removing form element", tweetID);

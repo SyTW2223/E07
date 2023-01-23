@@ -2,19 +2,26 @@
 import { useUsersStore, useAuthStore, useAlertStore } from "@/stores";
 const authStore = useAuthStore();
 const alertStore = useAlertStore();
+const userStore = useUsersStore();
 </script>
 
 <template>
   <v-container>
-    <v-img src="/E07/logo.png" style="width: 15%" class="mx-auto"></v-img>
+    <v-img
+      data-testid="login-logo"
+      @load="imageLoaded"
+      src="/E07/logo.png"
+      style="width: 15%"
+      class="mx-auto"
+    ></v-img>
   </v-container>
 
-  <div>
+  <div v-if="showForm" data-testid="login-form">
     <v-form ref="form" v-model="form">
       <v-container
         style="width: 50%; justify-content: center; align-items: center"
       >
-        <v-text-field
+        <v-text-field data-testid="login-email-field"
           label="Email"
           type="email"
           :rules="rules.email"
@@ -25,7 +32,7 @@ const alertStore = useAlertStore();
           prepend-icon="mdi-email"
           style="width: 100%; justify-content: center; align-items: center"
         ></v-text-field>
-        <v-text-field
+        <v-text-field data-testid="login-password-field"
           label="Password"
           type="password"
           :rules="rules.password"
@@ -43,7 +50,7 @@ const alertStore = useAlertStore();
             text-align: center;
           "
         >
-          <v-btn
+          <v-btn data-testid="login-button"
             @click="logIn"
             elevation="2"
             class="mx-auto"
@@ -55,7 +62,7 @@ const alertStore = useAlertStore();
 
           <v-card-text> or if you don't have an account yet </v-card-text>
 
-          <v-btn
+          <v-btn data-testid="signup-button"
             @click="goToSignUpPage"
             elevation="2"
             class="mx-auto"
@@ -75,6 +82,7 @@ export default {
   data() {
     return {
       form: false,
+      showForm: false,
       email: "",
       password: "",
       rules: {
@@ -94,6 +102,9 @@ export default {
     };
   },
   methods: {
+    async imageLoaded() {
+      this.showForm = true;
+    },
     async logIn() {
       const authStore = useAuthStore();
       const email: string = this.email;

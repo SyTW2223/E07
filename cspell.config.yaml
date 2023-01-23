@@ -11,6 +11,7 @@ words:
   - Avenir
   - iconsets
   - Pinia
+  - testid
   - unfollowed
   - Vuetify
 ignoreWords: []
