@@ -2,12 +2,13 @@ import * as express from "express";
 import User from "../models/user";
 import Publication from "../models/publication";
 
-import * as jwt from "jsonwebtoken";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
-import { jwtSecret } from "../env.backend";
 
 export const deleteRouter = express.Router();
 
+/*
+ * Deletes the publication that matches the id given, the userID that makes the petition must match the one in the jwtToken (not secure)
+ */
 deleteRouter.delete("/publication/:id", jwtAuthMiddleware, (req, res) => {
   const userID = res.locals.payload.id;
   User.findById(userID).then((user) => {
@@ -20,23 +21,12 @@ deleteRouter.delete("/publication/:id", jwtAuthMiddleware, (req, res) => {
           if (!publication) {
             res.status(404).send();
           } else {
-            const id_publication = req.params.id;
             User.findById(userID)
               .then((user) => {
                 const publications_copy = user.publications;
-                //con some puedes parar el bucle con el return forEach no te deja.
                 const filtered_publications = publications_copy.filter(
                   (obj) => obj._id.toString() !== req.params.id
                 );
-                // publications_copy.some((publication) => {
-                //   if (publication == id_publication) {
-                //     publications_copy.splice(
-                //       publications_copy.indexOf(publication),
-                //       1
-                //     );
-                //     return;
-                //   }
-                // });
                 User.updateOne(
                   { username: user.username },
                   { publications: filtered_publications }

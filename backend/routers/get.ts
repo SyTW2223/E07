@@ -2,14 +2,13 @@ import * as express from "express";
 import User from "../models/user";
 import Publication from "../models/publication";
 import { jwtAuthMiddleware } from "../middleware/jwt-auth";
-import { resolve } from "path";
 
 export const getRouter = express.Router();
 
 /*
- * Busca un usuario por su nombre de usuario y devuelve sus publicaciones
+ * Find a user by its name and retrieves its publications
  */
-getRouter.get("/user", (req, res) => {
+getRouter.get("/user", jwtAuthMiddleware, (req, res) => {
   const filter = req.query.username
     ? { username: req.query.username.toString() }
     : {};
@@ -40,7 +39,7 @@ getRouter.get("/user", (req, res) => {
 });
 
 /*
- * Busca todos los usuarios o los que cumplan el termino de busqueda
+ * Finds all users or the ones that match the search term
  */
 getRouter.get("/users", jwtAuthMiddleware, (req, res) => {
   const filter = req.query.searchTerm
@@ -64,7 +63,7 @@ getRouter.get("/users", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Devuelve un usuario a partir de su id
+ * Retrieves the user that matches the given id
  */
 getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
@@ -90,7 +89,7 @@ getRouter.get("/user/:id", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Todas las publicaciones  o las que cumplan el termino de busqueda
+ * Retrieves all publications o the ones that matches the search term
  */
 getRouter.get("/publications", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
@@ -142,7 +141,7 @@ getRouter.get("/publications", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Publicaciones del usuario y a los que sigue
+ * User timeline -> its publications and the ones from the users the user follows
  */
 getRouter.get("/userfeed/:id", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
@@ -213,7 +212,7 @@ getRouter.get("/userfeed/:id", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Devuelve una publicación a partir de su id
+ * Retrieves the publication that matches the id given
  */
 getRouter.get("/publication/:id", jwtAuthMiddleware, (req, res) => {
   const userID: string = res.locals.payload.id;
@@ -271,7 +270,7 @@ getRouter.get("/publication/:id", jwtAuthMiddleware, (req, res) => {
 });
 
 /*
- * Devuelve si el usuario sigue a otro usuario
+ * Retrieves if the user that generates de petition follows the user given
  */
 getRouter.get("/user/follows/:username", jwtAuthMiddleware, (req, res) => {
   const filter = req.params.username

@@ -20,7 +20,6 @@ express_app.options("*", cors());
 express_app.use(postRouter);
 express_app.use(getRouter);
 express_app.use(putRouter);
-//express_app.use(patchRouter);
 express_app.use(deleteRouter);
 express_app.use(defaultRouter);
 

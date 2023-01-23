@@ -1,6 +1,6 @@
 {
   "name": "not-twitter",
-  "version": "0.0.0",
+  "version": "1.0.6",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
@@ -8,7 +8,7 @@
     "build:express": "tsc --project ./tsconfig.express.json",
     "dev:express": "tsc-watch --onSuccess \"node backend/dist/src/api.js\" -p tsconfig.express.json",
     "prod:express": "node /backend/dist/src/api.js",
-    "test:unit": "vitest --environment jsdom --root src",
+    "test:unit": "vitest --environment jsdom --root src/ ",
     "test:unit:single": "vitest run --environment jsdom --root src",
     "test:unit:backend": "vitest --environment jsdom --root backend/tests/",
     "test:unit:backend:single": "vitest run --environment jsdom --root backend/tests/",
@@ -70,6 +70,7 @@
     "tsc-watch": "^5.0.3",
     "typescript": "~4.7.4",
     "vite": "^3.1.8",
+    "vite-plugin-vuetify": "^1.0.1",
     "vitest": "^0.24.3",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-tsc": "^1.0.12"
